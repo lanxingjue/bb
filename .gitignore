@@ -1,10 +1,20 @@
-# Freqtrade
-*.sqlite
+# Freqtrade engine source (clone separately)
+btc/freqtrade/freqtrade/
+btc/freqtrade/.venv/
+btc/freqtrade/.git/
+
+# Frontend deps
+btc/frontend/node_modules/
+btc/frontend/.next/
+btc/frontend/.git/
+
+# Python
 __pycache__/
 *.pyc
-.venv/
-node_modules/
-.next/
+*.pyo
+*.sqlite
+
+# Env
 .env
 config_*.json
 
@@ -17,3 +27,6 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+
+# Backend results (generated)
+btc/backend/results/*.json
