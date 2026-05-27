@@ -1,0 +1,4343 @@
+{
+  "success": true,
+  "metrics": {
+    "total_trades": 73,
+    "total_entries": 73,
+    "total_profit_usdt": -41.56,
+    "total_profit_pct": -5.33,
+    "win_rate": 35.62,
+    "avg_profit_pct": -0.28,
+    "sharpe_ratio": -0.18,
+    "max_drawdown_pct": 30.37,
+    "starting_balance": 1000.0,
+    "final_balance": 946.7,
+    "total_fees": 11.7067,
+    "win_trades": 26,
+    "loss_trades": 47
+  },
+  "trades": [
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 1944.95,
+      "size": 0.10283,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-01 22:00:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 66650.0,
+      "size": 0.003001,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-02 00:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 65566.2,
+      "size": 0.003001,
+      "pnl": -16.26,
+      "pnl_pct": -8.1305,
+      "fee": 0.078699,
+      "timestamp": "2026-03-02 13:30:00+00:00",
+      "duration": "0 days 13:00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 68388.1,
+      "size": 0.002924,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-02 15:00:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2027.7,
+      "size": 0.10283,
+      "pnl": 42.55,
+      "pnl_pct": 21.273,
+      "fee": 0.083404,
+      "timestamp": "2026-03-02 15:00:00+00:00",
+      "duration": "0 days 17:00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2061.0,
+      "size": 0.09704,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-02 15:30:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2028.12,
+      "size": 0.09704,
+      "pnl": -15.95,
+      "pnl_pct": -7.9767,
+      "fee": 0.078724,
+      "timestamp": "2026-03-02 17:30:00+00:00",
+      "duration": "0 days 02:00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 67313.3,
+      "size": 0.002924,
+      "pnl": -15.72,
+      "pnl_pct": -7.8581,
+      "fee": 0.078743,
+      "timestamp": "2026-03-03 08:30:00+00:00",
+      "duration": "0 days 17:30:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 67706.4,
+      "size": 0.002954,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-03 12:00:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 66423.8,
+      "size": 0.002954,
+      "pnl": -18.94,
+      "pnl_pct": -9.4718,
+      "fee": 0.078485,
+      "timestamp": "2026-03-03 14:30:00+00:00",
+      "duration": "0 days 02:30:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 67493.9,
+      "size": 0.002963,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-03 15:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 69856.8,
+      "size": 0.002963,
+      "pnl": 35.01,
+      "pnl_pct": 17.5045,
+      "fee": 0.082801,
+      "timestamp": "2026-03-04 08:30:00+00:00",
+      "duration": "0 days 17:00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 70989.9,
+      "size": 0.002817,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-04 08:45:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 73122.3,
+      "size": 0.002817,
+      "pnl": 30.04,
+      "pnl_pct": 15.019,
+      "fee": 0.082403,
+      "timestamp": "2026-03-04 21:15:00+00:00",
+      "duration": "0 days 12:30:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 68786.6,
+      "size": 0.002908,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-06 14:00:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 1941.46,
+      "size": 0.103015,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-08 02:45:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 66612.1,
+      "size": 0.002908,
+      "pnl": 31.61,
+      "pnl_pct": 15.8061,
+      "fee": 0.077471,
+      "timestamp": "2026-03-08 04:45:00+00:00",
+      "duration": "1 days 14:45:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 1974.86,
+      "size": 0.103015,
+      "pnl": -17.2,
+      "pnl_pct": -8.6018,
+      "fee": 0.081376,
+      "timestamp": "2026-03-08 10:15:00+00:00",
+      "duration": "0 days 07:30:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 67527.1,
+      "size": 0.002962,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-08 11:00:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 1947.73,
+      "size": 0.102684,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-08 11:30:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 1996.91,
+      "size": 0.102684,
+      "pnl": -25.25,
+      "pnl_pct": -12.625,
+      "fee": 0.08202,
+      "timestamp": "2026-03-09 03:00:00+00:00",
+      "duration": "0 days 15:30:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2003.1,
+      "size": 0.099845,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-09 05:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 68731.8,
+      "size": 0.002962,
+      "pnl": -17.84,
+      "pnl_pct": -8.9201,
+      "fee": 0.081427,
+      "timestamp": "2026-03-09 13:15:00+00:00",
+      "duration": "1 days 02:15:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2065.2,
+      "size": 0.099845,
+      "pnl": 31.0,
+      "pnl_pct": 15.501,
+      "fee": 0.08248,
+      "timestamp": "2026-03-10 08:30:00+00:00",
+      "duration": "1 days 03:00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2038.16,
+      "size": 0.098128,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-11 01:00:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 71448.9,
+      "size": 0.002799,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-13 00:15:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2131.99,
+      "size": 0.098128,
+      "pnl": 46.04,
+      "pnl_pct": 23.0183,
+      "fee": 0.083683,
+      "timestamp": "2026-03-13 00:15:00+00:00",
+      "duration": "1 days 23:15:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 73686.6,
+      "size": 0.002799,
+      "pnl": 31.32,
+      "pnl_pct": 15.6594,
+      "fee": 0.082506,
+      "timestamp": "2026-03-13 14:15:00+00:00",
+      "duration": "0 days 14:00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 70960.0,
+      "size": 0.002818,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-14 03:00:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2096.85,
+      "size": 0.095381,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-14 03:00:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2064.71,
+      "size": 0.095381,
+      "pnl": -15.33,
+      "pnl_pct": -7.6639,
+      "fee": 0.078774,
+      "timestamp": "2026-03-14 10:15:00+00:00",
+      "duration": "0 days 07:15:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2171.24,
+      "size": 0.092113,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-15 22:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 73749.9,
+      "size": 0.002818,
+      "pnl": 39.32,
+      "pnl_pct": 19.6583,
+      "fee": 0.083145,
+      "timestamp": "2026-03-16 03:30:00+00:00",
+      "duration": "2 days 00:30:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2258.27,
+      "size": 0.092113,
+      "pnl": 40.08,
+      "pnl_pct": 20.0415,
+      "fee": 0.083207,
+      "timestamp": "2026-03-16 10:30:00+00:00",
+      "duration": "0 days 12:00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 74695.9,
+      "size": 0.002678,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-17 21:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 73562.8,
+      "size": 0.002678,
+      "pnl": -15.17,
+      "pnl_pct": -7.5848,
+      "fee": 0.078786,
+      "timestamp": "2026-03-18 11:15:00+00:00",
+      "duration": "0 days 13:45:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 72716.0,
+      "size": 0.00275,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-18 12:00:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 69950.1,
+      "size": 0.00275,
+      "pnl": 38.04,
+      "pnl_pct": 19.0185,
+      "fee": 0.076957,
+      "timestamp": "2026-03-19 07:00:00+00:00",
+      "duration": "0 days 19:00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2139.3,
+      "size": 0.093489,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-20 04:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 70428.2,
+      "size": 0.00284,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-20 06:30:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2070.31,
+      "size": 0.093489,
+      "pnl": 32.25,
+      "pnl_pct": 16.1244,
+      "fee": 0.07742,
+      "timestamp": "2026-03-22 00:00:00+00:00",
+      "duration": "1 days 19:30:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 68182.0,
+      "size": 0.00284,
+      "pnl": 31.89,
+      "pnl_pct": 15.9467,
+      "fee": 0.077449,
+      "timestamp": "2026-03-22 11:45:00+00:00",
+      "duration": "2 days 05:15:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 67792.6,
+      "size": 0.00295,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-23 06:30:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2032.75,
+      "size": 0.098389,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-23 06:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 70938.2,
+      "size": 0.00295,
+      "pnl": -46.4,
+      "pnl_pct": -23.2002,
+      "fee": 0.083712,
+      "timestamp": "2026-03-23 11:00:00+00:00",
+      "duration": "0 days 04:30:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2167.91,
+      "size": 0.098389,
+      "pnl": -66.49,
+      "pnl_pct": -33.2456,
+      "fee": 0.085319,
+      "timestamp": "2026-03-23 11:00:00+00:00",
+      "duration": "0 days 04:30:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 71180.7,
+      "size": 0.00281,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-23 13:30:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2168.31,
+      "size": 0.092238,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-23 13:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 70099.0,
+      "size": 0.00281,
+      "pnl": -15.2,
+      "pnl_pct": -7.5983,
+      "fee": 0.078784,
+      "timestamp": "2026-03-23 15:45:00+00:00",
+      "duration": "0 days 02:15:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2127.7,
+      "size": 0.092238,
+      "pnl": -18.73,
+      "pnl_pct": -9.3644,
+      "fee": 0.078502,
+      "timestamp": "2026-03-23 15:45:00+00:00",
+      "duration": "0 days 02:15:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 70796.3,
+      "size": 0.002825,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-24 01:15:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 69539.3,
+      "size": 0.002825,
+      "pnl": -17.76,
+      "pnl_pct": -8.8776,
+      "fee": 0.07858,
+      "timestamp": "2026-03-24 16:30:00+00:00",
+      "duration": "0 days 15:15:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 71828.0,
+      "size": 0.002784,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-25 11:15:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 70749.4,
+      "size": 0.002784,
+      "pnl": -15.02,
+      "pnl_pct": -7.5082,
+      "fee": 0.078799,
+      "timestamp": "2026-03-25 17:45:00+00:00",
+      "duration": "0 days 06:30:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2083.19,
+      "size": 0.096007,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-26 09:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 68856.7,
+      "size": 0.002905,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-26 16:15:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2010.17,
+      "size": 0.096007,
+      "pnl": 35.05,
+      "pnl_pct": 17.526,
+      "fee": 0.077196,
+      "timestamp": "2026-03-27 10:30:00+00:00",
+      "duration": "1 days 01:00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 66452.1,
+      "size": 0.002905,
+      "pnl": 34.92,
+      "pnl_pct": 17.4609,
+      "fee": 0.077206,
+      "timestamp": "2026-03-27 10:45:00+00:00",
+      "duration": "0 days 18:30:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 1965.54,
+      "size": 0.101753,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-29 22:30:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2006.49,
+      "size": 0.101753,
+      "pnl": -20.83,
+      "pnl_pct": -10.417,
+      "fee": 0.081667,
+      "timestamp": "2026-03-30 00:15:00+00:00",
+      "duration": "0 days 01:45:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 67389.9,
+      "size": 0.002968,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-30 04:00:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2058.62,
+      "size": 0.097152,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-30 07:45:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2018.43,
+      "size": 0.097152,
+      "pnl": -19.52,
+      "pnl_pct": -9.7614,
+      "fee": 0.078438,
+      "timestamp": "2026-03-30 19:00:00+00:00",
+      "duration": "0 days 11:15:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 66281.5,
+      "size": 0.002968,
+      "pnl": -16.45,
+      "pnl_pct": -8.2238,
+      "fee": 0.078684,
+      "timestamp": "2026-03-30 19:15:00+00:00",
+      "duration": "0 days 15:15:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2029.11,
+      "size": 0.098565,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-31 00:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 67178.1,
+      "size": 0.002977,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-31 00:45:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 66090.0,
+      "size": 0.002977,
+      "pnl": -16.2,
+      "pnl_pct": -8.0986,
+      "fee": 0.078704,
+      "timestamp": "2026-03-31 09:45:00+00:00",
+      "duration": "0 days 09:00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2093.84,
+      "size": 0.098565,
+      "pnl": 31.9,
+      "pnl_pct": 15.9503,
+      "fee": 0.082552,
+      "timestamp": "2026-03-31 16:30:00+00:00",
+      "duration": "0 days 16:00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 68425.2,
+      "size": 0.002923,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-03-31 17:00:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 67144.3,
+      "size": 0.002923,
+      "pnl": -18.72,
+      "pnl_pct": -9.3599,
+      "fee": 0.078502,
+      "timestamp": "2026-04-02 01:30:00+00:00",
+      "duration": "1 days 08:30:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 65825.1,
+      "size": 0.003038,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-02 13:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 67022.4,
+      "size": 0.003038,
+      "pnl": -18.19,
+      "pnl_pct": -9.0946,
+      "fee": 0.081455,
+      "timestamp": "2026-04-02 14:30:00+00:00",
+      "duration": "0 days 01:00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2056.09,
+      "size": 0.097272,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-02 22:15:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 67403.8,
+      "size": 0.002967,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-04 16:15:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2096.31,
+      "size": 0.097272,
+      "pnl": -19.56,
+      "pnl_pct": -9.7807,
+      "fee": 0.081565,
+      "timestamp": "2026-04-05 23:00:00+00:00",
+      "duration": "3 days 00:45:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 69602.3,
+      "size": 0.002967,
+      "pnl": 32.62,
+      "pnl_pct": 16.3084,
+      "fee": 0.082609,
+      "timestamp": "2026-04-06 09:00:00+00:00",
+      "duration": "1 days 16:45:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 70390.5,
+      "size": 0.002841,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-07 22:15:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2177.11,
+      "size": 0.091865,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-07 22:30:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2244.01,
+      "size": 0.091865,
+      "pnl": 30.73,
+      "pnl_pct": 15.3644,
+      "fee": 0.082458,
+      "timestamp": "2026-04-08 10:30:00+00:00",
+      "duration": "0 days 12:00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 72582.6,
+      "size": 0.002841,
+      "pnl": 31.14,
+      "pnl_pct": 15.571,
+      "fee": 0.082491,
+      "timestamp": "2026-04-08 13:00:00+00:00",
+      "duration": "0 days 14:45:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 72936.2,
+      "size": 0.002742,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-10 14:15:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2247.01,
+      "size": 0.089007,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-11 15:15:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 71700.9,
+      "size": 0.002742,
+      "pnl": -16.94,
+      "pnl_pct": -8.4684,
+      "fee": 0.078645,
+      "timestamp": "2026-04-12 01:30:00+00:00",
+      "duration": "1 days 11:15:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2213.14,
+      "size": 0.089007,
+      "pnl": -15.07,
+      "pnl_pct": -7.5367,
+      "fee": 0.078794,
+      "timestamp": "2026-04-12 03:45:00+00:00",
+      "duration": "0 days 12:30:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 71376.8,
+      "size": 0.002802,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-12 12:00:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2205.66,
+      "size": 0.090676,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-13 15:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 72818.9,
+      "size": 0.002802,
+      "pnl": -20.2,
+      "pnl_pct": -10.102,
+      "fee": 0.081616,
+      "timestamp": "2026-04-13 19:15:00+00:00",
+      "duration": "1 days 07:15:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2240.85,
+      "size": 0.090676,
+      "pnl": -15.95,
+      "pnl_pct": -7.9772,
+      "fee": 0.081276,
+      "timestamp": "2026-04-13 19:15:00+00:00",
+      "duration": "0 days 03:45:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 74112.3,
+      "size": 0.002699,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-13 22:15:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2343.31,
+      "size": 0.085349,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-13 22:30:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2306.92,
+      "size": 0.085349,
+      "pnl": -15.53,
+      "pnl_pct": -7.7647,
+      "fee": 0.078758,
+      "timestamp": "2026-04-16 13:45:00+00:00",
+      "duration": "2 days 15:15:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2294.01,
+      "size": 0.087184,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-16 14:15:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2337.55,
+      "size": 0.087184,
+      "pnl": -18.98,
+      "pnl_pct": -9.4899,
+      "fee": 0.081518,
+      "timestamp": "2026-04-16 15:30:00+00:00",
+      "duration": "0 days 01:15:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 76878.9,
+      "size": 0.002699,
+      "pnl": 37.33,
+      "pnl_pct": 18.6649,
+      "fee": 0.082986,
+      "timestamp": "2026-04-17 13:00:00+00:00",
+      "duration": "3 days 14:45:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2406.13,
+      "size": 0.083121,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-17 13:00:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2361.45,
+      "size": 0.083121,
+      "pnl": -18.57,
+      "pnl_pct": -9.2846,
+      "fee": 0.078514,
+      "timestamp": "2026-04-18 10:00:00+00:00",
+      "duration": "0 days 21:00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2364.06,
+      "size": 0.0846,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-18 14:45:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2327.18,
+      "size": 0.0846,
+      "pnl": -15.6,
+      "pnl_pct": -7.8001,
+      "fee": 0.078752,
+      "timestamp": "2026-04-19 04:30:00+00:00",
+      "duration": "0 days 13:45:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2301.8,
+      "size": 0.086889,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-19 07:15:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2340.29,
+      "size": 0.086889,
+      "pnl": -16.72,
+      "pnl_pct": -8.3608,
+      "fee": 0.081338,
+      "timestamp": "2026-04-19 13:15:00+00:00",
+      "duration": "0 days 06:00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2330.01,
+      "size": 0.085837,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-19 14:00:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 75225.2,
+      "size": 0.002659,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-19 17:00:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 76389.9,
+      "size": 0.002659,
+      "pnl": -15.48,
+      "pnl_pct": -7.7414,
+      "fee": 0.081239,
+      "timestamp": "2026-04-20 18:45:00+00:00",
+      "duration": "1 days 01:45:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 76306.4,
+      "size": 0.002621,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-21 08:15:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 74822.1,
+      "size": 0.002621,
+      "pnl": -19.45,
+      "pnl_pct": -9.7259,
+      "fee": 0.078444,
+      "timestamp": "2026-04-21 19:30:00+00:00",
+      "duration": "0 days 11:15:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 76045.0,
+      "size": 0.00263,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-21 23:30:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2369.53,
+      "size": 0.085837,
+      "pnl": -16.96,
+      "pnl_pct": -8.4807,
+      "fee": 0.081357,
+      "timestamp": "2026-04-22 02:45:00+00:00",
+      "duration": "2 days 12:45:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 78377.3,
+      "size": 0.00263,
+      "pnl": 30.67,
+      "pnl_pct": 15.335,
+      "fee": 0.082454,
+      "timestamp": "2026-04-22 12:00:00+00:00",
+      "duration": "0 days 12:30:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 78437.8,
+      "size": 0.00255,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-23 15:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 77149.6,
+      "size": 0.00255,
+      "pnl": -16.42,
+      "pnl_pct": -8.2116,
+      "fee": 0.078686,
+      "timestamp": "2026-04-23 17:30:00+00:00",
+      "duration": "0 days 02:00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2307.38,
+      "size": 0.086678,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-24 15:00:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2349.13,
+      "size": 0.086678,
+      "pnl": -18.09,
+      "pnl_pct": -9.0471,
+      "fee": 0.081448,
+      "timestamp": "2026-04-26 14:15:00+00:00",
+      "duration": "1 days 23:15:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 78382.8,
+      "size": 0.002552,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-26 21:45:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2293.61,
+      "size": 0.087199,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-27 15:00:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 76819.9,
+      "size": 0.002552,
+      "pnl": -19.94,
+      "pnl_pct": -9.9697,
+      "fee": 0.078405,
+      "timestamp": "2026-04-27 15:15:00+00:00",
+      "duration": "0 days 17:30:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 77059.6,
+      "size": 0.002595,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-28 01:30:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2333.08,
+      "size": 0.087199,
+      "pnl": -17.21,
+      "pnl_pct": -8.6043,
+      "fee": 0.081377,
+      "timestamp": "2026-04-29 04:30:00+00:00",
+      "duration": "1 days 13:30:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2240.11,
+      "size": 0.089281,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-29 18:00:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2274.68,
+      "size": 0.089281,
+      "pnl": -15.43,
+      "pnl_pct": -7.7161,
+      "fee": 0.081235,
+      "timestamp": "2026-04-30 01:15:00+00:00",
+      "duration": "0 days 07:15:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2240.51,
+      "size": 0.089265,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-04-30 02:30:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2283.71,
+      "size": 0.089265,
+      "pnl": -19.28,
+      "pnl_pct": -9.6407,
+      "fee": 0.081543,
+      "timestamp": "2026-05-01 03:15:00+00:00",
+      "duration": "1 days 00:45:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 78315.4,
+      "size": 0.002595,
+      "pnl": -16.3,
+      "pnl_pct": -8.1482,
+      "fee": 0.081304,
+      "timestamp": "2026-05-01 13:00:00+00:00",
+      "duration": "3 days 11:30:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2308.0,
+      "size": 0.086655,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-05-02 18:15:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 78879.9,
+      "size": 0.002536,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-05-03 20:15:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2379.67,
+      "size": 0.086655,
+      "pnl": 31.05,
+      "pnl_pct": 15.5264,
+      "fee": 0.082484,
+      "timestamp": "2026-05-04 02:30:00+00:00",
+      "duration": "1 days 08:15:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2344.29,
+      "size": 0.085314,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-05-04 14:15:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 81270.0,
+      "size": 0.002536,
+      "pnl": 30.3,
+      "pnl_pct": 15.1502,
+      "fee": 0.082424,
+      "timestamp": "2026-05-05 12:30:00+00:00",
+      "duration": "1 days 16:15:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 80993.8,
+      "size": 0.002469,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-05-06 00:45:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2416.66,
+      "size": 0.085314,
+      "pnl": 30.87,
+      "pnl_pct": 15.4354,
+      "fee": 0.08247,
+      "timestamp": "2026-05-06 09:30:00+00:00",
+      "duration": "1 days 19:15:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2335.74,
+      "size": 0.085626,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-05-07 00:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 79763.5,
+      "size": 0.002469,
+      "pnl": -15.19,
+      "pnl_pct": -7.595,
+      "fee": 0.078785,
+      "timestamp": "2026-05-07 16:45:00+00:00",
+      "duration": "1 days 16:00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 81276.3,
+      "size": 0.002461,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-05-10 22:00:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2373.45,
+      "size": 0.085626,
+      "pnl": -16.14,
+      "pnl_pct": -8.0724,
+      "fee": 0.081292,
+      "timestamp": "2026-05-10 22:45:00+00:00",
+      "duration": "3 days 22:15:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 2338.64,
+      "size": 0.08552,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-05-11 16:00:00+00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 2303.04,
+      "size": 0.08552,
+      "pnl": -15.22,
+      "pnl_pct": -7.6113,
+      "fee": 0.078782,
+      "timestamp": "2026-05-12 06:45:00+00:00",
+      "duration": "0 days 14:45:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 79949.9,
+      "size": 0.002461,
+      "pnl": -16.32,
+      "pnl_pct": -8.1598,
+      "fee": 0.078694,
+      "timestamp": "2026-05-12 16:45:00+00:00",
+      "duration": "1 days 18:45:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 2300.82,
+      "size": 0.086926,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-05-13 05:15:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 80322.5,
+      "size": 0.00249,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-05-13 12:15:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 81840.1,
+      "size": 0.00249,
+      "pnl": -18.89,
+      "pnl_pct": -9.4469,
+      "fee": 0.081512,
+      "timestamp": "2026-05-14 16:45:00+00:00",
+      "duration": "1 days 04:30:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "long",
+      "price": 81443.9,
+      "size": 0.002456,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-05-15 00:00:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "long",
+      "price": 80094.7,
+      "size": 0.002456,
+      "pnl": -16.57,
+      "pnl_pct": -8.283,
+      "fee": 0.078675,
+      "timestamp": "2026-05-15 13:00:00+00:00",
+      "duration": "0 days 13:00:00"
+    },
+    {
+      "pair": "ETH/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 2223.62,
+      "size": 0.086926,
+      "pnl": 33.55,
+      "pnl_pct": 16.7766,
+      "fee": 0.077316,
+      "timestamp": "2026-05-15 13:30:00+00:00",
+      "duration": "2 days 08:15:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 78709.5,
+      "size": 0.002541,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-05-15 13:45:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 76250.1,
+      "size": 0.002541,
+      "pnl": 31.25,
+      "pnl_pct": 15.6233,
+      "fee": 0.0775,
+      "timestamp": "2026-05-18 15:00:00+00:00",
+      "duration": "3 days 01:15:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "entry",
+      "side": "short",
+      "price": 76627.7,
+      "size": 0.00261,
+      "cost": 200.0,
+      "fee": 0.08,
+      "timestamp": "2026-05-19 11:30:00+00:00"
+    },
+    {
+      "pair": "BTC/USDT:USDT",
+      "type": "exit",
+      "side": "short",
+      "price": 76544.5,
+      "size": 0.00261,
+      "pnl": 1.09,
+      "pnl_pct": 0.5429,
+      "fee": 0.079913,
+      "timestamp": "2026-05-20 00:00:00+00:00",
+      "duration": "0 days 12:30:00"
+    }
+  ],
+  "equity_curve": [
+    {
+      "timestamp": "2026-02-26 08:00:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-26 11:45:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-26 15:30:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-26 19:15:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-26 23:00:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-27 02:45:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-27 06:30:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-27 10:15:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-27 14:00:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-27 17:45:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-27 21:30:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-28 01:15:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-28 05:00:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-28 08:45:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-28 12:30:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-28 16:15:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-28 20:00:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-02-28 23:45:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-03-01 03:30:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-03-01 07:15:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-03-01 11:00:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-03-01 14:45:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-03-01 18:30:00+00:00",
+      "equity": 1000.0,
+      "balance": 1000.0
+    },
+    {
+      "timestamp": "2026-03-01 22:15:00+00:00",
+      "equity": 994.84,
+      "balance": 799.92
+    },
+    {
+      "timestamp": "2026-03-02 02:00:00+00:00",
+      "equity": 990.89,
+      "balance": 599.84
+    },
+    {
+      "timestamp": "2026-03-02 05:45:00+00:00",
+      "equity": 1013.62,
+      "balance": 599.84
+    },
+    {
+      "timestamp": "2026-03-02 09:30:00+00:00",
+      "equity": 1001.01,
+      "balance": 599.84
+    },
+    {
+      "timestamp": "2026-03-02 13:15:00+00:00",
+      "equity": 980.84,
+      "balance": 599.84
+    },
+    {
+      "timestamp": "2026-03-02 17:00:00+00:00",
+      "equity": 1038.33,
+      "balance": 625.8
+    },
+    {
+      "timestamp": "2026-03-02 20:45:00+00:00",
+      "equity": 1019.68,
+      "balance": 809.77
+    },
+    {
+      "timestamp": "2026-03-03 00:30:00+00:00",
+      "equity": 1019.65,
+      "balance": 809.77
+    },
+    {
+      "timestamp": "2026-03-03 04:15:00+00:00",
+      "equity": 1008.45,
+      "balance": 809.77
+    },
+    {
+      "timestamp": "2026-03-03 08:00:00+00:00",
+      "equity": 1003.8,
+      "balance": 809.77
+    },
+    {
+      "timestamp": "2026-03-03 11:45:00+00:00",
+      "equity": 993.98,
+      "balance": 993.98
+    },
+    {
+      "timestamp": "2026-03-03 15:30:00+00:00",
+      "equity": 974.79,
+      "balance": 774.79
+    },
+    {
+      "timestamp": "2026-03-03 19:15:00+00:00",
+      "equity": 991.3,
+      "balance": 774.79
+    },
+    {
+      "timestamp": "2026-03-03 23:00:00+00:00",
+      "equity": 991.88,
+      "balance": 774.79
+    },
+    {
+      "timestamp": "2026-03-04 02:45:00+00:00",
+      "equity": 986.46,
+      "balance": 774.79
+    },
+    {
+      "timestamp": "2026-03-04 06:30:00+00:00",
+      "equity": 991.7,
+      "balance": 774.79
+    },
+    {
+      "timestamp": "2026-03-04 10:15:00+00:00",
+      "equity": 1016.73,
+      "balance": 809.64
+    },
+    {
+      "timestamp": "2026-03-04 14:00:00+00:00",
+      "equity": 1020.52,
+      "balance": 809.64
+    },
+    {
+      "timestamp": "2026-03-04 17:45:00+00:00",
+      "equity": 1040.47,
+      "balance": 809.64
+    },
+    {
+      "timestamp": "2026-03-04 21:30:00+00:00",
+      "equity": 1039.6,
+      "balance": 1039.6
+    },
+    {
+      "timestamp": "2026-03-05 01:15:00+00:00",
+      "equity": 1039.6,
+      "balance": 1039.6
+    },
+    {
+      "timestamp": "2026-03-05 05:00:00+00:00",
+      "equity": 1039.6,
+      "balance": 1039.6
+    },
+    {
+      "timestamp": "2026-03-05 08:45:00+00:00",
+      "equity": 1039.6,
+      "balance": 1039.6
+    },
+    {
+      "timestamp": "2026-03-05 12:30:00+00:00",
+      "equity": 1039.6,
+      "balance": 1039.6
+    },
+    {
+      "timestamp": "2026-03-05 16:15:00+00:00",
+      "equity": 1039.6,
+      "balance": 1039.6
+    },
+    {
+      "timestamp": "2026-03-05 20:00:00+00:00",
+      "equity": 1039.6,
+      "balance": 1039.6
+    },
+    {
+      "timestamp": "2026-03-05 23:45:00+00:00",
+      "equity": 1039.6,
+      "balance": 1039.6
+    },
+    {
+      "timestamp": "2026-03-06 03:30:00+00:00",
+      "equity": 1039.6,
+      "balance": 1039.6
+    },
+    {
+      "timestamp": "2026-03-06 07:15:00+00:00",
+      "equity": 1039.6,
+      "balance": 1039.6
+    },
+    {
+      "timestamp": "2026-03-06 11:00:00+00:00",
+      "equity": 1039.6,
+      "balance": 1039.6
+    },
+    {
+      "timestamp": "2026-03-06 14:45:00+00:00",
+      "equity": 1045.52,
+      "balance": 839.52
+    },
+    {
+      "timestamp": "2026-03-06 18:30:00+00:00",
+      "equity": 1045.12,
+      "balance": 839.52
+    },
+    {
+      "timestamp": "2026-03-06 22:15:00+00:00",
+      "equity": 1047.21,
+      "balance": 839.52
+    },
+    {
+      "timestamp": "2026-03-07 02:00:00+00:00",
+      "equity": 1047.94,
+      "balance": 839.52
+    },
+    {
+      "timestamp": "2026-03-07 05:45:00+00:00",
+      "equity": 1051.1,
+      "balance": 839.52
+    },
+    {
+      "timestamp": "2026-03-07 09:30:00+00:00",
+      "equity": 1051.97,
+      "balance": 839.52
+    },
+    {
+      "timestamp": "2026-03-07 13:15:00+00:00",
+      "equity": 1051.56,
+      "balance": 839.52
+    },
+    {
+      "timestamp": "2026-03-07 17:00:00+00:00",
+      "equity": 1053.82,
+      "balance": 839.52
+    },
+    {
+      "timestamp": "2026-03-07 20:45:00+00:00",
+      "equity": 1060.31,
+      "balance": 839.52
+    },
+    {
+      "timestamp": "2026-03-08 00:30:00+00:00",
+      "equity": 1061.35,
+      "balance": 839.52
+    },
+    {
+      "timestamp": "2026-03-08 04:15:00+00:00",
+      "equity": 1061.39,
+      "balance": 639.44
+    },
+    {
+      "timestamp": "2026-03-08 08:00:00+00:00",
+      "equity": 1066.57,
+      "balance": 870.97
+    },
+    {
+      "timestamp": "2026-03-08 11:45:00+00:00",
+      "equity": 1052.85,
+      "balance": 653.53
+    },
+    {
+      "timestamp": "2026-03-08 15:30:00+00:00",
+      "equity": 1063.21,
+      "balance": 653.53
+    },
+    {
+      "timestamp": "2026-03-08 19:15:00+00:00",
+      "equity": 1053.51,
+      "balance": 653.53
+    },
+    {
+      "timestamp": "2026-03-08 23:00:00+00:00",
+      "equity": 1071.98,
+      "balance": 653.53
+    },
+    {
+      "timestamp": "2026-03-09 02:45:00+00:00",
+      "equity": 1063.0,
+      "balance": 653.53
+    },
+    {
+      "timestamp": "2026-03-09 06:30:00+00:00",
+      "equity": 1024.26,
+      "balance": 628.11
+    },
+    {
+      "timestamp": "2026-03-09 10:15:00+00:00",
+      "equity": 1023.28,
+      "balance": 628.11
+    },
+    {
+      "timestamp": "2026-03-09 14:00:00+00:00",
+      "equity": 1015.25,
+      "balance": 810.19
+    },
+    {
+      "timestamp": "2026-03-09 17:45:00+00:00",
+      "equity": 1016.53,
+      "balance": 810.19
+    },
+    {
+      "timestamp": "2026-03-09 21:30:00+00:00",
+      "equity": 1021.63,
+      "balance": 810.19
+    },
+    {
+      "timestamp": "2026-03-10 01:15:00+00:00",
+      "equity": 1014.54,
+      "balance": 810.19
+    },
+    {
+      "timestamp": "2026-03-10 05:00:00+00:00",
+      "equity": 1032.12,
+      "balance": 810.19
+    },
+    {
+      "timestamp": "2026-03-10 08:45:00+00:00",
+      "equity": 1041.11,
+      "balance": 1041.11
+    },
+    {
+      "timestamp": "2026-03-10 12:30:00+00:00",
+      "equity": 1041.11,
+      "balance": 1041.11
+    },
+    {
+      "timestamp": "2026-03-10 16:15:00+00:00",
+      "equity": 1041.11,
+      "balance": 1041.11
+    },
+    {
+      "timestamp": "2026-03-10 20:00:00+00:00",
+      "equity": 1041.11,
+      "balance": 1041.11
+    },
+    {
+      "timestamp": "2026-03-10 23:45:00+00:00",
+      "equity": 1041.11,
+      "balance": 1041.11
+    },
+    {
+      "timestamp": "2026-03-11 03:30:00+00:00",
+      "equity": 1032.09,
+      "balance": 841.03
+    },
+    {
+      "timestamp": "2026-03-11 07:15:00+00:00",
+      "equity": 1031.34,
+      "balance": 841.03
+    },
+    {
+      "timestamp": "2026-03-11 11:00:00+00:00",
+      "equity": 1038.1,
+      "balance": 841.03
+    },
+    {
+      "timestamp": "2026-03-11 14:45:00+00:00",
+      "equity": 1052.76,
+      "balance": 841.03
+    },
+    {
+      "timestamp": "2026-03-11 18:30:00+00:00",
+      "equity": 1055.88,
+      "balance": 841.03
+    },
+    {
+      "timestamp": "2026-03-11 22:15:00+00:00",
+      "equity": 1055.41,
+      "balance": 841.03
+    },
+    {
+      "timestamp": "2026-03-12 02:00:00+00:00",
+      "equity": 1043.57,
+      "balance": 841.03
+    },
+    {
+      "timestamp": "2026-03-12 05:45:00+00:00",
+      "equity": 1035.17,
+      "balance": 841.03
+    },
+    {
+      "timestamp": "2026-03-12 09:30:00+00:00",
+      "equity": 1051.85,
+      "balance": 841.03
+    },
+    {
+      "timestamp": "2026-03-12 13:15:00+00:00",
+      "equity": 1049.62,
+      "balance": 841.03
+    },
+    {
+      "timestamp": "2026-03-12 17:00:00+00:00",
+      "equity": 1056.18,
+      "balance": 841.03
+    },
+    {
+      "timestamp": "2026-03-12 20:45:00+00:00",
+      "equity": 1052.62,
+      "balance": 841.03
+    },
+    {
+      "timestamp": "2026-03-13 00:30:00+00:00",
+      "equity": 1087.26,
+      "balance": 886.9
+    },
+    {
+      "timestamp": "2026-03-13 04:15:00+00:00",
+      "equity": 1084.64,
+      "balance": 886.9
+    },
+    {
+      "timestamp": "2026-03-13 08:00:00+00:00",
+      "equity": 1086.78,
+      "balance": 886.9
+    },
+    {
+      "timestamp": "2026-03-13 11:45:00+00:00",
+      "equity": 1097.42,
+      "balance": 886.9
+    },
+    {
+      "timestamp": "2026-03-13 15:30:00+00:00",
+      "equity": 1118.14,
+      "balance": 1118.14
+    },
+    {
+      "timestamp": "2026-03-13 19:15:00+00:00",
+      "equity": 1118.14,
+      "balance": 1118.14
+    },
+    {
+      "timestamp": "2026-03-13 23:00:00+00:00",
+      "equity": 1118.14,
+      "balance": 1118.14
+    },
+    {
+      "timestamp": "2026-03-14 02:45:00+00:00",
+      "equity": 1118.14,
+      "balance": 1118.14
+    },
+    {
+      "timestamp": "2026-03-14 06:30:00+00:00",
+      "equity": 1099.94,
+      "balance": 717.98
+    },
+    {
+      "timestamp": "2026-03-14 10:15:00+00:00",
+      "equity": 1095.18,
+      "balance": 902.57
+    },
+    {
+      "timestamp": "2026-03-14 14:00:00+00:00",
+      "equity": 1098.89,
+      "balance": 902.57
+    },
+    {
+      "timestamp": "2026-03-14 17:45:00+00:00",
+      "equity": 1097.32,
+      "balance": 902.57
+    },
+    {
+      "timestamp": "2026-03-14 21:30:00+00:00",
+      "equity": 1098.93,
+      "balance": 902.57
+    },
+    {
+      "timestamp": "2026-03-15 01:15:00+00:00",
+      "equity": 1101.72,
+      "balance": 902.57
+    },
+    {
+      "timestamp": "2026-03-15 05:00:00+00:00",
+      "equity": 1110.43,
+      "balance": 902.57
+    },
+    {
+      "timestamp": "2026-03-15 08:45:00+00:00",
+      "equity": 1112.72,
+      "balance": 902.57
+    },
+    {
+      "timestamp": "2026-03-15 12:30:00+00:00",
+      "equity": 1110.68,
+      "balance": 902.57
+    },
+    {
+      "timestamp": "2026-03-15 16:15:00+00:00",
+      "equity": 1108.28,
+      "balance": 902.57
+    },
+    {
+      "timestamp": "2026-03-15 20:00:00+00:00",
+      "equity": 1110.1,
+      "balance": 902.57
+    },
+    {
+      "timestamp": "2026-03-15 23:45:00+00:00",
+      "equity": 1130.86,
+      "balance": 702.49
+    },
+    {
+      "timestamp": "2026-03-16 03:30:00+00:00",
+      "equity": 1172.27,
+      "balance": 941.73
+    },
+    {
+      "timestamp": "2026-03-16 07:15:00+00:00",
+      "equity": 1185.26,
+      "balance": 941.73
+    },
+    {
+      "timestamp": "2026-03-16 11:00:00+00:00",
+      "equity": 1181.73,
+      "balance": 1181.73
+    },
+    {
+      "timestamp": "2026-03-16 14:45:00+00:00",
+      "equity": 1181.73,
+      "balance": 1181.73
+    },
+    {
+      "timestamp": "2026-03-16 18:30:00+00:00",
+      "equity": 1181.73,
+      "balance": 1181.73
+    },
+    {
+      "timestamp": "2026-03-16 22:15:00+00:00",
+      "equity": 1181.73,
+      "balance": 1181.73
+    },
+    {
+      "timestamp": "2026-03-17 02:00:00+00:00",
+      "equity": 1181.73,
+      "balance": 1181.73
+    },
+    {
+      "timestamp": "2026-03-17 05:45:00+00:00",
+      "equity": 1181.73,
+      "balance": 1181.73
+    },
+    {
+      "timestamp": "2026-03-17 09:30:00+00:00",
+      "equity": 1181.73,
+      "balance": 1181.73
+    },
+    {
+      "timestamp": "2026-03-17 13:15:00+00:00",
+      "equity": 1181.73,
+      "balance": 1181.73
+    },
+    {
+      "timestamp": "2026-03-17 17:00:00+00:00",
+      "equity": 1181.73,
+      "balance": 1181.73
+    },
+    {
+      "timestamp": "2026-03-17 20:45:00+00:00",
+      "equity": 1181.73,
+      "balance": 1181.73
+    },
+    {
+      "timestamp": "2026-03-18 00:30:00+00:00",
+      "equity": 1168.09,
+      "balance": 981.65
+    },
+    {
+      "timestamp": "2026-03-18 04:15:00+00:00",
+      "equity": 1175.34,
+      "balance": 981.65
+    },
+    {
+      "timestamp": "2026-03-18 08:00:00+00:00",
+      "equity": 1172.1,
+      "balance": 981.65
+    },
+    {
+      "timestamp": "2026-03-18 11:45:00+00:00",
+      "equity": 1166.4,
+      "balance": 1166.4
+    },
+    {
+      "timestamp": "2026-03-18 15:30:00+00:00",
+      "equity": 1185.51,
+      "balance": 966.32
+    },
+    {
+      "timestamp": "2026-03-18 19:15:00+00:00",
+      "equity": 1186.61,
+      "balance": 966.32
+    },
+    {
+      "timestamp": "2026-03-18 23:00:00+00:00",
+      "equity": 1188.23,
+      "balance": 966.32
+    },
+    {
+      "timestamp": "2026-03-19 02:45:00+00:00",
+      "equity": 1189.69,
+      "balance": 966.32
+    },
+    {
+      "timestamp": "2026-03-19 06:30:00+00:00",
+      "equity": 1194.25,
+      "balance": 966.32
+    },
+    {
+      "timestamp": "2026-03-19 10:15:00+00:00",
+      "equity": 1204.28,
+      "balance": 1204.28
+    },
+    {
+      "timestamp": "2026-03-19 14:00:00+00:00",
+      "equity": 1204.28,
+      "balance": 1204.28
+    },
+    {
+      "timestamp": "2026-03-19 17:45:00+00:00",
+      "equity": 1204.28,
+      "balance": 1204.28
+    },
+    {
+      "timestamp": "2026-03-19 21:30:00+00:00",
+      "equity": 1204.28,
+      "balance": 1204.28
+    },
+    {
+      "timestamp": "2026-03-20 01:15:00+00:00",
+      "equity": 1204.28,
+      "balance": 1204.28
+    },
+    {
+      "timestamp": "2026-03-20 05:00:00+00:00",
+      "equity": 1199.25,
+      "balance": 1004.2
+    },
+    {
+      "timestamp": "2026-03-20 08:45:00+00:00",
+      "equity": 1184.9,
+      "balance": 804.12
+    },
+    {
+      "timestamp": "2026-03-20 12:30:00+00:00",
+      "equity": 1206.1,
+      "balance": 804.12
+    },
+    {
+      "timestamp": "2026-03-20 16:15:00+00:00",
+      "equity": 1210.25,
+      "balance": 804.12
+    },
+    {
+      "timestamp": "2026-03-20 20:00:00+00:00",
+      "equity": 1210.23,
+      "balance": 804.12
+    },
+    {
+      "timestamp": "2026-03-20 23:45:00+00:00",
+      "equity": 1200.77,
+      "balance": 804.12
+    },
+    {
+      "timestamp": "2026-03-21 03:30:00+00:00",
+      "equity": 1196.07,
+      "balance": 804.12
+    },
+    {
+      "timestamp": "2026-03-21 07:15:00+00:00",
+      "equity": 1189.36,
+      "balance": 804.12
+    },
+    {
+      "timestamp": "2026-03-21 11:00:00+00:00",
+      "equity": 1196.68,
+      "balance": 804.12
+    },
+    {
+      "timestamp": "2026-03-21 14:45:00+00:00",
+      "equity": 1196.23,
+      "balance": 804.12
+    },
+    {
+      "timestamp": "2026-03-21 18:30:00+00:00",
+      "equity": 1196.98,
+      "balance": 804.12
+    },
+    {
+      "timestamp": "2026-03-21 22:15:00+00:00",
+      "equity": 1201.87,
+      "balance": 804.12
+    },
+    {
+      "timestamp": "2026-03-22 02:00:00+00:00",
+      "equity": 1256.48,
+      "balance": 1036.29
+    },
+    {
+      "timestamp": "2026-03-22 05:45:00+00:00",
+      "equity": 1254.93,
+      "balance": 1036.29
+    },
+    {
+      "timestamp": "2026-03-22 09:30:00+00:00",
+      "equity": 1260.23,
+      "balance": 1036.29
+    },
+    {
+      "timestamp": "2026-03-22 13:15:00+00:00",
+      "equity": 1268.11,
+      "balance": 1268.11
+    },
+    {
+      "timestamp": "2026-03-22 17:00:00+00:00",
+      "equity": 1268.11,
+      "balance": 1268.11
+    },
+    {
+      "timestamp": "2026-03-22 20:45:00+00:00",
+      "equity": 1268.11,
+      "balance": 1268.11
+    },
+    {
+      "timestamp": "2026-03-23 00:30:00+00:00",
+      "equity": 1268.11,
+      "balance": 1268.11
+    },
+    {
+      "timestamp": "2026-03-23 04:15:00+00:00",
+      "equity": 1268.11,
+      "balance": 1268.11
+    },
+    {
+      "timestamp": "2026-03-23 08:00:00+00:00",
+      "equity": 1244.33,
+      "balance": 867.95
+    },
+    {
+      "timestamp": "2026-03-23 11:45:00+00:00",
+      "equity": 1154.89,
+      "balance": 1154.89
+    },
+    {
+      "timestamp": "2026-03-23 15:30:00+00:00",
+      "equity": 1138.1,
+      "balance": 754.73
+    },
+    {
+      "timestamp": "2026-03-23 19:15:00+00:00",
+      "equity": 1120.64,
+      "balance": 1120.64
+    },
+    {
+      "timestamp": "2026-03-23 23:00:00+00:00",
+      "equity": 1120.64,
+      "balance": 1120.64
+    },
+    {
+      "timestamp": "2026-03-24 02:45:00+00:00",
+      "equity": 1115.27,
+      "balance": 920.56
+    },
+    {
+      "timestamp": "2026-03-24 06:30:00+00:00",
+      "equity": 1115.5,
+      "balance": 920.56
+    },
+    {
+      "timestamp": "2026-03-24 10:15:00+00:00",
+      "equity": 1124.63,
+      "balance": 920.56
+    },
+    {
+      "timestamp": "2026-03-24 14:00:00+00:00",
+      "equity": 1106.96,
+      "balance": 920.56
+    },
+    {
+      "timestamp": "2026-03-24 17:45:00+00:00",
+      "equity": 1102.73,
+      "balance": 1102.73
+    },
+    {
+      "timestamp": "2026-03-24 21:30:00+00:00",
+      "equity": 1102.73,
+      "balance": 1102.73
+    },
+    {
+      "timestamp": "2026-03-25 01:15:00+00:00",
+      "equity": 1102.73,
+      "balance": 1102.73
+    },
+    {
+      "timestamp": "2026-03-25 05:00:00+00:00",
+      "equity": 1102.73,
+      "balance": 1102.73
+    },
+    {
+      "timestamp": "2026-03-25 08:45:00+00:00",
+      "equity": 1102.73,
+      "balance": 1102.73
+    },
+    {
+      "timestamp": "2026-03-25 12:30:00+00:00",
+      "equity": 1095.67,
+      "balance": 902.65
+    },
+    {
+      "timestamp": "2026-03-25 16:15:00+00:00",
+      "equity": 1097.64,
+      "balance": 902.65
+    },
+    {
+      "timestamp": "2026-03-25 20:00:00+00:00",
+      "equity": 1087.55,
+      "balance": 1087.55
+    },
+    {
+      "timestamp": "2026-03-25 23:45:00+00:00",
+      "equity": 1087.55,
+      "balance": 1087.55
+    },
+    {
+      "timestamp": "2026-03-26 03:30:00+00:00",
+      "equity": 1087.55,
+      "balance": 1087.55
+    },
+    {
+      "timestamp": "2026-03-26 07:15:00+00:00",
+      "equity": 1087.55,
+      "balance": 1087.55
+    },
+    {
+      "timestamp": "2026-03-26 11:00:00+00:00",
+      "equity": 1093.55,
+      "balance": 887.47
+    },
+    {
+      "timestamp": "2026-03-26 14:45:00+00:00",
+      "equity": 1091.45,
+      "balance": 887.47
+    },
+    {
+      "timestamp": "2026-03-26 18:30:00+00:00",
+      "equity": 1115.68,
+      "balance": 687.39
+    },
+    {
+      "timestamp": "2026-03-26 22:15:00+00:00",
+      "equity": 1099.81,
+      "balance": 687.39
+    },
+    {
+      "timestamp": "2026-03-27 02:00:00+00:00",
+      "equity": 1090.22,
+      "balance": 687.39
+    },
+    {
+      "timestamp": "2026-03-27 05:45:00+00:00",
+      "equity": 1102.29,
+      "balance": 687.39
+    },
+    {
+      "timestamp": "2026-03-27 09:30:00+00:00",
+      "equity": 1123.46,
+      "balance": 687.39
+    },
+    {
+      "timestamp": "2026-03-27 13:15:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-27 17:00:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-27 20:45:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-28 00:30:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-28 04:15:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-28 08:00:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-28 11:45:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-28 15:30:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-28 19:15:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-28 23:00:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-29 02:45:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-29 06:30:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-29 10:15:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-29 14:00:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-29 17:45:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-29 21:30:00+00:00",
+      "equity": 1157.21,
+      "balance": 1157.21
+    },
+    {
+      "timestamp": "2026-03-30 01:15:00+00:00",
+      "equity": 1136.22,
+      "balance": 1136.22
+    },
+    {
+      "timestamp": "2026-03-30 05:00:00+00:00",
+      "equity": 1139.51,
+      "balance": 936.14
+    },
+    {
+      "timestamp": "2026-03-30 08:45:00+00:00",
+      "equity": 1140.93,
+      "balance": 736.06
+    },
+    {
+      "timestamp": "2026-03-30 12:30:00+00:00",
+      "equity": 1149.87,
+      "balance": 736.06
+    },
+    {
+      "timestamp": "2026-03-30 16:15:00+00:00",
+      "equity": 1137.28,
+      "balance": 736.06
+    },
+    {
+      "timestamp": "2026-03-30 20:00:00+00:00",
+      "equity": 1099.93,
+      "balance": 1099.93
+    },
+    {
+      "timestamp": "2026-03-30 23:45:00+00:00",
+      "equity": 1099.93,
+      "balance": 1099.93
+    },
+    {
+      "timestamp": "2026-03-31 03:30:00+00:00",
+      "equity": 1124.51,
+      "balance": 699.77
+    },
+    {
+      "timestamp": "2026-03-31 07:15:00+00:00",
+      "equity": 1111.24,
+      "balance": 699.77
+    },
+    {
+      "timestamp": "2026-03-31 11:00:00+00:00",
+      "equity": 1085.24,
+      "balance": 883.49
+    },
+    {
+      "timestamp": "2026-03-31 14:45:00+00:00",
+      "equity": 1091.33,
+      "balance": 883.49
+    },
+    {
+      "timestamp": "2026-03-31 18:30:00+00:00",
+      "equity": 1105.96,
+      "balance": 915.23
+    },
+    {
+      "timestamp": "2026-03-31 22:15:00+00:00",
+      "equity": 1110.21,
+      "balance": 915.23
+    },
+    {
+      "timestamp": "2026-04-01 02:00:00+00:00",
+      "equity": 1106.23,
+      "balance": 915.23
+    },
+    {
+      "timestamp": "2026-04-01 05:45:00+00:00",
+      "equity": 1115.23,
+      "balance": 915.23
+    },
+    {
+      "timestamp": "2026-04-01 09:30:00+00:00",
+      "equity": 1115.67,
+      "balance": 915.23
+    },
+    {
+      "timestamp": "2026-04-01 13:15:00+00:00",
+      "equity": 1116.72,
+      "balance": 915.23
+    },
+    {
+      "timestamp": "2026-04-01 17:00:00+00:00",
+      "equity": 1119.46,
+      "balance": 915.23
+    },
+    {
+      "timestamp": "2026-04-01 20:45:00+00:00",
+      "equity": 1111.36,
+      "balance": 915.23
+    },
+    {
+      "timestamp": "2026-04-02 00:30:00+00:00",
+      "equity": 1116.29,
+      "balance": 915.23
+    },
+    {
+      "timestamp": "2026-04-02 04:15:00+00:00",
+      "equity": 1096.43,
+      "balance": 1096.43
+    },
+    {
+      "timestamp": "2026-04-02 08:00:00+00:00",
+      "equity": 1096.43,
+      "balance": 1096.43
+    },
+    {
+      "timestamp": "2026-04-02 11:45:00+00:00",
+      "equity": 1096.43,
+      "balance": 1096.43
+    },
+    {
+      "timestamp": "2026-04-02 15:30:00+00:00",
+      "equity": 1078.08,
+      "balance": 1078.08
+    },
+    {
+      "timestamp": "2026-04-02 19:15:00+00:00",
+      "equity": 1078.08,
+      "balance": 1078.08
+    },
+    {
+      "timestamp": "2026-04-02 23:00:00+00:00",
+      "equity": 1077.71,
+      "balance": 878.0
+    },
+    {
+      "timestamp": "2026-04-03 02:45:00+00:00",
+      "equity": 1080.36,
+      "balance": 878.0
+    },
+    {
+      "timestamp": "2026-04-03 06:30:00+00:00",
+      "equity": 1075.21,
+      "balance": 878.0
+    },
+    {
+      "timestamp": "2026-04-03 10:15:00+00:00",
+      "equity": 1078.46,
+      "balance": 878.0
+    },
+    {
+      "timestamp": "2026-04-03 14:00:00+00:00",
+      "equity": 1081.45,
+      "balance": 878.0
+    },
+    {
+      "timestamp": "2026-04-03 17:45:00+00:00",
+      "equity": 1081.31,
+      "balance": 878.0
+    },
+    {
+      "timestamp": "2026-04-03 21:30:00+00:00",
+      "equity": 1077.36,
+      "balance": 878.0
+    },
+    {
+      "timestamp": "2026-04-04 01:15:00+00:00",
+      "equity": 1081.3,
+      "balance": 878.0
+    },
+    {
+      "timestamp": "2026-04-04 05:00:00+00:00",
+      "equity": 1080.7,
+      "balance": 878.0
+    },
+    {
+      "timestamp": "2026-04-04 08:45:00+00:00",
+      "equity": 1081.15,
+      "balance": 878.0
+    },
+    {
+      "timestamp": "2026-04-04 12:30:00+00:00",
+      "equity": 1082.11,
+      "balance": 878.0
+    },
+    {
+      "timestamp": "2026-04-04 16:15:00+00:00",
+      "equity": 1076.72,
+      "balance": 677.92
+    },
+    {
+      "timestamp": "2026-04-04 20:00:00+00:00",
+      "equity": 1072.52,
+      "balance": 677.92
+    },
+    {
+      "timestamp": "2026-04-04 23:45:00+00:00",
+      "equity": 1071.73,
+      "balance": 677.92
+    },
+    {
+      "timestamp": "2026-04-05 03:30:00+00:00",
+      "equity": 1073.46,
+      "balance": 677.92
+    },
+    {
+      "timestamp": "2026-04-05 07:15:00+00:00",
+      "equity": 1077.03,
+      "balance": 677.92
+    },
+    {
+      "timestamp": "2026-04-05 11:00:00+00:00",
+      "equity": 1078.02,
+      "balance": 677.92
+    },
+    {
+      "timestamp": "2026-04-05 14:45:00+00:00",
+      "equity": 1079.36,
+      "balance": 677.92
+    },
+    {
+      "timestamp": "2026-04-05 18:30:00+00:00",
+      "equity": 1074.01,
+      "balance": 677.92
+    },
+    {
+      "timestamp": "2026-04-05 22:15:00+00:00",
+      "equity": 1079.42,
+      "balance": 677.92
+    },
+    {
+      "timestamp": "2026-04-06 02:00:00+00:00",
+      "equity": 1083.26,
+      "balance": 858.28
+    },
+    {
+      "timestamp": "2026-04-06 05:45:00+00:00",
+      "equity": 1084.47,
+      "balance": 858.28
+    },
+    {
+      "timestamp": "2026-04-06 09:30:00+00:00",
+      "equity": 1090.82,
+      "balance": 1090.82
+    },
+    {
+      "timestamp": "2026-04-06 13:15:00+00:00",
+      "equity": 1090.82,
+      "balance": 1090.82
+    },
+    {
+      "timestamp": "2026-04-06 17:00:00+00:00",
+      "equity": 1090.82,
+      "balance": 1090.82
+    },
+    {
+      "timestamp": "2026-04-06 20:45:00+00:00",
+      "equity": 1090.82,
+      "balance": 1090.82
+    },
+    {
+      "timestamp": "2026-04-07 00:30:00+00:00",
+      "equity": 1090.82,
+      "balance": 1090.82
+    },
+    {
+      "timestamp": "2026-04-07 04:15:00+00:00",
+      "equity": 1090.82,
+      "balance": 1090.82
+    },
+    {
+      "timestamp": "2026-04-07 08:00:00+00:00",
+      "equity": 1090.82,
+      "balance": 1090.82
+    },
+    {
+      "timestamp": "2026-04-07 11:45:00+00:00",
+      "equity": 1090.82,
+      "balance": 1090.82
+    },
+    {
+      "timestamp": "2026-04-07 15:30:00+00:00",
+      "equity": 1090.82,
+      "balance": 1090.82
+    },
+    {
+      "timestamp": "2026-04-07 19:15:00+00:00",
+      "equity": 1090.82,
+      "balance": 1090.82
+    },
+    {
+      "timestamp": "2026-04-07 23:00:00+00:00",
+      "equity": 1130.09,
+      "balance": 690.66
+    },
+    {
+      "timestamp": "2026-04-08 02:45:00+00:00",
+      "equity": 1131.59,
+      "balance": 690.66
+    },
+    {
+      "timestamp": "2026-04-08 06:30:00+00:00",
+      "equity": 1143.44,
+      "balance": 690.66
+    },
+    {
+      "timestamp": "2026-04-08 10:15:00+00:00",
+      "equity": 1141.41,
+      "balance": 690.66
+    },
+    {
+      "timestamp": "2026-04-08 14:00:00+00:00",
+      "equity": 1152.36,
+      "balance": 1152.36
+    },
+    {
+      "timestamp": "2026-04-08 17:45:00+00:00",
+      "equity": 1152.36,
+      "balance": 1152.36
+    },
+    {
+      "timestamp": "2026-04-08 21:30:00+00:00",
+      "equity": 1152.36,
+      "balance": 1152.36
+    },
+    {
+      "timestamp": "2026-04-09 01:15:00+00:00",
+      "equity": 1152.36,
+      "balance": 1152.36
+    },
+    {
+      "timestamp": "2026-04-09 05:00:00+00:00",
+      "equity": 1152.36,
+      "balance": 1152.36
+    },
+    {
+      "timestamp": "2026-04-09 08:45:00+00:00",
+      "equity": 1152.36,
+      "balance": 1152.36
+    },
+    {
+      "timestamp": "2026-04-09 12:30:00+00:00",
+      "equity": 1152.36,
+      "balance": 1152.36
+    },
+    {
+      "timestamp": "2026-04-09 16:15:00+00:00",
+      "equity": 1152.36,
+      "balance": 1152.36
+    },
+    {
+      "timestamp": "2026-04-09 20:00:00+00:00",
+      "equity": 1152.36,
+      "balance": 1152.36
+    },
+    {
+      "timestamp": "2026-04-09 23:45:00+00:00",
+      "equity": 1152.36,
+      "balance": 1152.36
+    },
+    {
+      "timestamp": "2026-04-10 03:30:00+00:00",
+      "equity": 1152.36,
+      "balance": 1152.36
+    },
+    {
+      "timestamp": "2026-04-10 07:15:00+00:00",
+      "equity": 1152.36,
+      "balance": 1152.36
+    },
+    {
+      "timestamp": "2026-04-10 11:00:00+00:00",
+      "equity": 1152.36,
+      "balance": 1152.36
+    },
+    {
+      "timestamp": "2026-04-10 14:45:00+00:00",
+      "equity": 1151.49,
+      "balance": 952.28
+    },
+    {
+      "timestamp": "2026-04-10 18:30:00+00:00",
+      "equity": 1152.03,
+      "balance": 952.28
+    },
+    {
+      "timestamp": "2026-04-10 22:15:00+00:00",
+      "equity": 1152.88,
+      "balance": 952.28
+    },
+    {
+      "timestamp": "2026-04-11 02:00:00+00:00",
+      "equity": 1152.15,
+      "balance": 952.28
+    },
+    {
+      "timestamp": "2026-04-11 05:45:00+00:00",
+      "equity": 1148.99,
+      "balance": 952.28
+    },
+    {
+      "timestamp": "2026-04-11 09:30:00+00:00",
+      "equity": 1150.34,
+      "balance": 952.28
+    },
+    {
+      "timestamp": "2026-04-11 13:15:00+00:00",
+      "equity": 1147.53,
+      "balance": 952.28
+    },
+    {
+      "timestamp": "2026-04-11 17:00:00+00:00",
+      "equity": 1156.26,
+      "balance": 752.2
+    },
+    {
+      "timestamp": "2026-04-11 20:45:00+00:00",
+      "equity": 1179.35,
+      "balance": 752.2
+    },
+    {
+      "timestamp": "2026-04-12 00:30:00+00:00",
+      "equity": 1167.5,
+      "balance": 752.2
+    },
+    {
+      "timestamp": "2026-04-12 04:15:00+00:00",
+      "equity": 1120.03,
+      "balance": 1120.03
+    },
+    {
+      "timestamp": "2026-04-12 08:00:00+00:00",
+      "equity": 1120.03,
+      "balance": 1120.03
+    },
+    {
+      "timestamp": "2026-04-12 11:45:00+00:00",
+      "equity": 1120.03,
+      "balance": 1120.03
+    },
+    {
+      "timestamp": "2026-04-12 15:30:00+00:00",
+      "equity": 1127.33,
+      "balance": 919.95
+    },
+    {
+      "timestamp": "2026-04-12 19:15:00+00:00",
+      "equity": 1123.38,
+      "balance": 919.95
+    },
+    {
+      "timestamp": "2026-04-12 23:00:00+00:00",
+      "equity": 1131.01,
+      "balance": 919.95
+    },
+    {
+      "timestamp": "2026-04-13 02:45:00+00:00",
+      "equity": 1124.39,
+      "balance": 919.95
+    },
+    {
+      "timestamp": "2026-04-13 06:30:00+00:00",
+      "equity": 1125.01,
+      "balance": 919.95
+    },
+    {
+      "timestamp": "2026-04-13 10:15:00+00:00",
+      "equity": 1129.02,
+      "balance": 919.95
+    },
+    {
+      "timestamp": "2026-04-13 14:00:00+00:00",
+      "equity": 1117.22,
+      "balance": 919.95
+    },
+    {
+      "timestamp": "2026-04-13 17:45:00+00:00",
+      "equity": 1101.28,
+      "balance": 719.87
+    },
+    {
+      "timestamp": "2026-04-13 21:30:00+00:00",
+      "equity": 1083.55,
+      "balance": 1083.55
+    },
+    {
+      "timestamp": "2026-04-14 01:15:00+00:00",
+      "equity": 1093.65,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-14 05:00:00+00:00",
+      "equity": 1093.76,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-14 08:45:00+00:00",
+      "equity": 1110.16,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-14 12:30:00+00:00",
+      "equity": 1096.89,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-14 16:15:00+00:00",
+      "equity": 1101.66,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-14 20:00:00+00:00",
+      "equity": 1076.75,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-14 23:45:00+00:00",
+      "equity": 1073.82,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-15 03:30:00+00:00",
+      "equity": 1076.0,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-15 07:15:00+00:00",
+      "equity": 1064.93,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-15 11:00:00+00:00",
+      "equity": 1074.12,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-15 14:45:00+00:00",
+      "equity": 1080.84,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-15 18:30:00+00:00",
+      "equity": 1089.56,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-15 22:15:00+00:00",
+      "equity": 1105.0,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-16 02:00:00+00:00",
+      "equity": 1093.9,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-16 05:45:00+00:00",
+      "equity": 1100.74,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-16 09:30:00+00:00",
+      "equity": 1088.83,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-16 13:15:00+00:00",
+      "equity": 1096.33,
+      "balance": 683.39
+    },
+    {
+      "timestamp": "2026-04-16 17:00:00+00:00",
+      "equity": 1046.05,
+      "balance": 848.64
+    },
+    {
+      "timestamp": "2026-04-16 20:45:00+00:00",
+      "equity": 1063.13,
+      "balance": 848.64
+    },
+    {
+      "timestamp": "2026-04-17 00:30:00+00:00",
+      "equity": 1059.54,
+      "balance": 848.64
+    },
+    {
+      "timestamp": "2026-04-17 04:15:00+00:00",
+      "equity": 1056.78,
+      "balance": 848.64
+    },
+    {
+      "timestamp": "2026-04-17 08:00:00+00:00",
+      "equity": 1060.92,
+      "balance": 848.64
+    },
+    {
+      "timestamp": "2026-04-17 11:45:00+00:00",
+      "equity": 1067.96,
+      "balance": 848.64
+    },
+    {
+      "timestamp": "2026-04-17 15:30:00+00:00",
+      "equity": 1099.09,
+      "balance": 885.81
+    },
+    {
+      "timestamp": "2026-04-17 19:15:00+00:00",
+      "equity": 1092.92,
+      "balance": 885.81
+    },
+    {
+      "timestamp": "2026-04-17 23:00:00+00:00",
+      "equity": 1094.9,
+      "balance": 885.81
+    },
+    {
+      "timestamp": "2026-04-18 02:45:00+00:00",
+      "equity": 1090.91,
+      "balance": 885.81
+    },
+    {
+      "timestamp": "2026-04-18 06:30:00+00:00",
+      "equity": 1087.52,
+      "balance": 885.81
+    },
+    {
+      "timestamp": "2026-04-18 10:15:00+00:00",
+      "equity": 1067.16,
+      "balance": 1067.16
+    },
+    {
+      "timestamp": "2026-04-18 14:00:00+00:00",
+      "equity": 1067.16,
+      "balance": 1067.16
+    },
+    {
+      "timestamp": "2026-04-18 17:45:00+00:00",
+      "equity": 1065.36,
+      "balance": 867.08
+    },
+    {
+      "timestamp": "2026-04-18 21:30:00+00:00",
+      "equity": 1061.76,
+      "balance": 867.08
+    },
+    {
+      "timestamp": "2026-04-19 01:15:00+00:00",
+      "equity": 1058.03,
+      "balance": 867.08
+    },
+    {
+      "timestamp": "2026-04-19 05:00:00+00:00",
+      "equity": 1051.4,
+      "balance": 1051.4
+    },
+    {
+      "timestamp": "2026-04-19 08:45:00+00:00",
+      "equity": 1044.63,
+      "balance": 851.32
+    },
+    {
+      "timestamp": "2026-04-19 12:30:00+00:00",
+      "equity": 1041.49,
+      "balance": 851.32
+    },
+    {
+      "timestamp": "2026-04-19 16:15:00+00:00",
+      "equity": 1039.1,
+      "balance": 834.44
+    },
+    {
+      "timestamp": "2026-04-19 20:00:00+00:00",
+      "equity": 1055.71,
+      "balance": 634.36
+    },
+    {
+      "timestamp": "2026-04-19 23:45:00+00:00",
+      "equity": 1082.72,
+      "balance": 634.36
+    },
+    {
+      "timestamp": "2026-04-20 03:30:00+00:00",
+      "equity": 1064.79,
+      "balance": 634.36
+    },
+    {
+      "timestamp": "2026-04-20 07:15:00+00:00",
+      "equity": 1041.94,
+      "balance": 634.36
+    },
+    {
+      "timestamp": "2026-04-20 11:00:00+00:00",
+      "equity": 1044.96,
+      "balance": 634.36
+    },
+    {
+      "timestamp": "2026-04-20 14:45:00+00:00",
+      "equity": 1054.72,
+      "balance": 634.36
+    },
+    {
+      "timestamp": "2026-04-20 18:30:00+00:00",
+      "equity": 1020.63,
+      "balance": 634.36
+    },
+    {
+      "timestamp": "2026-04-20 22:15:00+00:00",
+      "equity": 1024.18,
+      "balance": 818.8
+    },
+    {
+      "timestamp": "2026-04-21 02:00:00+00:00",
+      "equity": 1027.76,
+      "balance": 818.8
+    },
+    {
+      "timestamp": "2026-04-21 05:45:00+00:00",
+      "equity": 1026.13,
+      "balance": 818.8
+    },
+    {
+      "timestamp": "2026-04-21 09:30:00+00:00",
+      "equity": 1020.87,
+      "balance": 618.72
+    },
+    {
+      "timestamp": "2026-04-21 13:15:00+00:00",
+      "equity": 1024.72,
+      "balance": 618.72
+    },
+    {
+      "timestamp": "2026-04-21 17:00:00+00:00",
+      "equity": 1021.23,
+      "balance": 618.72
+    },
+    {
+      "timestamp": "2026-04-21 20:45:00+00:00",
+      "equity": 1006.34,
+      "balance": 799.19
+    },
+    {
+      "timestamp": "2026-04-22 00:30:00+00:00",
+      "equity": 1004.54,
+      "balance": 599.11
+    },
+    {
+      "timestamp": "2026-04-22 04:15:00+00:00",
+      "equity": 1000.8,
+      "balance": 782.06
+    },
+    {
+      "timestamp": "2026-04-22 08:00:00+00:00",
+      "equity": 1009.1,
+      "balance": 782.06
+    },
+    {
+      "timestamp": "2026-04-22 11:45:00+00:00",
+      "equity": 1011.22,
+      "balance": 782.06
+    },
+    {
+      "timestamp": "2026-04-22 15:30:00+00:00",
+      "equity": 1012.65,
+      "balance": 1012.65
+    },
+    {
+      "timestamp": "2026-04-22 19:15:00+00:00",
+      "equity": 1012.65,
+      "balance": 1012.65
+    },
+    {
+      "timestamp": "2026-04-22 23:00:00+00:00",
+      "equity": 1012.65,
+      "balance": 1012.65
+    },
+    {
+      "timestamp": "2026-04-23 02:45:00+00:00",
+      "equity": 1012.65,
+      "balance": 1012.65
+    },
+    {
+      "timestamp": "2026-04-23 06:30:00+00:00",
+      "equity": 1012.65,
+      "balance": 1012.65
+    },
+    {
+      "timestamp": "2026-04-23 10:15:00+00:00",
+      "equity": 1012.65,
+      "balance": 1012.65
+    },
+    {
+      "timestamp": "2026-04-23 14:00:00+00:00",
+      "equity": 1012.65,
+      "balance": 1012.65
+    },
+    {
+      "timestamp": "2026-04-23 17:45:00+00:00",
+      "equity": 996.07,
+      "balance": 996.07
+    },
+    {
+      "timestamp": "2026-04-23 21:30:00+00:00",
+      "equity": 996.07,
+      "balance": 996.07
+    },
+    {
+      "timestamp": "2026-04-24 01:15:00+00:00",
+      "equity": 996.07,
+      "balance": 996.07
+    },
+    {
+      "timestamp": "2026-04-24 05:00:00+00:00",
+      "equity": 996.07,
+      "balance": 996.07
+    },
+    {
+      "timestamp": "2026-04-24 08:45:00+00:00",
+      "equity": 996.07,
+      "balance": 996.07
+    },
+    {
+      "timestamp": "2026-04-24 12:30:00+00:00",
+      "equity": 996.07,
+      "balance": 996.07
+    },
+    {
+      "timestamp": "2026-04-24 16:15:00+00:00",
+      "equity": 992.82,
+      "balance": 795.99
+    },
+    {
+      "timestamp": "2026-04-24 20:00:00+00:00",
+      "equity": 990.84,
+      "balance": 795.99
+    },
+    {
+      "timestamp": "2026-04-24 23:45:00+00:00",
+      "equity": 993.1,
+      "balance": 795.99
+    },
+    {
+      "timestamp": "2026-04-25 03:30:00+00:00",
+      "equity": 991.81,
+      "balance": 795.99
+    },
+    {
+      "timestamp": "2026-04-25 07:15:00+00:00",
+      "equity": 992.69,
+      "balance": 795.99
+    },
+    {
+      "timestamp": "2026-04-25 11:00:00+00:00",
+      "equity": 992.25,
+      "balance": 795.99
+    },
+    {
+      "timestamp": "2026-04-25 14:45:00+00:00",
+      "equity": 992.82,
+      "balance": 795.99
+    },
+    {
+      "timestamp": "2026-04-25 18:30:00+00:00",
+      "equity": 994.39,
+      "balance": 795.99
+    },
+    {
+      "timestamp": "2026-04-25 22:15:00+00:00",
+      "equity": 992.35,
+      "balance": 795.99
+    },
+    {
+      "timestamp": "2026-04-26 02:00:00+00:00",
+      "equity": 991.95,
+      "balance": 795.99
+    },
+    {
+      "timestamp": "2026-04-26 05:45:00+00:00",
+      "equity": 987.62,
+      "balance": 795.99
+    },
+    {
+      "timestamp": "2026-04-26 09:30:00+00:00",
+      "equity": 985.28,
+      "balance": 795.99
+    },
+    {
+      "timestamp": "2026-04-26 13:15:00+00:00",
+      "equity": 986.51,
+      "balance": 795.99
+    },
+    {
+      "timestamp": "2026-04-26 17:00:00+00:00",
+      "equity": 977.81,
+      "balance": 977.81
+    },
+    {
+      "timestamp": "2026-04-26 20:45:00+00:00",
+      "equity": 977.81,
+      "balance": 977.81
+    },
+    {
+      "timestamp": "2026-04-27 00:30:00+00:00",
+      "equity": 982.8,
+      "balance": 777.73
+    },
+    {
+      "timestamp": "2026-04-27 04:15:00+00:00",
+      "equity": 986.61,
+      "balance": 777.73
+    },
+    {
+      "timestamp": "2026-04-27 08:00:00+00:00",
+      "equity": 967.68,
+      "balance": 777.73
+    },
+    {
+      "timestamp": "2026-04-27 11:45:00+00:00",
+      "equity": 970.24,
+      "balance": 777.73
+    },
+    {
+      "timestamp": "2026-04-27 15:30:00+00:00",
+      "equity": 963.01,
+      "balance": 757.64
+    },
+    {
+      "timestamp": "2026-04-27 19:15:00+00:00",
+      "equity": 963.97,
+      "balance": 757.64
+    },
+    {
+      "timestamp": "2026-04-27 23:00:00+00:00",
+      "equity": 959.22,
+      "balance": 757.64
+    },
+    {
+      "timestamp": "2026-04-28 02:45:00+00:00",
+      "equity": 962.92,
+      "balance": 557.56
+    },
+    {
+      "timestamp": "2026-04-28 06:30:00+00:00",
+      "equity": 974.09,
+      "balance": 557.56
+    },
+    {
+      "timestamp": "2026-04-28 10:15:00+00:00",
+      "equity": 970.23,
+      "balance": 557.56
+    },
+    {
+      "timestamp": "2026-04-28 14:00:00+00:00",
+      "equity": 980.3,
+      "balance": 557.56
+    },
+    {
+      "timestamp": "2026-04-28 17:45:00+00:00",
+      "equity": 971.23,
+      "balance": 557.56
+    },
+    {
+      "timestamp": "2026-04-28 21:30:00+00:00",
+      "equity": 970.66,
+      "balance": 557.56
+    },
+    {
+      "timestamp": "2026-04-29 01:15:00+00:00",
+      "equity": 974.36,
+      "balance": 557.56
+    },
+    {
+      "timestamp": "2026-04-29 05:00:00+00:00",
+      "equity": 938.81,
+      "balance": 740.27
+    },
+    {
+      "timestamp": "2026-04-29 08:45:00+00:00",
+      "equity": 941.02,
+      "balance": 740.27
+    },
+    {
+      "timestamp": "2026-04-29 12:30:00+00:00",
+      "equity": 939.34,
+      "balance": 740.27
+    },
+    {
+      "timestamp": "2026-04-29 16:15:00+00:00",
+      "equity": 956.51,
+      "balance": 740.27
+    },
+    {
+      "timestamp": "2026-04-29 20:00:00+00:00",
+      "equity": 964.95,
+      "balance": 540.19
+    },
+    {
+      "timestamp": "2026-04-29 23:45:00+00:00",
+      "equity": 951.84,
+      "balance": 540.19
+    },
+    {
+      "timestamp": "2026-04-30 03:30:00+00:00",
+      "equity": 933.81,
+      "balance": 524.59
+    },
+    {
+      "timestamp": "2026-04-30 07:15:00+00:00",
+      "equity": 935.04,
+      "balance": 524.59
+    },
+    {
+      "timestamp": "2026-04-30 11:00:00+00:00",
+      "equity": 925.38,
+      "balance": 524.59
+    },
+    {
+      "timestamp": "2026-04-30 14:45:00+00:00",
+      "equity": 925.92,
+      "balance": 524.59
+    },
+    {
+      "timestamp": "2026-04-30 18:30:00+00:00",
+      "equity": 925.23,
+      "balance": 524.59
+    },
+    {
+      "timestamp": "2026-04-30 22:15:00+00:00",
+      "equity": 924.71,
+      "balance": 524.59
+    },
+    {
+      "timestamp": "2026-05-01 02:00:00+00:00",
+      "equity": 918.92,
+      "balance": 524.59
+    },
+    {
+      "timestamp": "2026-05-01 05:45:00+00:00",
+      "equity": 904.28,
+      "balance": 705.23
+    },
+    {
+      "timestamp": "2026-05-01 09:30:00+00:00",
+      "equity": 902.96,
+      "balance": 705.23
+    },
+    {
+      "timestamp": "2026-05-01 13:15:00+00:00",
+      "equity": 888.85,
+      "balance": 888.85
+    },
+    {
+      "timestamp": "2026-05-01 17:00:00+00:00",
+      "equity": 888.85,
+      "balance": 888.85
+    },
+    {
+      "timestamp": "2026-05-01 20:45:00+00:00",
+      "equity": 888.85,
+      "balance": 888.85
+    },
+    {
+      "timestamp": "2026-05-02 00:30:00+00:00",
+      "equity": 888.85,
+      "balance": 888.85
+    },
+    {
+      "timestamp": "2026-05-02 04:15:00+00:00",
+      "equity": 888.85,
+      "balance": 888.85
+    },
+    {
+      "timestamp": "2026-05-02 08:00:00+00:00",
+      "equity": 888.85,
+      "balance": 888.85
+    },
+    {
+      "timestamp": "2026-05-02 11:45:00+00:00",
+      "equity": 888.85,
+      "balance": 888.85
+    },
+    {
+      "timestamp": "2026-05-02 15:30:00+00:00",
+      "equity": 888.85,
+      "balance": 888.85
+    },
+    {
+      "timestamp": "2026-05-02 19:15:00+00:00",
+      "equity": 889.57,
+      "balance": 688.77
+    },
+    {
+      "timestamp": "2026-05-02 23:00:00+00:00",
+      "equity": 894.67,
+      "balance": 688.77
+    },
+    {
+      "timestamp": "2026-05-03 02:45:00+00:00",
+      "equity": 886.31,
+      "balance": 688.77
+    },
+    {
+      "timestamp": "2026-05-03 06:30:00+00:00",
+      "equity": 885.6,
+      "balance": 688.77
+    },
+    {
+      "timestamp": "2026-05-03 10:15:00+00:00",
+      "equity": 889.87,
+      "balance": 688.77
+    },
+    {
+      "timestamp": "2026-05-03 14:00:00+00:00",
+      "equity": 896.06,
+      "balance": 688.77
+    },
+    {
+      "timestamp": "2026-05-03 17:45:00+00:00",
+      "equity": 898.63,
+      "balance": 688.77
+    },
+    {
+      "timestamp": "2026-05-03 21:30:00+00:00",
+      "equity": 890.7,
+      "balance": 488.69
+    },
+    {
+      "timestamp": "2026-05-04 01:15:00+00:00",
+      "equity": 889.56,
+      "balance": 488.69
+    },
+    {
+      "timestamp": "2026-05-04 05:00:00+00:00",
+      "equity": 935.39,
+      "balance": 719.66
+    },
+    {
+      "timestamp": "2026-05-04 08:45:00+00:00",
+      "equity": 929.77,
+      "balance": 719.66
+    },
+    {
+      "timestamp": "2026-05-04 12:30:00+00:00",
+      "equity": 920.47,
+      "balance": 719.66
+    },
+    {
+      "timestamp": "2026-05-04 16:15:00+00:00",
+      "equity": 941.82,
+      "balance": 519.58
+    },
+    {
+      "timestamp": "2026-05-04 20:00:00+00:00",
+      "equity": 939.72,
+      "balance": 519.58
+    },
+    {
+      "timestamp": "2026-05-04 23:45:00+00:00",
+      "equity": 932.25,
+      "balance": 519.58
+    },
+    {
+      "timestamp": "2026-05-05 03:30:00+00:00",
+      "equity": 962.09,
+      "balance": 519.58
+    },
+    {
+      "timestamp": "2026-05-05 07:15:00+00:00",
+      "equity": 962.55,
+      "balance": 519.58
+    },
+    {
+      "timestamp": "2026-05-05 11:00:00+00:00",
+      "equity": 959.43,
+      "balance": 519.58
+    },
+    {
+      "timestamp": "2026-05-05 14:45:00+00:00",
+      "equity": 964.05,
+      "balance": 749.8
+    },
+    {
+      "timestamp": "2026-05-05 18:30:00+00:00",
+      "equity": 961.15,
+      "balance": 749.8
+    },
+    {
+      "timestamp": "2026-05-05 22:15:00+00:00",
+      "equity": 963.18,
+      "balance": 749.8
+    },
+    {
+      "timestamp": "2026-05-06 02:00:00+00:00",
+      "equity": 964.56,
+      "balance": 549.72
+    },
+    {
+      "timestamp": "2026-05-06 05:45:00+00:00",
+      "equity": 961.87,
+      "balance": 549.72
+    },
+    {
+      "timestamp": "2026-05-06 09:30:00+00:00",
+      "equity": 992.68,
+      "balance": 780.51
+    },
+    {
+      "timestamp": "2026-05-06 13:15:00+00:00",
+      "equity": 991.81,
+      "balance": 780.51
+    },
+    {
+      "timestamp": "2026-05-06 17:00:00+00:00",
+      "equity": 988.2,
+      "balance": 780.51
+    },
+    {
+      "timestamp": "2026-05-06 20:45:00+00:00",
+      "equity": 985.32,
+      "balance": 780.51
+    },
+    {
+      "timestamp": "2026-05-07 00:30:00+00:00",
+      "equity": 980.4,
+      "balance": 580.43
+    },
+    {
+      "timestamp": "2026-05-07 04:15:00+00:00",
+      "equity": 983.92,
+      "balance": 580.43
+    },
+    {
+      "timestamp": "2026-05-07 08:00:00+00:00",
+      "equity": 984.2,
+      "balance": 580.43
+    },
+    {
+      "timestamp": "2026-05-07 11:45:00+00:00",
+      "equity": 981.21,
+      "balance": 580.43
+    },
+    {
+      "timestamp": "2026-05-07 15:30:00+00:00",
+      "equity": 984.7,
+      "balance": 580.43
+    },
+    {
+      "timestamp": "2026-05-07 19:15:00+00:00",
+      "equity": 984.72,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-07 23:00:00+00:00",
+      "equity": 985.05,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-08 02:45:00+00:00",
+      "equity": 989.87,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-08 06:30:00+00:00",
+      "equity": 991.24,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-08 10:15:00+00:00",
+      "equity": 987.95,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-08 14:00:00+00:00",
+      "equity": 988.9,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-08 17:45:00+00:00",
+      "equity": 978.63,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-08 21:30:00+00:00",
+      "equity": 974.76,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-09 01:15:00+00:00",
+      "equity": 975.94,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-09 05:00:00+00:00",
+      "equity": 974.92,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-09 08:45:00+00:00",
+      "equity": 973.44,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-09 12:30:00+00:00",
+      "equity": 974.27,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-09 16:15:00+00:00",
+      "equity": 972.57,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-09 20:00:00+00:00",
+      "equity": 968.9,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-09 23:45:00+00:00",
+      "equity": 969.58,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-10 03:30:00+00:00",
+      "equity": 968.41,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-10 07:15:00+00:00",
+      "equity": 968.24,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-10 11:00:00+00:00",
+      "equity": 970.42,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-10 14:45:00+00:00",
+      "equity": 967.62,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-10 18:30:00+00:00",
+      "equity": 956.66,
+      "balance": 765.16
+    },
+    {
+      "timestamp": "2026-05-10 22:15:00+00:00",
+      "equity": 959.42,
+      "balance": 565.08
+    },
+    {
+      "timestamp": "2026-05-11 02:00:00+00:00",
+      "equity": 950.11,
+      "balance": 748.85
+    },
+    {
+      "timestamp": "2026-05-11 05:45:00+00:00",
+      "equity": 943.09,
+      "balance": 748.85
+    },
+    {
+      "timestamp": "2026-05-11 09:30:00+00:00",
+      "equity": 943.91,
+      "balance": 748.85
+    },
+    {
+      "timestamp": "2026-05-11 13:15:00+00:00",
+      "equity": 946.84,
+      "balance": 748.85
+    },
+    {
+      "timestamp": "2026-05-11 17:00:00+00:00",
+      "equity": 946.09,
+      "balance": 548.77
+    },
+    {
+      "timestamp": "2026-05-11 20:45:00+00:00",
+      "equity": 954.2,
+      "balance": 548.77
+    },
+    {
+      "timestamp": "2026-05-12 00:30:00+00:00",
+      "equity": 947.7,
+      "balance": 548.77
+    },
+    {
+      "timestamp": "2026-05-12 04:15:00+00:00",
+      "equity": 935.71,
+      "balance": 548.77
+    },
+    {
+      "timestamp": "2026-05-12 08:00:00+00:00",
+      "equity": 927.36,
+      "balance": 733.47
+    },
+    {
+      "timestamp": "2026-05-12 11:45:00+00:00",
+      "equity": 926.79,
+      "balance": 733.47
+    },
+    {
+      "timestamp": "2026-05-12 15:30:00+00:00",
+      "equity": 921.67,
+      "balance": 733.47
+    },
+    {
+      "timestamp": "2026-05-12 19:15:00+00:00",
+      "equity": 917.07,
+      "balance": 917.07
+    },
+    {
+      "timestamp": "2026-05-12 23:00:00+00:00",
+      "equity": 917.07,
+      "balance": 917.07
+    },
+    {
+      "timestamp": "2026-05-13 02:45:00+00:00",
+      "equity": 917.07,
+      "balance": 917.07
+    },
+    {
+      "timestamp": "2026-05-13 06:30:00+00:00",
+      "equity": 915.59,
+      "balance": 716.99
+    },
+    {
+      "timestamp": "2026-05-13 10:15:00+00:00",
+      "equity": 913.39,
+      "balance": 716.99
+    },
+    {
+      "timestamp": "2026-05-13 14:00:00+00:00",
+      "equity": 941.62,
+      "balance": 516.91
+    },
+    {
+      "timestamp": "2026-05-13 17:45:00+00:00",
+      "equity": 946.31,
+      "balance": 516.91
+    },
+    {
+      "timestamp": "2026-05-13 21:30:00+00:00",
+      "equity": 947.29,
+      "balance": 516.91
+    },
+    {
+      "timestamp": "2026-05-14 01:15:00+00:00",
+      "equity": 943.92,
+      "balance": 516.91
+    },
+    {
+      "timestamp": "2026-05-14 05:00:00+00:00",
+      "equity": 948.44,
+      "balance": 516.91
+    },
+    {
+      "timestamp": "2026-05-14 08:45:00+00:00",
+      "equity": 938.97,
+      "balance": 516.91
+    },
+    {
+      "timestamp": "2026-05-14 12:30:00+00:00",
+      "equity": 943.37,
+      "balance": 516.91
+    },
+    {
+      "timestamp": "2026-05-14 16:15:00+00:00",
+      "equity": 900.29,
+      "balance": 516.91
+    },
+    {
+      "timestamp": "2026-05-14 20:00:00+00:00",
+      "equity": 901.64,
+      "balance": 697.94
+    },
+    {
+      "timestamp": "2026-05-14 23:45:00+00:00",
+      "equity": 905.98,
+      "balance": 697.94
+    },
+    {
+      "timestamp": "2026-05-15 03:30:00+00:00",
+      "equity": 904.88,
+      "balance": 497.86
+    },
+    {
+      "timestamp": "2026-05-15 07:15:00+00:00",
+      "equity": 906.12,
+      "balance": 497.86
+    },
+    {
+      "timestamp": "2026-05-15 11:00:00+00:00",
+      "equity": 905.96,
+      "balance": 497.86
+    },
+    {
+      "timestamp": "2026-05-15 14:45:00+00:00",
+      "equity": 909.52,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-15 18:30:00+00:00",
+      "equity": 907.74,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-15 22:15:00+00:00",
+      "equity": 910.27,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-16 02:00:00+00:00",
+      "equity": 908.73,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-16 05:45:00+00:00",
+      "equity": 911.01,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-16 09:30:00+00:00",
+      "equity": 922.48,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-16 13:15:00+00:00",
+      "equity": 924.45,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-16 17:00:00+00:00",
+      "equity": 920.69,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-16 20:45:00+00:00",
+      "equity": 920.85,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-17 00:30:00+00:00",
+      "equity": 922.35,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-17 04:15:00+00:00",
+      "equity": 922.88,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-17 08:00:00+00:00",
+      "equity": 922.14,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-17 11:45:00+00:00",
+      "equity": 918.94,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-17 15:30:00+00:00",
+      "equity": 923.68,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-17 19:15:00+00:00",
+      "equity": 921.21,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-17 23:00:00+00:00",
+      "equity": 925.91,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-18 02:45:00+00:00",
+      "equity": 938.82,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-18 06:30:00+00:00",
+      "equity": 938.89,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-18 10:15:00+00:00",
+      "equity": 938.98,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-18 14:00:00+00:00",
+      "equity": 940.54,
+      "balance": 714.61
+    },
+    {
+      "timestamp": "2026-05-18 17:45:00+00:00",
+      "equity": 945.78,
+      "balance": 945.78
+    },
+    {
+      "timestamp": "2026-05-18 21:30:00+00:00",
+      "equity": 945.78,
+      "balance": 945.78
+    },
+    {
+      "timestamp": "2026-05-19 01:15:00+00:00",
+      "equity": 945.78,
+      "balance": 945.78
+    },
+    {
+      "timestamp": "2026-05-19 05:00:00+00:00",
+      "equity": 945.78,
+      "balance": 945.78
+    },
+    {
+      "timestamp": "2026-05-19 08:45:00+00:00",
+      "equity": 945.78,
+      "balance": 945.78
+    },
+    {
+      "timestamp": "2026-05-19 12:30:00+00:00",
+      "equity": 942.52,
+      "balance": 745.7
+    },
+    {
+      "timestamp": "2026-05-19 16:15:00+00:00",
+      "equity": 946.13,
+      "balance": 745.7
+    },
+    {
+      "timestamp": "2026-05-19 20:00:00+00:00",
+      "equity": 941.98,
+      "balance": 745.7
+    },
+    {
+      "timestamp": "2026-05-19 23:45:00+00:00",
+      "equity": 943.45,
+      "balance": 745.7
+    }
+  ],
+  "equity_curve_full_len": 7937,
+  "daily_pnl": {
+    "2026-03-02": 10.33159494022052,
+    "2026-03-03": -34.659740836885106,
+    "2026-03-04": 65.047165549287,
+    "2026-03-08": 14.408713845067833,
+    "2026-03-09": -43.090151180644575,
+    "2026-03-10": 31.001946982177586,
+    "2026-03-13": 77.35550791110103,
+    "2026-03-14": -15.327753535064442,
+    "2026-03-16": 79.39960250998361,
+    "2026-03-18": -15.169507295581033,
+    "2026-03-19": 38.037020738214345,
+    "2026-03-22": 64.14234094055524,
+    "2026-03-23": -146.8169578840221,
+    "2026-03-24": -17.755165171061197,
+    "2026-03-25": -15.01642813387545,
+    "2026-03-27": 69.97381294267909,
+    "2026-03-30": -56.804324953250756,
+    "2026-03-31": 15.703442670759078,
+    "2026-04-02": -36.90882168436299,
+    "2026-04-05": -19.561400522350578,
+    "2026-04-06": 32.61685542951584,
+    "2026-04-08": 61.87079670135694,
+    "2026-04-12": -32.01008419699548,
+    "2026-04-13": -36.15845209535911,
+    "2026-04-16": -34.509180322776274,
+    "2026-04-17": 37.32983593816399,
+    "2026-04-18": -18.569237738609424,
+    "2026-04-19": -32.321976936685786,
+    "2026-04-20": -15.482843515204971,
+    "2026-04-21": -19.451841523122418,
+    "2026-04-22": 13.708697432207362,
+    "2026-04-23": -16.423204118422458,
+    "2026-04-26": -18.094115403617955,
+    "2026-04-27": -19.939323422995972,
+    "2026-04-29": -17.208679766830365,
+    "2026-04-30": -15.432277879211158,
+    "2026-05-01": -35.57780135393081,
+    "2026-05-04": 31.052859618717537,
+    "2026-05-05": 30.3004948028586,
+    "2026-05-06": 30.870754044934667,
+    "2026-05-07": -15.190051584195368,
+    "2026-05-10": -16.1447763877829,
+    "2026-05-12": -31.5421630265223,
+    "2026-05-14": -18.89383423075733,
+    "2026-05-15": 16.987250597144158,
+    "2026-05-18": 31.24654584262375,
+    "2026-05-20": 1.085769245325086
+  },
+  "config": {
+    "strategy": "ChanTheoryStrategy",
+    "pairs": [
+      "BTC/USDT:USDT",
+      "ETH/USDT:USDT"
+    ],
+    "timeframe": "15m",
+    "timerange": "20260201-20260520",
+    "stake_amount": 200.0,
+    "initial_balance": 1000.0,
+    "max_open_trades": 3,
+    "leverage": 5.0,
+    "fee": 0.0004,
+    "trading_mode": "futures"
+  }
+}

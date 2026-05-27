@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "metrics": {
+    "total_trades": 0,
+    "total_profit_pct": 0,
+    "total_profit_usdt": 0,
+    "win_rate": 0,
+    "sharpe_ratio": 0,
+    "max_drawdown": 0,
+    "avg_profit_pct": 0,
+    "avg_duration": "0:00:00",
+    "starting_balance": 1000,
+    "final_balance": 1000
+  },
+  "trades": [],
+  "equity_curve": [],
+  "daily_pnl": {},
+  "error": "No trades were executed"
+}
