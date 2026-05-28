@@ -279,9 +279,9 @@ class LiveTradeConfig(BaseModel):
     exchange_name: str = "okx"
     strategy: str = "ChanTheoryScalp"
     pairs: list[str] = ["BTC/USDT:USDT"]
-    timeframe: str = "1h"
+    timeframe: str = "1m"
     leverage: float = 3.0
-    position_pct: float = 20.0
+    position_pct: float = 25.0
     max_positions: int = 2
     daily_loss_limit: float = -10.0
     max_drawdown: float = -25.0

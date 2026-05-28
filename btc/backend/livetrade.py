@@ -20,11 +20,11 @@ class LiveTradingEngine:
         self.exchange_name = "okx"
         self.strategy_name = "ChanTheoryScalp"
         self.pairs = ["BTC/USDT:USDT"]
-        self.timeframe = "1h"
+        self.timeframe = "1m"
         self.leverage = 3.0
         self.max_positions = 2
-        self.position_pct = 20.0
-        # 风控参数
+        self.position_pct = 25.0  # 与回测一致
+        # 风控参数（回测验证有效）
         self.daily_loss_limit = -10.0   # 当日亏损超过 10% 自动停止
         self.max_drawdown = -25.0       # 总回撤超过 25% 自动停止
         self.webhook_url = ""            # 交易通知 URL
