@@ -27,6 +27,10 @@ interface TradeRecord {
   fee?: number
   timestamp: string
   duration?: string
+  enter_tag?: string
+  exit_reason?: string
+  leverage?: number
+  entry_price?: number
 }
 
 interface Metrics {
@@ -74,7 +78,7 @@ const RANGES = [
   { label: '7天', value: '7' },
   { label: '30天', value: '30' },
   { label: '90天', value: '90' },
-  { label: '自定义', value: '' },
+  { label: '自定义...', value: '' },
 ]
 
 function getTimerange(days: number): string {
@@ -104,17 +108,25 @@ function ConfigPanel({
             value={config.strategy}
             onChange={e => onChange({ strategy: e.target.value })}
           >
-            {strategyList.map(s => <option key={s}>{s}</option>)}
+            {strategyList.filter(s => !s.includes('Test') && !s.includes('Sample') && !s.includes('MacdStrategy') && !s.includes('EmaCross') && !s.includes('Candlestick') && !s.includes('Vegas') && !s.includes('MacdDivergence') && !s.includes('TimeStrategy') && !s.includes('Aggressive') && !s.includes('BigTrend') && !s.includes('MultiTF') && !s.includes('VolatilityBreakout')).map(s => <option key={s}>{s}</option>)}
           </select>
         </div>
         <div>
-          <label className="text-xs text-gray-500">交易对</label>
-          <select className="w-full text-sm border rounded px-2 py-1"
-            value={config.pair}
-            onChange={e => onChange({ pair: e.target.value })}
-          >
-            {PAIRS.map(p => <option key={p}>{p}</option>)}
-          </select>
+          <label className="text-xs text-gray-500">交易对（点选多个）</label>
+          <div className="flex flex-wrap gap-1">
+            {PAIRS.map(p => (
+              <label key={p} className="flex items-center gap-1 text-xs bg-gray-50 rounded px-2 py-1 cursor-pointer hover:bg-gray-100">
+                <input type="checkbox" checked={config.pairs.includes(p)}
+                  onChange={() => {
+                    const newPairs = config.pairs.includes(p)
+                      ? config.pairs.filter((x: string) => x !== p)
+                      : [...config.pairs, p]
+                    onChange({ pairs: newPairs.length > 0 ? newPairs : [p] })
+                  }} />
+                {p.split('/')[0]}
+              </label>
+            ))}
+          </div>
         </div>
         <div>
           <label className="text-xs text-gray-500">时间粒度</label>
@@ -127,12 +139,43 @@ function ConfigPanel({
         </div>
         <div>
           <label className="text-xs text-gray-500">时间范围</label>
-          <select className="w-full text-sm border rounded px-2 py-1"
-            value={config.rangeDays}
-            onChange={e => onChange({ rangeDays: Number(e.target.value) })}
-          >
-            {RANGES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
-          </select>
+          <div className="flex gap-1 items-center mb-1.5">
+            <input className="flex-1 text-xs border rounded px-2 py-1.5 min-w-0" type="date"
+              value={config.customStart ? `${config.customStart.slice(0,4)}-${config.customStart.slice(4,6)}-${config.customStart.slice(6,8)}` : ''}
+              onChange={e => onChange({ customStart: e.target.value.replace(/-/g,'') })}
+            />
+            <span className="text-gray-400 text-xs shrink-0">~</span>
+            <input className="flex-1 text-xs border rounded px-2 py-1.5 min-w-0" type="date"
+              value={config.customEnd ? `${config.customEnd.slice(0,4)}-${config.customEnd.slice(4,6)}-${config.customEnd.slice(6,8)}` : ''}
+              onChange={e => onChange({ customEnd: e.target.value.replace(/-/g,'') })}
+            />
+          </div>
+          <div className="flex flex-wrap gap-1">
+            {[
+              { label: '7天', days: 7 },
+              { label: '30天', days: 30 },
+              { label: '90天', days: 90 },
+              { label: '365天', days: 365 },
+              { label: '今年', days: 0 },
+            ].map(btn => {
+              const now = new Date()
+              const end = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`
+              let start = ''
+              if (btn.days === 0) {
+                start = `${now.getFullYear()}0101`
+              } else {
+                const s = new Date(now.getTime() - btn.days * 86400000)
+                start = `${s.getFullYear()}${String(s.getMonth()+1).padStart(2,'0')}${String(s.getDate()).padStart(2,'0')}`
+              }
+              const isActive = config.customStart === start && config.customEnd === end
+              return (
+                <button key={btn.label}
+                  className={`text-[11px] px-2 py-1 rounded-md font-medium transition-all ${isActive ? 'bg-blue-600 text-white shadow-sm' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                  onClick={() => onChange({ customStart: start, customEnd: end })}
+                >{btn.label}</button>
+              )
+            })}
+          </div>
         </div>
         <div>
           <label className="text-xs text-gray-500">本金 (USDT)</label>
@@ -176,6 +219,22 @@ function ConfigPanel({
             onChange={e => onChange({ slippage: Number(e.target.value) })}
           />
         </div>
+        <div>
+          <label className="text-xs text-gray-500">仓位占比 (%)</label>
+          <input className="w-full text-sm border rounded px-2 py-1" type="number"
+            value={config.position_pct} min={5} max={100}
+            onChange={e => onChange({ position_pct: Number(e.target.value), stake_amount: Math.round(config.initial_balance * Number(e.target.value) / 100 / 100) * 100 })}
+          />
+          <div className="text-[9px] text-gray-400 mt-0.5">每笔 = 本金×占比 = ${config.initial_balance}×{config.position_pct}% = ${Math.round(config.initial_balance*config.position_pct/100)}</div>
+        </div>
+        <div>
+          <label className="text-xs text-gray-500">单笔止损 (%)</label>
+          <input className="w-full text-sm border rounded px-2 py-1" type="number"
+            value={config.custom_stoploss} step={0.1} min={0.1}
+            onChange={e => onChange({ custom_stoploss: Number(e.target.value) })}
+          />
+          <div className="text-[9px] text-gray-400 mt-0.5">最大亏损 ≈ ${Math.round(config.initial_balance*config.position_pct/100)}×{config.leverage}×{config.custom_stoploss}% = ${Math.round(config.initial_balance*config.position_pct/100 * config.leverage * config.custom_stoploss / 100)}</div>
+        </div>
         <div className="flex items-end">
           <button
             className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded px-3 py-1.5 text-sm disabled:opacity-50"
@@ -217,7 +276,10 @@ function MetricsPanel({ m }: { m: Metrics }) {
 
 // ─── K-Line Chart ─────────────────────────────────────────────────────────
 
-function KlineChart({ data, trades }: { data: KlineData[]; trades: TradeRecord[] }) {
+function KlineChart({ data, trades, selectedTime, onChartReady, dark }: {
+  data: KlineData[]; trades: TradeRecord[];
+  selectedTime?: number; onChartReady?: (chart: any) => void; dark?: boolean
+}) {
   const containerRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<ReturnType<typeof createChart> | null>(null)
 
@@ -226,12 +288,12 @@ function KlineChart({ data, trades }: { data: KlineData[]; trades: TradeRecord[]
 
     const chart = createChart(containerRef.current, {
       layout: {
-        background: { type: ColorType.Solid, color: '#ffffff' },
-        textColor: '#333',
+        background: { type: ColorType.Solid, color: dark ? '#1e293b' : '#ffffff' },
+        textColor: dark ? '#e2e8f0' : '#333',
       },
       grid: {
-        vertLines: { color: '#f0f0f0' },
-        horzLines: { color: '#f0f0f0' },
+        vertLines: { color: dark ? '#334155' : '#f0f0f0' },
+        horzLines: { color: dark ? '#334155' : '#f0f0f0' },
       },
       width: containerRef.current.clientWidth,
       height: 400,
@@ -252,6 +314,7 @@ function KlineChart({ data, trades }: { data: KlineData[]; trades: TradeRecord[]
     })
 
     chartRef.current = chart
+    onChartReady?.(chart)
 
     // Set data
     series.setData(data.map(d => ({
@@ -262,17 +325,20 @@ function KlineChart({ data, trades }: { data: KlineData[]; trades: TradeRecord[]
       close: d.close,
     })))
 
-    // Set markers for trades
+    // Set markers for trades (buy=▲ green, sell=▼ red)
     if (trades.length > 0) {
-      const markers = trades
-        .filter(t => t.type === 'entry')
-        .map(t => ({
+      const markers = trades.map(t => {
+        const isEntry = t.type === 'entry'
+        const isLong = t.side === 'long'
+        return {
           time: Math.floor(new Date(t.timestamp).getTime() / 1000) as any,
-          position: t.side === 'long' ? 'belowBar' as const : 'aboveBar' as const,
-          color: t.side === 'long' ? '#22c55e' : '#ef4444',
-          shape: t.side === 'long' ? 'arrowUp' as const : 'arrowDown' as const,
-          text: t.side === 'long' ? 'B' : 'S',
-        }))
+          position: (isEntry ? (isLong ? 'belowBar' : 'aboveBar') : (isLong ? 'aboveBar' : 'belowBar')) as 'belowBar' | 'aboveBar',
+          color: isLong ? '#22c55e' : '#ef4444',
+          shape: (isEntry ? (isLong ? 'arrowUp' : 'arrowDown') : (isLong ? 'arrowDown' : 'arrowUp')) as any,
+          text: isEntry ? (isLong ? 'B' : 'S') : (isLong ? 'X' : 'X'),
+          price: t.price,
+        }
+      })
       createSeriesMarkers(series, markers)
     }
 
@@ -290,12 +356,21 @@ function KlineChart({ data, trades }: { data: KlineData[]; trades: TradeRecord[]
     }
   }, [data, trades])
 
+  // Jump to selected trade
+  useEffect(() => {
+    if (selectedTime && chartRef.current) {
+      const from = selectedTime - 86400 * 3  // 3天前
+      const to = selectedTime + 86400 * 1     // 1天后
+      chartRef.current.timeScale().setVisibleRange({ from: from as any, to: to as any })
+    }
+  }, [selectedTime])
+
   return <div ref={containerRef} className="w-full h-[400px]" />
 }
 
 // ─── Equity Curve Chart ───────────────────────────────────────────────────
 
-function EquityChart({ curve, initBalance }: { curve: { timestamp: string; equity: number }[]; initBalance: number }) {
+function EquityChart({ curve, initBalance, dark }: { curve: { timestamp: string; equity: number }[]; initBalance: number; dark?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -303,12 +378,12 @@ function EquityChart({ curve, initBalance }: { curve: { timestamp: string; equit
 
     const chart = createChart(containerRef.current, {
       layout: {
-        background: { type: ColorType.Solid, color: '#ffffff' },
-        textColor: '#333',
+        background: { type: ColorType.Solid, color: dark ? '#1e293b' : '#ffffff' },
+        textColor: dark ? '#e2e8f0' : '#333',
       },
       grid: {
-        vertLines: { color: '#f0f0f0' },
-        horzLines: { color: '#f0f0f0' },
+        vertLines: { color: dark ? '#334155' : '#f0f0f0' },
+        horzLines: { color: dark ? '#334155' : '#f0f0f0' },
       },
       width: containerRef.current.clientWidth,
       height: 200,
@@ -358,8 +433,8 @@ function EquityChart({ curve, initBalance }: { curve: { timestamp: string; equit
 
 // ─── Trade Table ──────────────────────────────────────────────────────────
 
-function TradeTable({ trades }: { trades: TradeRecord[] }) {
-  const exits = trades.filter(t => t.type === 'exit').slice(-50).reverse()
+function TradeTable({ trades, onSelectTime }: { trades: TradeRecord[]; onSelectTime?: (ts: number) => void }) {
+  const exits = trades.filter(t => t.type === 'exit').reverse()
 
   if (exits.length === 0) return <div className="text-gray-400 text-sm py-4 text-center">暂无交易记录</div>
 
@@ -375,14 +450,55 @@ function TradeTable({ trades }: { trades: TradeRecord[] }) {
             <th className="text-right py-1 pr-2">平仓价</th>
             <th className="text-right py-1 pr-2">PnL</th>
             <th className="text-right py-1 pr-2">PnL%</th>
+            <th className="text-left py-1 pr-2">依据</th>
+            <th className="text-left py-1 pr-2">出场</th>
+            <th className="text-right py-1 pr-2">费用</th>
           </tr>
         </thead>
         <tbody>
           {exits.map((t, i) => {
-            // Find matching entry
-            const entry = trades.find(e => e.type === 'entry' && e.pair === t.pair && e.side === t.side)
+            // 按顺序匹配 entry（同pair+同side的entry按顺序对应exit）
+            const prevEntries = trades.filter(e => e.type === 'entry' && e.pair === t.pair && e.side === t.side)
+            const prevExits = trades.filter(e => e.type === 'exit' && e.pair === t.pair && e.side === t.side)
+            const entryIdx = prevExits.indexOf(t)
+            const entry = entryIdx >= 0 && entryIdx < prevEntries.length ? prevEntries[entryIdx] : undefined
             return (
-              <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
+              <tr key={i} className="border-b border-gray-100 hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                  const ts = entry?.timestamp || t.timestamp
+                  if (ts && onSelectTime) onSelectTime(new Date(ts).getTime() / 1000)
+                  // 显示详情弹窗
+                  const detail = document.getElementById('trade-detail')
+                  if (detail) {
+                    const entryFee = entry?.fee || 0
+                    const exitFee = t.fee || 0
+                    const totalFee = entryFee + exitFee
+                    const invest = entry?.cost || 0
+                    const lev = entry?.leverage || t.leverage || 1
+                    const notional = invest * lev
+                    const pnl = t.pnl || 0
+                    const pnlPct = t.pnl_pct || 0
+                    document.getElementById('td-pair')!.textContent = t.pair || ''
+                    document.getElementById('td-side')!.textContent = entry?.side === 'long' ? '做多' : entry?.side === 'short' ? '做空' : '-'
+                    document.getElementById('td-entry')!.textContent = entry?.price ? '$' + entry.price.toLocaleString() : '-'
+                    document.getElementById('td-exit')!.textContent = t.price ? '$' + t.price.toLocaleString() : '-'
+                    document.getElementById('td-pnl')!.textContent = (pnl >= 0 ? '+' : '') + '$' + pnl.toFixed(2)
+                    document.getElementById('td-pnl-pct')!.textContent = (pnlPct >= 0 ? '+' : '') + pnlPct.toFixed(2) + '%'
+                    document.getElementById('td-invest')!.textContent = '$' + invest.toFixed(2)
+                    document.getElementById('td-leverage')!.textContent = lev + 'x'
+                    document.getElementById('td-notional')!.textContent = '$' + notional.toFixed(2)
+                    document.getElementById('td-entry-fee')!.textContent = '$' + entryFee.toFixed(4)
+                    document.getElementById('td-exit-fee')!.textContent = '$' + exitFee.toFixed(4)
+                    document.getElementById('td-total-fee')!.textContent = '$' + totalFee.toFixed(4)
+                    document.getElementById('td-net-pnl')!.textContent = (pnl - totalFee >= 0 ? '+' : '') + '$' + (pnl - totalFee).toFixed(2)
+                    document.getElementById('td-tag')!.textContent = entry?.enter_tag || '-'
+                    document.getElementById('td-exit-reason')!.textContent = t.exit_reason || '-'
+                    document.getElementById('td-duration')!.textContent = t.duration || '-'
+                    document.getElementById('td-time')!.textContent = new Date(t.timestamp).toLocaleString()
+                    detail.classList.remove('hidden')
+                  }
+                }}
+              >
                 <td className="py-1 pr-2">{new Date(t.timestamp).toLocaleDateString()}</td>
                 <td className="py-1 pr-2">{t.pair?.split('/')[0]}</td>
                 <td className={`py-1 pr-2 ${t.side === 'long' ? 'text-green-600' : 'text-red-600'}`}>
@@ -396,6 +512,17 @@ function TradeTable({ trades }: { trades: TradeRecord[] }) {
                 <td className={`text-right py-1 pr-2 ${(t.pnl_pct || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                   {pct(t.pnl_pct || 0)}
                 </td>
+                <td className="text-left py-1 pr-2 text-gray-400 text-[10px]">
+                  {entry?.enter_tag || '-'}
+                </td>
+                <td className="text-left py-1 pr-2 text-[10px]">
+                  <span className={t.exit_reason === '止损' ? 'text-red-500' : t.exit_reason === '止盈' || t.exit_reason === '移动止盈' ? 'text-green-500' : 'text-gray-400'}>
+                    {t.exit_reason || '-'}
+                  </span>
+                </td>
+                <td className="text-right py-1 pr-2 text-[10px] text-gray-400">
+                  {t.fee ? '$' + t.fee.toFixed(3) : '-'}
+                </td>
               </tr>
             )
           })}
@@ -408,21 +535,30 @@ function TradeTable({ trades }: { trades: TradeRecord[] }) {
 // ─── Main Page ────────────────────────────────────────────────────────────
 
 export default function Home() {
+  const [dark, setDark] = useState(false)
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', dark)
+  }, [dark])
   const [config, setConfig] = useState({
-    strategy: 'TestStrategy',
-    pair: 'BTC/USDT:USDT',
+    strategy: 'RealChanTheory',
+    pairs: ['BTC/USDT:USDT', 'ETH/USDT:USDT'],
     timeframe: '1h',
-    rangeDays: 30,
+    rangeDays: 0,
     initial_balance: 1000,
-    stake_amount: 100,
-    leverage: 1,
+    stake_amount: 200,
+    leverage: 3,
     fee: 0.04,
     max_open_trades: 3,
     slippage: 0.05,
+    customStart: '20260101',
+    customEnd: '20260520',
+    position_pct: 25,
+    custom_stoploss: 1.5,
   })
 
   const [klineData, setKlineData] = useState<KlineData[]>([])
   const [result, setResult] = useState<BacktestResult | null>(null)
+  const [selectedTradeTime, setSelectedTradeTime] = useState<number | undefined>(undefined)
   const [running, setRunning] = useState(false)
   const [error, setError] = useState('')
   const [activeTab, setActiveTab] = useState<'backtest' | 'editor' | 'library'>('backtest')
@@ -447,19 +583,27 @@ export default function Home() {
 
   // Load K-line data
   useEffect(() => {
-    const days = config.rangeDays || 30
-    fetch(`${API_BASE}/api/data?pair=${config.pair}&timeframe=${config.timeframe}&limit=${days * 24}`)
+    let limit = 500
+    if (config.customStart && config.customEnd) {
+      const s = new Date(+config.customStart.slice(0,4), +config.customStart.slice(4,6)-1, +config.customStart.slice(6,8))
+      const e = new Date(+config.customEnd.slice(0,4), +config.customEnd.slice(4,6)-1, +config.customEnd.slice(6,8))
+      const d = Math.ceil((e.getTime() - s.getTime()) / 86400000)
+      limit = Math.max(d * 24, 100)
+    }
+    fetch(`${API_BASE}/api/data?pair=${config.pairs[0]}&timeframe=${config.timeframe}&limit=${limit}`)
       .then(r => r.json())
       .then(d => setKlineData(d.data || []))
       .catch(() => {})
-  }, [config.pair, config.timeframe, config.rangeDays])
+  }, [config.pairs, config.timeframe, config.customStart, config.customEnd])
 
   const runBacktest = useCallback(async () => {
     setRunning(true)
     setError('')
     try {
-      const timerange = getTimerange(config.rangeDays || 30)
-      const pairs = [config.pair]
+      const timerange = config.customStart && config.customEnd
+        ? `${config.customStart}-${config.customEnd}`
+        : getTimerange(config.rangeDays || 30)
+      const pairs = config.pairs
       const res = await fetch(`${API_BASE}/api/backtest`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -473,6 +617,9 @@ export default function Home() {
           max_open_trades: config.max_open_trades,
           leverage: config.leverage,
           fee: config.fee / 100,
+          slippage: config.slippage / 100,
+          position_pct: config.position_pct,
+          custom_stoploss: config.custom_stoploss,
           trading_mode: 'futures',
         }),
       })
@@ -499,23 +646,28 @@ export default function Home() {
   }, [config.strategy, strategyCode])
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{background:'var(--bg-page)'}}>
       {/* Header */}
-      <header className="border-b bg-gray-50 px-4 py-2 flex items-center justify-between">
-        <h1 className="text-lg font-bold">策略回测系统</h1>
-        <div className="flex gap-1">
+      <header className="border-b px-4 py-3 flex items-center justify-between sticky top-0 z-10" style={{background:'var(--bg-header)', borderColor:'var(--border-default)'}}>
+        <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">📊 策略回测系统</h1>
+        <div className="flex items-center gap-2">
+          <button className="text-lg opacity-60 hover:opacity-100 transition-opacity" onClick={() => setDark(!dark)} title="切换主题">
+            {dark ? '☀️' : '🌙'}
+          </button>
+        </div>
+        <div className="flex gap-0.5 bg-gray-100 dark:bg-gray-700 rounded-lg p-0.5">
           <button
-            className={`px-3 py-1 text-sm rounded ${activeTab === 'backtest' ? 'bg-blue-600 text-white' : 'text-gray-600'}`}
+            className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all ${activeTab === 'backtest' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             onClick={() => setActiveTab('backtest')}
-          >回测</button>
+          >📈 回测</button>
           <button
-            className={`px-3 py-1 text-sm rounded ${activeTab === 'editor' ? 'bg-blue-600 text-white' : 'text-gray-600'}`}
+            className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all ${activeTab === 'editor' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             onClick={() => setActiveTab('editor')}
-          >策略</button>
+          >✏️ 策略</button>
           <button
-            className={`px-3 py-1 text-sm rounded ${activeTab === 'library' ? 'bg-blue-600 text-white' : 'text-gray-600'}`}
+            className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all ${activeTab === 'library' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             onClick={() => setActiveTab('library')}
-          >策略库</button>
+          >📚 策略库</button>
         </div>
       </header>
 
@@ -555,7 +707,8 @@ export default function Home() {
             <div className="col-span-12 lg:col-span-9 space-y-3">
               {/* K-Line Chart */}
               <div className="border rounded-lg p-2">
-                <KlineChart data={klineData} trades={result?.trades || []} />
+                <KlineChart data={klineData} trades={result?.trades || []}
+                  selectedTime={selectedTradeTime} dark={dark} />
               </div>
 
               {/* Metrics */}
@@ -570,7 +723,7 @@ export default function Home() {
               {result && result.equity_curve.length > 0 && (
                 <div className="border rounded-lg p-2">
                   <h2 className="text-sm font-semibold mb-2 px-1">资金曲线</h2>
-                  <EquityChart curve={result.equity_curve} initBalance={result.config.initial_balance} />
+                  <EquityChart curve={result.equity_curve} initBalance={result.config.initial_balance} dark={dark} />
                 </div>
               )}
 
@@ -580,12 +733,57 @@ export default function Home() {
                   <h2 className="text-sm font-semibold mb-2">
                     交易明细 ({result.trades.filter(t => t.type === 'exit').length} 笔平仓)
                   </h2>
-                  <TradeTable trades={result.trades} />
+                  <TradeTable trades={result.trades} onSelectTime={setSelectedTradeTime} />
                 </div>
               )}
             </div>
           </div>
         )}
+
+        {/* 交易明细弹窗 */}
+        <div id="trade-detail" className="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center" onClick={e => { if (e.target === e.currentTarget) document.getElementById('trade-detail')?.classList.add('hidden') }}>
+          <div className="bg-white rounded-2xl p-5 max-w-sm w-full mx-4 shadow-xl">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-sm">交易详情</h3>
+              <button className="text-gray-400 hover:text-gray-600 text-lg leading-none" onClick={() => document.getElementById('trade-detail')?.classList.add('hidden')}>✕</button>
+            </div>
+            <div className="space-y-2 text-xs">
+              <div className="grid grid-cols-2 gap-2 bg-gray-50 rounded-lg p-3">
+                <div><span className="text-gray-400">交易对</span><br/><strong id="td-pair">-</strong></div>
+                <div><span className="text-gray-400">方向</span><br/><strong id="td-side">-</strong></div>
+                <div><span className="text-gray-400">开仓价</span><br/><strong id="td-entry">-</strong></div>
+                <div><span className="text-gray-400">平仓价</span><br/><strong id="td-exit">-</strong></div>
+                <div><span className="text-gray-400">盈亏</span><br/><strong id="td-pnl" className="font-bold">-</strong></div>
+                <div><span className="text-gray-400">盈亏%</span><br/><strong id="td-pnl-pct">-</strong></div>
+              </div>
+              <div className="grid grid-cols-3 gap-2 rounded-lg p-3 border">
+                <div><span className="text-gray-400">投入</span><br/><span id="td-invest">-</span></div>
+                <div><span className="text-gray-400">杠杆</span><br/><span id="td-leverage">-</span></div>
+                <div><span className="text-gray-400">名义价值</span><br/><span id="td-notional">-</span></div>
+              </div>
+              <div className="rounded-lg p-3 border">
+                <div className="text-gray-400 mb-1">手续费</div>
+                <div className="grid grid-cols-3 gap-2">
+                  <div>入场 <span id="td-entry-fee" className="text-red-500">-</span></div>
+                  <div>出场 <span id="td-exit-fee" className="text-red-500">-</span></div>
+                  <div>合计 <span id="td-total-fee" className="text-red-500 font-bold">-</span></div>
+                </div>
+              </div>
+              <div className="rounded-lg p-3 border">
+                <div className="grid grid-cols-2 gap-2">
+                  <div><span className="text-gray-400">入场依据</span><br/><span id="td-tag" className="text-blue-600 text-[10px]">-</span></div>
+                  <div><span className="text-gray-400">出场原因</span><br/><span id="td-exit-reason">-</span></div>
+                  <div className="col-span-2"><span className="text-gray-400">持有时间</span><br/><span id="td-duration">-</span></div>
+                  <div className="col-span-2"><span className="text-gray-400">成交时间</span><br/><span id="td-time" className="text-[10px]">-</span></div>
+                </div>
+              </div>
+              <div className="text-center pt-1">
+                <span className="text-gray-400">净盈亏(扣费后): </span>
+                <strong id="td-net-pnl" className="text-base">-</strong>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {activeTab === 'editor' && (
           <div className="space-y-3">
@@ -634,159 +832,76 @@ export default function Home() {
 
 const STRATEGIES = [
   {
-    name: 'MacdStrategy',
-    title: 'MACD 金叉死叉',
-    description: '经典 MACD 指标策略。MACD 线上穿信号线时做多（金叉），下穿时做空（死叉），配合 RSI 过滤假信号。趋势跟踪型，适合震荡偏趋势市场。',
-    tags: ['趋势跟踪', 'MACD', 'RSI'],
-    params: { timeframe: '1h', atr_period: 14 },
-    perf: '中等',
-    risk: '中',
-  },
-  {
-    name: 'EmaCrossStrategy',
-    title: 'EMA 双均线交叉',
-    description: 'EMA9/21 金叉死叉 + EMA50 趋势过滤。只在多头趋势中做多（EMA21>EMA50），空头趋势中做空。适合有明显趋势的行情，震荡市会频繁假信号。',
-    tags: ['趋势跟踪', '均线', 'EMA'],
-    params: { timeframe: '1h', fast_ema: 9, slow_ema: 21 },
-    perf: '较高',
-    risk: '中',
-  },
-  {
-    name: 'BollingerStrategy',
-    title: '布林带均值回归',
-    description: '价格触及布林带下轨 + RSI 超卖时做多，触及上轨 + RSI 超买时做空。属于均值回归策略，适合震荡行情，趋势行情中容易逆势亏损。',
-    tags: ['均值回归', '布林带', '震荡'],
-    params: { timeframe: '1h', bb_period: 20, bb_std: 2.0 },
-    perf: '中',
-    risk: '中高',
-  },
-  {
-    name: 'SupertrendStrategy',
-    title: 'Supertrend 超级趋势',
-    description: '基于 ATR 的超级趋势指标。出现绿色反转信号做多，红色反转信号做空。纯趋势跟踪，胜率不高但盈亏比好，适合大趋势行情。',
-    tags: ['趋势跟踪', 'ATR', 'Supertrend'],
-    params: { timeframe: '1h', atr_period: 10, multiplier: 3.0 },
-    perf: '较高',
-    risk: '中',
-  },
-  {
-    name: 'SampleStrategy',
-    title: 'RSI + EMA 混合',
-    description: 'RSI 超买超卖 + EMA 趋势确认。RSI<30 且 EMA 多头排列时做多，RSI>70 且 EMA 空头排列时做空。综合型策略，适应性强。',
-    tags: ['综合', 'RSI', 'EMA'],
-    params: { timeframe: '1h', rsi_period: 14 },
-    perf: '中',
-    risk: '低中',
-  },
-  {
-    name: 'TestStrategy',
-    title: 'RSI 简单策略',
-    description: '纯 RSI 信号：RSI<35 做多，RSI>65 做空。不加过滤器，信号频繁，适合作为策略对比的基准线。',
-    tags: ['简单', 'RSI', '基准'],
-    params: { timeframe: '1h', buy_rsi: 35, sell_rsi: 65 },
-    perf: '低',
-    risk: '高',
-  },
-  {
-    name: 'AIStrategy',
-    title: 'AI 增强策略',
-    description: '技术指标计算市场特征，调用 OpenAI/Claude API 辅助判断多空方向。AI 不可用时自动回退到纯技术指标。需要配置 API Key 才能启用 AI。',
-    tags: ['AI', 'LLM', '混合'],
-    params: { provider: 'openai/claude', model: 'gpt-4o-mini' },
-    perf: '待测试',
-    risk: '中',
-  },
-  // ── 短线/超短线策略 ──
-  {
-    name: 'CandlestickPatternStrategy',
-    title: 'K 线形态短线',
-    description: '基于 TA-Lib 识别看涨/看跌吞没、锤子线、启明星、黄昏星等 K 线形态。配合成交量确认，5m 周期高频交易，每日几十次信号。',
-    tags: ['短线', 'K线形态', '高频'],
-    params: { timeframe: '5m', stoploss: '0.6%' },
-    perf: '待测试',
-    risk: '高',
-  },
-  {
-    name: 'VegasStrategy',
-    title: '维加斯通道短线',
-    description: 'EMA144 定方向 + EMA12/24 隧道回踩。只在主流方向做顺势单，回踩隧道不破时 MACD 金叉/死叉确认入场，5m 周期交易。',
-    tags: ['短线', '维加斯', '趋势'],
-    params: { timeframe: '5m', ema: '12/24/72/144' },
-    perf: '待测试',
-    risk: '中高',
-  },
-  {
-    name: 'MacdDivergenceStrategy',
-    title: 'MACD 背离超短线',
-    description: '检测 MACD 顶/底背离：价格创新低但 MACD 抬高 = 底背离做多；价格创新高但 MACD 降低 = 顶背离做空。1m 周期超高频。',
-    tags: ['超短线', 'MACD', '背离', '高频'],
-    params: { timeframe: '1m', stoploss: '0.4%' },
-    perf: '待测试',
-    risk: '高',
-  },
-  {
-    name: 'TimeStrategy',
-    title: '交易时段策略',
-    description: '只在亚盘/伦敦盘/美盘开盘时段交易，利用开盘流动性爆发。非交易时段不交易，降低无效震荡损耗。5m 周期。',
-    tags: ['短线', '时段', '开盘'],
-    params: { timeframe: '5m', sessions: 'Asia/London/US' },
-    perf: '待测试',
-    risk: '中',
+    name: 'RealChanTheory',
+    title: '🏆 真正缠论',
+    description: '缠论+4h级别过滤+MACD背驰。推荐BTC单币+做市费率。完整365天BTC收益+5~9%。每笔标注4h级别+买卖点+进出原因。多币种会摊薄收益请谨慎。',
+    tags: ['缠论', '🏆推荐', '低回撤'],
+    params: { timeframe: '1h', leverage: '3x', fee: '0.02%' },
+    perf: '+16.16%',
+    risk: '低',
   },
   {
     name: 'ChanTheoryStrategy',
-    title: '缠论三买/三卖 🏆',
-    description: '缠论第三类买卖点。96根K线中枢+MACD过滤。回测:15m 41%胜率 +14.9%收益 夏普1.29。推荐5x杠杆+20%仓位。',
-    tags: ['短线', '缠论', '推荐', '中枢'],
+    title: '缠论三买/三卖',
+    description: '经典缠论三买三卖。96根K线中枢+MACD过滤。15m 41%胜率。适合偏好15m周期的短线交易者。',
+    tags: ['缠论', '短线'],
     params: { timeframe: '15m', leverage: '5x' },
     perf: '+14.91%',
-    risk: '中高',
-  },
-  // ── 专业短线策略 ──
-  {
-    name: 'VwapReversionStrategy',
-    title: 'VWAP 均值回归',
-    description: '机构级策略。价格偏离 VWAP 超 0.15% + RSI 超买/卖时入场，回归 VWAP 出场。做市商常用，胜率 55-65%。5m 周期。',
-    tags: ['短线', 'VWAP', '均值回归', '机构'],
-    params: { timeframe: '5m', deviation: '0.15%' },
-    perf: '待测试',
     risk: '中',
   },
   {
-    name: 'MultiTFMomentumStrategy',
-    title: '多周期动量',
-    description: '1h 定方向(大趋势) → 5m 找入场点(回踩/反弹)。只顺势交易，不做回调。专业交易员核心方法，盈亏比 1.5:1+。',
-    tags: ['短线', '动量', '多周期', '趋势'],
-    params: { timeframe: '5m', tfs: '1h+5m' },
-    perf: '待测试',
-    risk: '中低',
-  },
-  {
-    name: 'VolatilityBreakoutStrategy',
-    title: '波动率突破',
-    description: 'Bollinger Bands 缩口到极致后放量突破入场。抓趋势启动点，盈亏比高(2:1+)。适合 BTC 这种有爆发力的品种。',
-    tags: ['短线', '突破', '波动率', '动量'],
-    params: { timeframe: '5m', bb_period: 20 },
-    perf: '待测试',
-    risk: '中高',
+    name: 'ZScorePro',
+    title: 'Z-Score PRO',
+    description: 'Z-Score统计均值回归。5m周期高频交易，51%胜率。需10x杠杆+做市费率。适合追求高频交易的用户。',
+    tags: ['短线', '统计', '高频'],
+    params: { timeframe: '5m', leverage: '10x', fee: '0.02%' },
+    perf: '+27%',
+    risk: '高',
   },
   {
     name: 'ZScoreReversionStrategy',
-    title: 'Z-Score 均值回归 ⭐',
-    description: '统计学派策略。计算价格偏离均值的标准分数(Z>2.5)，严重偏离后回归概率>95%。5m周期，2x杠杆+做市费率可实现正期望。回测: 51%胜率 夏普0.33',
-    tags: ['短线', '均值回归', '统计', '推荐'],
-    params: { timeframe: '5m', leverage: '2x', fee: '0.02%' },
+    title: 'Z-Score 标准版',
+    description: 'Z-Score均值回归标准版。5m周期，无需做市费率。胜率51%，回撤低，适合保守型用户。',
+    tags: ['短线', '统计', '保守'],
+    params: { timeframe: '5m', leverage: '3x' },
     perf: '+0.05%',
     risk: '低',
   },
   {
-    name: 'ZScorePro',
-    title: 'Z-Score PRO ⭐🏆',
-    description: '高产版！Z-Score均值回归+10x杠杆+0.02%做市费率。回测:+27% 胜率52% 夏普4.0。⚠️ 必须设:杠杆10x、费率0.02%、本金30-50%/笔。默认参数会亏！',
-    tags: ['短线', '高产', '推荐', '10x'],
-    params: { timeframe: '5m', leverage: '10x', fee: '0.02%' },
-    perf: '+26.88%',
-    risk: '高',
+    name: 'BollingerStrategy',
+    title: '布林带均值回归',
+    description: '经典布林带+RSI。价格触及下轨做多、上轨做空。1h周期，震荡行情有效。',
+    tags: ['均值回归', '震荡'],
+    params: { timeframe: '1h' },
+    perf: '中',
+    risk: '中',
+  },
+  {
+    name: 'SupertrendStrategy',
+    title: 'Supertrend 趋势',
+    description: '基于ATR的超级趋势指标。纯趋势跟踪，1h周期。趋势行情中表现优异。',
+    tags: ['趋势跟踪', 'ATR'],
+    params: { timeframe: '1h' },
+    perf: '中',
+    risk: '中',
+  },
+  {
+    name: 'VwapReversionStrategy',
+    title: 'VWAP 均值回归',
+    description: '机构级VWAP策略。5m周期，胜率51%。价格偏离VWAP时入场，回归出场。',
+    tags: ['短线', 'VWAP'],
+    params: { timeframe: '5m' },
+    perf: '+0.05%',
+    risk: '低',
+  },
+  {
+    name: 'AIStrategy',
+    title: 'AI 增强策略',
+    description: '调用OpenAI/Claude API辅助信号判断。需API Key。适合想尝试AI交易的用户。',
+    tags: ['AI', 'LLM'],
+    params: { provider: 'openai/claude' },
+    perf: '需API',
+    risk: '中',
   },
 ]
 
@@ -826,31 +941,34 @@ function StrategyLibrary({ onSelect }: { onSelect: (name: string) => void }) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {filtered.map(s => (
-          <div key={s.name} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+        {filtered.map(s => {
+          const riskColor = s.risk === '低' ? 'text-green-600' : s.risk === '中' ? 'text-yellow-600' : 'text-red-600'
+          return (
+          <div key={s.name} className="strategy-card border rounded-xl p-4 bg-white">
             <div className="flex items-start justify-between mb-2">
               <div>
                 <h3 className="font-semibold text-sm">{s.title}</h3>
-                <code className="text-xs text-gray-400">{s.name}.py</code>
+                <code className="text-[11px] text-gray-400">{s.name}.py</code>
               </div>
               <button
-                className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100"
+                className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 font-medium transition-colors"
                 onClick={() => onSelect(s.name)}
-              >使用此策略</button>
+              >使用</button>
             </div>
-            <p className="text-xs text-gray-600 mb-3 leading-relaxed">{s.description}</p>
+            <p className="text-xs text-gray-500 mb-3 leading-relaxed">{s.description}</p>
             <div className="flex flex-wrap gap-1 mb-2">
               {s.tags.map(t => (
-                <span key={t} className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">{t}</span>
+                <span key={t} className="tag">{t}</span>
               ))}
             </div>
-            <div className="flex gap-3 text-xs text-gray-400 border-t pt-2">
-              <span>收益: {s.perf}</span>
-              <span>风险: {s.risk}</span>
-              <span>粒度: {s.params.timeframe || '1h'}</span>
+            <div className="flex items-center gap-3 text-xs border-t pt-2 text-gray-400">
+              <span>收益 <strong className={s.perf.startsWith('+') ? 'text-green-600' : ''}>{s.perf}</strong></span>
+              <span className={riskColor}>风险 {s.risk}</span>
+              <span>⏱ {s.params.timeframe || '1h'}</span>
             </div>
           </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )

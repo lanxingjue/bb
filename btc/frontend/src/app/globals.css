@@ -1,25 +1,157 @@
 @import "tailwindcss";
 
+/* ═══ 亮色主题 (默认) ═══ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --card: #ffffff;
-  --card-foreground: #171717;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
-  --border: #e5e5e5;
+  --bg-page: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-header: #ffffff;
+  --bg-muted: #f1f5f9;
+  --bg-input: #ffffff;
+  --bg-tag: #e0e7ff;
+  --bg-table-even: #f8fafc;
+  --bg-table-hover: #eef2ff;
+  --bg-chart: #ffffff;
+  --bg-modal: rgba(0,0,0,0.4);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-tag: #4338ca;
+  --text-chart: #333333;
+
+  --border-default: #e2e8f0;
+  --border-card: #e2e8f0;
   --ring: #3b82f6;
-  --radius: 0.5rem;
+
+  --chart-grid: #f0f0f0;
 }
 
-* {
-  box-sizing: border-box;
+/* ═══ 暗色主题 ═══ */
+.dark {
+  --bg-page: #0b1120;
+  --bg-card: #1e293b;
+  --bg-header: #111b2b;
+  --bg-muted: #1e293b;
+  --bg-input: #0b1120;
+  --bg-tag: #1e3a5f;
+  --bg-table-even: #111b2b;
+  --bg-table-hover: #1e293b;
+  --bg-chart: #1a2332;
+  --bg-modal: rgba(0,0,0,0.7);
+
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-tag: #93c5fd;
+  --text-chart: #e2e8f0;
+
+  --border-default: #334155;
+  --border-card: #334155;
+  --ring: #60a5fa;
+
+  --chart-grid: #334155;
 }
+
+* { box-sizing: border-box; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg-page);
+  color: var(--text-primary);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   margin: 0;
   padding: 0;
+  transition: background 0.2s, color 0.2s;
 }
+
+/* ═══ 全局覆盖所有 Tailwind 背景/文字/边框 ═══ */
+
+/* 卡片、容器 */
+.bg-white, [class*="bg-white"] { background: var(--bg-card) !important; }
+.bg-gray-50 { background: var(--bg-muted) !important; }
+.bg-gray-100 { background: var(--bg-muted) !important; }
+.bg-blue-50, [class*="bg-blue-50"] { background: var(--bg-tag) !important; }
+
+/* 文字颜色 */
+.text-gray-400 { color: var(--text-muted) !important; }
+.text-gray-500 { color: var(--text-secondary) !important; }
+.text-gray-600 { color: var(--text-secondary) !important; }
+.text-blue-600, [class*="text-blue-600"] { color: var(--ring) !important; }
+.dark .text-gray-900, .dark .text-gray-800, .dark .text-gray-700 { color: var(--text-primary) !important; }
+
+/* 边框 */
+.border, .border-r, .border-l, .border-t, .border-b,
+[class*="border-gray"] { border-color: var(--border-default) !important; }
+.border-gray-100 { border-color: var(--border-default) !important; }
+.border-gray-200 { border-color: var(--border-default) !important; }
+
+/* 输入框 */
+input, select, textarea {
+  background: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-default) !important;
+}
+
+/* 表格 */
+thead tr { border-color: var(--border-default) !important; }
+tbody tr:nth-child(even) { background: var(--bg-table-even) !important; }
+tbody tr:hover { background: var(--bg-table-hover) !important; }
+
+/* 按钮 */
+.bg-blue-600 { background: #2563eb !important; }
+.dark .bg-blue-600 { background: #3b82f6 !important; }
+.bg-gray-200 { background: var(--bg-muted) !important; }
+
+/* 弹窗背景 */
+.fixed.inset-0.bg-black\/40 { background: var(--bg-modal) !important; }
+.dark .bg-black\/40 { background: var(--bg-modal) !important; }
+
+/* 标签 */
+.tag { background: var(--bg-tag) !important; color: var(--text-tag) !important; }
+
+/* 策略卡片悬停 */
+.strategy-card:hover { transform: translateY(-2px); }
+
+/* 选中高亮 */
+select:focus, input:focus {
+  outline: none; border-color: var(--ring) !important; box-shadow: 0 0 0 2px rgba(59,130,246,0.15);
+}
+
+/* 快捷按钮 */
+.bg-gray-100 { background: var(--bg-muted) !important; }
+
+/* 头部导航按钮 - 选中态白色背景需特殊处理 */
+.dark .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+
+/* 兜底：所有未覆盖的白色背景 */
+.dark [style*="background:"]:not([style*="var(--"]) { background: var(--bg-card) !important; }
+
+/* 导航按钮背景 */
+.dark .bg-gray-100 { background-color: #1e293b !important; }
+.dark .bg-gray-200 { background-color: #334155 !important; }
+
+/* 交易明细弹窗 */
+.dark .bg-white { background: var(--bg-card) !important; }
+.dark #trade-detail > div { background: var(--bg-card) !important; }
+
+/* Chart 容器边框 */
+.dark .border { border-color: var(--border-default) !important; }
+
+/* 所有 .text-gray-* 在暗色模式下更亮 */
+.dark .text-gray-400 { color: #94a3b8 !important; }
+.dark .text-gray-500 { color: #94a3b8 !important; }
+.dark .text-gray-600 { color: #cbd5e1 !important; }
+
+/* 金额颜色保持 */
+.dark .text-green-600 { color: #4ade80 !important; }
+.dark .text-red-600 { color: #f87171 !important; }
+
+/* 代码区/策略编辑器 */
+.dark .font-mono.text-xs { color: #e2e8f0 !important; }
+
+/* 标签颜色 */
+.dark .tag { background: #1e3a5f !important; color: #93c5fd !important; }
+
+/* 弹窗 */
+.dark [id="trade-detail"] .bg-white { background: #1a2332 !important; }
+.dark [id="trade-detail"] .bg-gray-50 { background: #111b2b !important; }
+.dark [id="trade-detail"] .border { border-color: #334155 !important; }

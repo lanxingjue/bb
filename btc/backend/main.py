@@ -70,6 +70,9 @@ class BacktestRequest(BaseModel):
     max_open_trades: int = 3
     leverage: float = 1.0
     fee: Optional[float] = None
+    slippage: float = 0.0
+    position_pct: Optional[float] = None
+    custom_stoploss: Optional[float] = None
     trading_mode: str = "futures"
 
 
@@ -98,6 +101,9 @@ def backtest(req: BacktestRequest):
             max_open_trades=req.max_open_trades,
             leverage_val=req.leverage,
             fee_rate=req.fee,
+            slippage=req.slippage,
+            custom_stoploss=req.custom_stoploss,
+            position_pct=req.position_pct,
             trading_mode=req.trading_mode,
         )
         # 保存结果

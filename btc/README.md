@@ -213,6 +213,34 @@ bb/
 
 ---
 
+## 自动数据更新
+
+系统支持每 4 小时自动更新 K 线数据，确保回测始终使用最新行情。
+
+### 安装定时任务（macOS）
+
+```bash
+bash btc/scripts/install_updater.sh
+```
+
+安装后会自动每 4 小时运行 `scripts/auto_updater.py`，增量下载最新数据。
+
+### 手动运行一次
+
+```bash
+cd btc && source freqtrade/.venv/bin/activate
+python scripts/auto_updater.py
+```
+
+### 后台持续运行
+
+```bash
+cd btc && source freqtrade/.venv/bin/activate
+nohup python scripts/auto_updater.py --daemon &
+```
+
+---
+
 ## 常见问题
 
 **Q: 没有网络/被墙，怎么用？**

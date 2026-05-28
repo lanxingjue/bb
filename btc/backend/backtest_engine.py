@@ -83,6 +83,9 @@ def run(
     max_open_trades: int = 3,
     leverage_val: float = 1.0,
     fee_rate: Optional[float] = None,
+    slippage: float = 0.0,
+    custom_stoploss: Optional[float] = None,
+    position_pct: Optional[float] = None,
     trading_mode: str = "futures",
 ) -> dict:
     if pairs is None:
@@ -93,6 +96,8 @@ def run(
     end_str = parts[1] if len(parts) > 1 and parts[1] else ""
 
     strat = load_strategy(strategy_name)
+    if custom_stoploss is not None:
+        strat.stoploss = -abs(custom_stoploss) / 100  # 前端的 % 转成负小数
     fees = FEE_CONFIG.get(trading_mode, FEE_CONFIG["futures"])
     fee = fee_rate if fee_rate is not None else fees["taker"]
     startup = getattr(strat, "startup_candle_count", 30)
@@ -137,47 +142,66 @@ def run(
             self.daily_pnl: dict[str, float] = {}
             self.prev_equity = initial_balance
 
-        def entry(self, pair, side, price, ts):
+        def entry(self, pair, side, price, ts, tag=""):
             if len(self.positions) >= max_positions:
                 return False
-            size = stake_amount / price
+            # 动态仓位：按当前权益百分比，或固定金额
+            if position_pct:
+                trade_amount = self.balance * position_pct / 100
+                trade_amount = max(10, min(trade_amount, self.balance * 0.5))  # 不超过50%
+            else:
+                trade_amount = stake_amount
+            size = trade_amount / price
             cost = size * price
             if cost > self.balance:
                 return False
-            fee_cost = cost * fee
+            notional = cost * leverage_val  # 名义价值 = 保证金 × 杠杆
+            fee_cost = notional * fee  # 手续费按名义价值算
             self.balance -= cost + fee_cost
             self.positions[pair] = {
                 "side": side, "size": size, "entry_p": price,
                 "ts": ts, "lev": leverage_val,
-                "highest": price, "lowest": price,  # 用于 trailing
+                "highest": price, "lowest": price,
+                "enter_tag": tag,
             }
             self.trades.append({"pair": pair, "type": "entry", "side": side,
                                 "price": round(price, 2), "size": round(size, 6),
                                 "cost": round(cost, 2), "fee": round(fee_cost, 6),
-                                "timestamp": str(ts)})
+                                "timestamp": str(ts), "enter_tag": tag})
             return True
 
-        def exit(self, pair, price, ts):
+        def exit(self, pair, price, ts, reason=""):
             pos = self.positions.pop(pair, None)
             if not pos:
                 return False
             sz = pos["size"]
             ep = pos["entry_p"]
+            direction = "多单" if pos["side"] == "long" else "空单"
+            entry_tag = pos.get("enter_tag", "")
             if pos["side"] == "long":
                 pnl = (price - ep) * sz
             else:
                 pnl = (ep - price) * sz
             pnl *= pos["lev"]
-            fee_cost = price * sz * fee
-            self.balance += sz * ep + pnl - fee_cost  # 返回本金 + PnL - 手续费
+            pnl_pct = pnl / (sz * ep) * 100
+            notional_value = price * sz * pos["lev"]
+            fee_cost = notional_value * fee
+            self.balance += sz * ep + pnl - fee_cost
             dk = str(ts.date())
             self.daily_pnl[dk] = self.daily_pnl.get(dk, 0) + pnl
+
+            # 构建详细出场原因: 多单_1买_4h升势_中枢下方_止盈_赚7.6%
+            pnl_txt = f"赚{abs(pnl_pct):.1f}%" if pnl > 0 else f"亏{abs(pnl_pct):.1f}%"
+            detail_reason = f"{direction}_{entry_tag[:25]}_{reason}_{pnl_txt}"
+
             self.trades.append({"pair": pair, "type": "exit", "side": pos["side"],
                                 "price": round(price, 2), "size": round(sz, 6),
                                 "pnl": round(pnl, 2),
-                                "pnl_pct": round(pnl / (sz * ep) * 100, 4),
+                                "pnl_pct": round(pnl_pct, 4),
                                 "fee": round(fee_cost, 6), "timestamp": str(ts),
-                                "duration": str(ts - pos["ts"])})
+                                "duration": str(ts - pos["ts"]),
+                                "exit_reason": detail_reason, "leverage": pos["lev"],
+                                "entry_price": round(pos["entry_p"], 2)})
             return True
 
         def snapshot(self, ts):
@@ -207,14 +231,16 @@ def run(
             except KeyError:
                 continue
 
-            # 入场
+            # 入场（含滑点：买入用更高价，卖出用更低价）
             if p not in eng.positions:
                 if row.get("enter_long") == 1:
-                    eng.entry(p, "long", row["close"], t)
+                    tag = str(row.get("enter_tag", ""))
+                    eng.entry(p, "long", row["close"] * (1 + slippage), t, tag)
                 elif row.get("enter_short") == 1 and can_short:
-                    eng.entry(p, "short", row["close"], t)
+                    tag = str(row.get("enter_tag", ""))
+                    eng.entry(p, "short", row["close"] * (1 - slippage), t, tag)
 
-            # 出场: 信号 + 风控 (stoploss + trailing + minimal_roi)
+            # 出场: 信号 + 风控
             if p in eng.positions:
                 pos = eng.positions[p]
                 side = pos["side"]
@@ -222,11 +248,13 @@ def run(
                 ep = pos["entry_p"]
                 hold_minutes = (t - pos["ts"]).total_seconds() / 60
 
-                # 更新最高/最低价（用于 trailing）
+                # 更新最高/最低价（用于 trailing，用 HIGH/LOW 不是 CLOSE）
+                bar_high = float(row.get("high", cp))
+                bar_low = float(row.get("low", cp))
                 if side == "long":
-                    pos["highest"] = max(pos["highest"], cp)
+                    pos["highest"] = max(pos["highest"], bar_high)
                 else:
-                    pos["lowest"] = min(pos["lowest"], cp)
+                    pos["lowest"] = min(pos["lowest"], bar_low)
 
                 # 当前盈亏 %
                 if side == "long":
@@ -235,33 +263,38 @@ def run(
                     pnl_pct = (ep - cp) / ep * 100
 
                 should_exit = False
+                exit_reason = ""
 
                 # 1) 信号出场
                 if side == "long" and row.get("exit_long") == 1:
-                    should_exit = True
+                    should_exit = True; exit_reason = "信号出场"
                 elif side == "short" and row.get("exit_short") == 1:
-                    should_exit = True
+                    should_exit = True; exit_reason = "信号出场"
 
-                # 2) stoploss
+                # 2) stoploss — 用 LOW(做多)/HIGH(做空) 判断
                 sl = abs(getattr(strat, 'stoploss', 0.05))
                 if not should_exit:
-                    if side == "long" and cp < ep * (1 - sl):
-                        should_exit = True
-                    elif side == "short" and cp > ep * (1 + sl):
-                        should_exit = True
+                    bar_low = float(row.get("low", cp))
+                    bar_high = float(row.get("high", cp))
+                    if side == "long" and bar_low < ep * (1 - sl):
+                        should_exit = True; exit_reason = "止损"
+                    elif side == "short" and bar_high > ep * (1 + sl):
+                        should_exit = True; exit_reason = "止损"
 
-                # 3) trailing stop
+                # 3) trailing stop — 用 LOW/HIGH
                 if not should_exit and getattr(strat, 'trailing_stop', False):
                     trail_pos = getattr(strat, 'trailing_stop_positive', 0.01)
                     trail_off = getattr(strat, 'trailing_stop_positive_offset', 0.02)
+                    bar_low = float(row.get("low", cp))
+                    bar_high = float(row.get("high", cp))
                     if side == "long":
                         if pos["highest"] > ep * (1 + trail_off):
-                            if cp < pos["highest"] * (1 - trail_pos):
-                                should_exit = True
+                            if bar_low < pos["highest"] * (1 - trail_pos):
+                                should_exit = True; exit_reason = "移动止盈"
                     else:
                         if pos["lowest"] < ep * (1 - trail_off):
-                            if cp > pos["lowest"] * (1 + trail_pos):
-                                should_exit = True
+                            if bar_high > pos["lowest"] * (1 + trail_pos):
+                                should_exit = True; exit_reason = "移动止盈"
 
                 # 4) minimal_roi
                 if not should_exit and pnl_pct > 0:
@@ -275,10 +308,11 @@ def run(
                         if hold_minutes >= mins:
                             best_threshold = abs(ratio) * 100  # 转 %
                     if pnl_pct >= best_threshold:
-                        should_exit = True
+                        should_exit = True; exit_reason = "止盈"
 
                 if should_exit:
-                    eng.exit(p, cp, t)
+                    exit_price = cp * (1 - slippage) if side == "long" else cp * (1 + slippage)
+                    eng.exit(p, exit_price, t, exit_reason)
 
         # 更新权益曲线
         eq = eng.balance
@@ -308,7 +342,7 @@ def run(
     for p in list(eng.positions.keys()):
         df = all_dfs.get(p)
         if df is not None:
-            eng.exit(p, df["close"].iloc[-1], all_times[-1])
+            eng.exit(p, df["close"].iloc[-1], all_times[-1], "回测结束")
 
     # 6. 计算指标
     exits = [t for t in eng.trades if t["type"] == "exit"]
@@ -317,7 +351,7 @@ def run(
         "strategy": strategy_name, "pairs": pairs, "timeframe": timeframe,
         "timerange": timerange, "stake_amount": stake_amount,
         "initial_balance": initial_balance, "max_open_trades": max_open_trades,
-        "leverage": leverage_val, "fee": fee, "trading_mode": trading_mode,
+        "leverage": leverage_val, "fee": fee, "slippage": slippage, "position_pct": position_pct, "trading_mode": trading_mode,
     }
 
     if n_exits == 0:
