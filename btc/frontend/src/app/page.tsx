@@ -1441,6 +1441,25 @@ function LiveTradePanel({ API_BASE }: { API_BASE: string }) {
 
       {error && <div className="text-red-500 text-sm bg-red-50 border border-red-200 rounded-lg p-3">{error}</div>}
 
+      {/* ===== 等待状态指示 ===== */}
+      {running && paired.length === 0 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-700 flex items-center gap-3">
+          <span className="text-lg animate-pulse">⏳</span>
+          <div>
+            <div className="font-medium">等待信号中...</div>
+            <div className="text-xs text-blue-500 mt-0.5">
+              已监控 {status?.monitored_pairs?.length || 0} 个交易对
+              {status?.last_data_time ? ` · 最新数据: ${status.last_data_time.slice(5,16)}` : ''}
+              {status?.updater_alive === false ? (
+                <span className="text-red-600 font-medium"> · ⚠️ 数据源超过10分钟未更新</span>
+              ) : (
+                <span className="text-green-600"> · 数据源正常</span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ===== 风控配置面板（折叠） ===== */}
       <details className="bg-white dark:bg-gray-800 border rounded-xl">
         <summary className="px-4 py-3 text-sm font-medium cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl">

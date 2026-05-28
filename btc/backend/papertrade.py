@@ -32,10 +32,49 @@ class PaperTradingEngine:
         self.running = False
         self.thread: Optional[threading.Thread] = None
         self._lock = threading.Lock()
-        self._bar_idx: dict = {}  # 每个币种当前处理到的 bar 索引
+        self._bar_idx: dict = {}
         self._strat_cache = None
-        self._dfs: dict = {}      # 所有币种的 df2（含信号）
-        self._all_times: list = []  # 统一时间轴
+        self._dfs: dict = {}
+        self._all_times: list = []
+        self._state_path = Path(__file__).resolve().parent / "papertrade_state.json"
+        self._last_price: dict = {}  # 最新市价（用于K线间止损）
+        self._updater_alert_minutes = 10  # 数据超过N分钟没更新则告警
+        self._last_data_time = None
+
+    def _save_state(self):
+        """持久化交易状态到JSON"""
+        try:
+            state = {
+                "balance": self.balance,
+                "equity": self.equity,
+                "trades": self.trades[-500:],
+                "signal_log": self.signal_log[-100:],
+                "equity_curve": self.equity_curve[-1000:],
+                "daily_pnl": self.daily_pnl,
+                "positions": {k: {kk: (str(vv) if isinstance(vv, pd.Timestamp) else vv) for kk, vv in v.items()} for k, v in self.positions.items()},
+                "_pos_tracker": {k: {kk: (str(vv) if isinstance(vv, pd.Timestamp) else vv) for kk, vv in v.items()} for k, v in getattr(self, '_pos_tracker', {}).items()},
+            }
+            self._state_path.write_text(json.dumps(state, default=str, indent=2))
+        except Exception as e:
+            print(f"[PaperTrade] 保存状态失败: {e}")
+
+    def _load_state(self) -> bool:
+        """从JSON恢复状态"""
+        if not self._state_path.exists():
+            return False
+        try:
+            state = json.loads(self._state_path.read_text())
+            self.balance = state.get("balance", self.balance)
+            self.equity = state.get("equity", self.equity)
+            self.trades = state.get("trades", [])
+            self.signal_log = state.get("signal_log", [])
+            self.equity_curve = state.get("equity_curve", [])
+            self.daily_pnl = state.get("daily_pnl", {})
+            print(f"[PaperTrade] 恢复状态: {len(self.trades)}笔交易, ${self.balance:.2f}")
+            return True
+        except Exception as e:
+            print(f"[PaperTrade] 恢复状态失败: {e}")
+            return False
 
     def start(self, config: dict = None):
         if self.running:
@@ -72,6 +111,10 @@ class PaperTradingEngine:
     def get_status(self) -> dict:
         with self._lock:
             pt = self._paired_trades()
+            updater_alive = True
+            if self._last_data_time is not None and self.running:
+                age = (pd.Timestamp.now(tz='UTC') - pd.Timestamp(self._last_data_time)).total_seconds() / 60
+                updater_alive = age < self._updater_alert_minutes
             return {
                 "running": self.running,
                 "balance": round(self.balance, 2),
@@ -81,18 +124,25 @@ class PaperTradingEngine:
                 "positions": list(self.positions.values()),
                 "paired_trades": pt,
                 "recent_signals": self.signal_log[-30:],
-                "equity_curve": self.equity_curve[-500:],
+                "equity_curve": self.equity_curve[-100:],
+                "last_data_time": str(self._last_data_time)[:19] if self._last_data_time else None,
+                "updater_alive": updater_alive,
+                "monitored_pairs": list(self._dfs.keys()),
                 "config": self._get_config(),
             }
 
     def _loop(self):
         print(f"[PaperTrade] 启动: {self.strategy_name} @ {self.timeframe}")
+        check_count = 0
         while self.running:
             try:
-                self._check_new_data()
+                if check_count % 3 == 0:  # 每30秒检查新数据
+                    self._check_new_data()
+                self._check_realtime_stops()  # 每次loop检查止损
             except Exception as e:
                 print(f"[PaperTrade] 错误: {e}")
-            time.sleep(10 if self.timeframe == '1m' else 60)
+            check_count += 1
+            time.sleep(10)
 
     def _load_df(self, pair):
         pf = pair.replace("/", "").replace(":", "")
@@ -170,6 +220,65 @@ class PaperTradingEngine:
             print(f"[PaperTrade] 新数据: {len(new_times)}根, 最新: {new_times[-1]}")
             self._tick_batch(new_times)
 
+    def _check_realtime_stops(self):
+        """K线间止损检查 — 用最新市价，不等新K线"""
+        if not self._dfs or not self.positions:
+            return
+        for pair in list(self.positions.keys()):
+            if pair not in self.positions:
+                continue
+            pos = self.positions[pair]
+            ep = pos["entry_price"]
+            # 用最近一次已知价格，或从 df2 取最新 close
+            cp = self._last_price.get(pair, 0)
+            if cp == 0:
+                df2 = self._dfs.get(pair)
+                if df2 is not None and len(df2) > 0:
+                    cp = float(df2['close'].iloc[-1])
+            if cp == 0:
+                continue
+
+            bh = cp * 1.001  # 近似 high
+            bl = cp * 0.999  # 近似 low
+
+            pos["highest"] = max(pos.get("highest", 0), bh)
+            pos["lowest"] = min(pos.get("lowest", 999999), bl)
+
+            s, rsn = False, ""
+            strat = self._strat_cache
+            sl = abs(getattr(strat, 'stoploss', 0.015)) if strat else 0.015
+            if (pos["side"] == "long" and bl < ep * (1 - sl)) or \
+               (pos["side"] == "short" and bh > ep * (1 + sl)):
+                s, rsn = True, "止损"
+
+            if not s:
+                tp = getattr(strat, 'trailing_stop_positive', 0.008) if strat else 0.008
+                to = getattr(strat, 'trailing_stop_positive_offset', 0.03) if strat else 0.03
+                if pos["side"] == "long" and pos["highest"] > ep * (1 + to):
+                    if bl < pos["highest"] * (1 - tp):
+                        s, rsn = True, "移动止盈"
+                elif pos["side"] == "short" and pos["lowest"] < ep * (1 - to):
+                    if bh > pos["lowest"] * (1 + tp):
+                        s, rsn = True, "移动止盈"
+
+            if s:
+                # 模拟出场（没有实际K线数据，用当前价）
+                xp = cp * (1 - self.slippage) if pos["side"] == "long" else cp * (1 + self.slippage)
+                sz = pos["size"]
+                pnl = (xp - ep) * sz * pos["leverage"] if pos["side"] == "long" else (ep - xp) * sz * pos["leverage"]
+                pnl_pct = pnl / (sz * ep) * 100
+                fee = xp * sz * pos["leverage"] * self.fee
+                self.balance += sz * ep + pnl - fee
+                self.trades.append({"pair": pair, "type": "exit", "side": pos["side"],
+                    "price": round(xp, 2), "size": sz, "pnl": round(pnl, 2),
+                    "pnl_pct": round(pnl_pct, 4), "timestamp": str(datetime.now()),
+                    "exit_reason": f"{pos['side']}_{rsn}(K线间)", "leverage": pos["leverage"],
+                    "entry_price": pos["entry_price"]})
+                self.signal_log.append({"time": str(datetime.now()), "pair": pair,
+                    "action": "平仓", "price": round(xp, 2), "pnl": round(pnl, 2), "reason": f"{rsn}(K线间)"})
+                self._save_state()
+                del self.positions[pair]
+
     def _tick_batch(self, times):
         """批量处理一批时间戳（同步推进所有币种）"""
         for ts in times:
@@ -213,6 +322,15 @@ class PaperTradingEngine:
             self.equity = eq
             self.equity_curve.append({"timestamp": str(ts), "equity": round(eq, 2), "balance": round(self.balance, 2)})
 
+            # 更新最新价格（用于K线间止损）
+            for pair, df2 in self._dfs.items():
+                try:
+                    self._last_price[pair] = float(df2.loc[ts, "close"])
+                except:
+                    pass
+            # 更新数据时间戳（用于updater存活检测）
+            self._last_data_time = ts
+
             # 更新 bar 索引
             for pair in self._dfs:
                 self._bar_idx[pair] = ts
@@ -246,6 +364,7 @@ class PaperTradingEngine:
                         "timestamp": str(ts), "enter_tag": tag})
                     self.signal_log.append({"time": str(ts), "pair": pair,
                         "action": "买入" if side == "long" else "卖出", "tag": tag})
+                    self._save_state()
                 break
 
     def _process_exit(self, pair, row, ts):
@@ -304,6 +423,7 @@ class PaperTradingEngine:
             pnl_pct = pnl / (sz * ep) * 100
             fee = xp * sz * pos["leverage"] * self.fee
             self.balance += sz * ep + pnl - fee
+            self._save_state()
             self.trades.append({"pair": pair, "type": "exit", "side": pos["side"],
                 "price": round(xp, 2), "size": sz, "pnl": round(pnl, 2),
                 "pnl_pct": round(pnl_pct, 4), "timestamp": str(ts),
