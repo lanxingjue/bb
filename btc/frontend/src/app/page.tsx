@@ -996,6 +996,8 @@ function PaperTradePanel({ API_BASE }: { API_BASE: string }) {
   const [running, setRunning] = useState(false)
   const [loading, setLoading] = useState(false)
   const [strategy, setStrategy] = useState('RealChanTheory')
+  const [selectedTrade, setSelectedTrade] = useState<any>(null)
+  const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards')
   const [strategyList, setStrategyList] = useState<string[]>([])
   const chartRef = useRef<HTMLDivElement>(null)
   const chartInstance = useRef<any>(null)
@@ -1171,54 +1173,146 @@ function PaperTradePanel({ API_BASE }: { API_BASE: string }) {
         </div>
       )}
 
-      {/* 配对交易卡片 */}
+      {/* 视图切换 */}
       {paired.length > 0 && (
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold">交易记录 ({paired.length} 笔)</h3>
+          <div className="flex gap-1">
+            <button className={`px-2.5 py-1 text-xs rounded-md ${viewMode === 'cards' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'}`} onClick={() => setViewMode('cards')}>📇 卡片</button>
+            <button className={`px-2.5 py-1 text-xs rounded-md ${viewMode === 'table' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'}`} onClick={() => setViewMode('table')}>📋 表格</button>
+          </div>
+        </div>
+      )}
+
+      {/* 卡片视图 */}
+      {paired.length > 0 && viewMode === 'cards' && (
         <div className="border rounded-lg p-3">
-          <h3 className="text-sm font-semibold mb-3">交易记录 ({paired.length} 笔)</h3>
           <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
             {paired.slice().reverse().map((t: any, i: number) => (
-              <div key={i} className={`border rounded-lg p-3 flex items-stretch gap-3 ${t.pnl > 0 ? 'border-l-4 border-l-green-500' : 'border-l-4 border-l-red-500'}`}>
-                {/* 左侧：方向+盈亏 */}
+              <div key={i} className={`border rounded-lg p-3 flex items-stretch gap-3 cursor-pointer hover:shadow-md transition-shadow ${t.pnl > 0 ? 'border-l-4 border-l-green-500' : 'border-l-4 border-l-red-500'}`}
+                onClick={() => setSelectedTrade(t)}>
                 <div className="flex flex-col items-center justify-center min-w-[70px]">
-                  <div className={`text-lg ${t.direction === 'long' ? 'text-green-600' : 'text-red-600'}`}>
-                    {t.direction === 'long' ? '🟢' : '🔴'}
-                  </div>
-                  <div className={`text-base font-bold ${t.pnl > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {t.pnl > 0 ? '+' : ''}{t.pnl.toFixed(2)}
-                  </div>
-                  <div className={`text-xs ${t.pnl > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                    {t.pnl_pct > 0 ? '+' : ''}{t.pnl_pct}%
-                  </div>
+                  <div className={`text-lg ${t.direction === 'long' ? 'text-green-600' : 'text-red-600'}`}>{t.direction === 'long' ? '🟢' : '🔴'}</div>
+                  <div className={`text-base font-bold ${t.pnl > 0 ? 'text-green-600' : 'text-red-600'}`}>{t.pnl > 0 ? '+' : ''}{t.pnl.toFixed(2)}</div>
+                  <div className={`text-xs ${t.pnl > 0 ? 'text-green-500' : 'text-red-500'}`}>{t.pnl_pct > 0 ? '+' : ''}{t.pnl_pct}%</div>
                 </div>
-                {/* 中间：价格+时间 */}
                 <div className="flex-1 text-xs space-y-0.5">
                   <div className="flex items-center gap-3">
                     <span className="font-medium">{t.pair?.split('/')[0]}</span>
                     <span className="text-gray-400">{t.enter_tag}</span>
                     <span className="text-gray-400">{t.duration}</span>
                   </div>
-                  <div className="text-gray-500">
-                    入 {t.entry_price} → 出 {t.exit_price}
-                  </div>
-                  <div className="text-gray-400">
-                    {t.entry_time?.slice(5)} → {t.exit_time?.slice(5)}
-                  </div>
+                  <div className="text-gray-500">入 {t.entry_price} → 出 {t.exit_price}</div>
+                  <div className="text-gray-400">{t.entry_time?.slice(5)} → {t.exit_time?.slice(5)}</div>
                 </div>
-                {/* 右侧：出场原因 */}
                 <div className="flex flex-col items-end justify-center min-w-[60px] text-xs">
-                  <span className={`px-2 py-0.5 rounded font-medium ${
-                    t.exit_reason?.includes('止盈') ? 'bg-green-100 text-green-700' :
-                    t.exit_reason?.includes('止损') ? 'bg-red-100 text-red-700' :
-                    t.exit_reason?.includes('结构') ? 'bg-blue-100 text-blue-700' :
-                    t.exit_reason?.includes('移动') ? 'bg-yellow-100 text-yellow-700' :
-                    'bg-gray-100 text-gray-600'
-                  }`}>{t.exit_reason}</span>
-                  <div className={`text-xs mt-1 font-medium ${t.cumulative_pnl > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    累计 {t.cumulative_pnl > 0 ? '+' : ''}{t.cumulative_pnl.toFixed(2)}
-                  </div>
+                  <span className={`px-2 py-0.5 rounded font-medium ${t.exit_reason?.includes('止盈') ? 'bg-green-100 text-green-700' : t.exit_reason?.includes('止损') ? 'bg-red-100 text-red-700' : t.exit_reason?.includes('结构') ? 'bg-blue-100 text-blue-700' : t.exit_reason?.includes('移动') ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600'}`}>{t.exit_reason}</span>
+                  <div className={`text-xs mt-1 font-medium ${t.cumulative_pnl > 0 ? 'text-green-600' : 'text-red-600'}`}>累计 {t.cumulative_pnl > 0 ? '+' : ''}{t.cumulative_pnl.toFixed(2)}</div>
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* 表格视图 */}
+      {paired.length > 0 && viewMode === 'table' && (
+        <div className="border rounded-lg overflow-hidden">
+          <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
+            <table className="w-full text-xs">
+              <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0">
+                <tr className="text-left">
+                  <th className="py-2 px-3 font-medium text-gray-500">时间</th>
+                  <th className="py-2 px-3 font-medium text-gray-500">交易对</th>
+                  <th className="py-2 px-3 font-medium text-gray-500">方向</th>
+                  <th className="py-2 px-3 font-medium text-gray-500">入场价</th>
+                  <th className="py-2 px-3 font-medium text-gray-500">出场价</th>
+                  <th className="py-2 px-3 font-medium text-gray-500">PnL</th>
+                  <th className="py-2 px-3 font-medium text-gray-500">PnL%</th>
+                  <th className="py-2 px-3 font-medium text-gray-500">信号</th>
+                  <th className="py-2 px-3 font-medium text-gray-500">出场原因</th>
+                  <th className="py-2 px-3 font-medium text-gray-500">持仓</th>
+                  <th className="py-2 px-3 font-medium text-gray-500">累计</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...paired].reverse().map((t: any, i: number) => (
+                  <tr key={i} className={`border-t hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer ${t.pnl > 0 ? '' : ''}`}
+                    onClick={() => setSelectedTrade(t)}>
+                    <td className="py-2 px-3 whitespace-nowrap">{t.entry_time?.slice(5)}</td>
+                    <td className="py-2 px-3">{t.pair?.split('/')[0]}</td>
+                    <td className="py-2 px-3">{t.direction === 'long' ? '🟢多' : '🔴空'}</td>
+                    <td className="py-2 px-3">${t.entry_price}</td>
+                    <td className="py-2 px-3">${t.exit_price}</td>
+                    <td className={`py-2 px-3 font-medium ${t.pnl > 0 ? 'text-green-600' : 'text-red-600'}`}>{t.pnl > 0 ? '+' : ''}{t.pnl.toFixed(2)}</td>
+                    <td className={`py-2 px-3 ${t.pnl_pct > 0 ? 'text-green-600' : 'text-red-600'}`}>{t.pnl_pct > 0 ? '+' : ''}{t.pnl_pct}%</td>
+                    <td className="py-2 px-3 text-gray-400 max-w-[100px] truncate">{t.enter_tag}</td>
+                    <td className="py-2 px-3"><span className={`px-1 py-0.5 rounded text-[10px] font-medium ${t.exit_reason?.includes('止盈') ? 'bg-green-100 text-green-700' : t.exit_reason?.includes('止损') ? 'bg-red-100 text-red-700' : t.exit_reason?.includes('结构') ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'}`}>{t.exit_reason}</span></td>
+                    <td className="py-2 px-3 text-gray-400">{t.duration}</td>
+                    <td className={`py-2 px-3 font-medium ${t.cumulative_pnl > 0 ? 'text-green-600' : 'text-red-600'}`}>{t.cumulative_pnl > 0 ? '+' : ''}{t.cumulative_pnl.toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* 订单详情弹窗 */}
+      {selectedTrade && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" onClick={() => setSelectedTrade(null)}>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-sm">订单详情</h3>
+              <button className="text-gray-400 hover:text-gray-600 text-lg" onClick={() => setSelectedTrade(null)}>✕</button>
+            </div>
+            <div className="space-y-3 text-sm">
+              <div className="flex items-center gap-3 pb-3 border-b">
+                <span className={`text-2xl ${selectedTrade.direction === 'long' ? 'text-green-600' : 'text-red-600'}`}>{selectedTrade.direction === 'long' ? '🟢' : '🔴'}</span>
+                <div>
+                  <div className="font-bold text-base">{selectedTrade.pair}</div>
+                  <div className="text-xs text-gray-400">{selectedTrade.direction === 'long' ? '做多' : '做空'} · {selectedTrade.enter_tag}</div>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                  <div className="text-[10px] text-gray-400 mb-1">入场时间</div>
+                  <div className="font-medium text-xs">{selectedTrade.entry_time}</div>
+                </div>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                  <div className="text-[10px] text-gray-400 mb-1">出场时间</div>
+                  <div className="font-medium text-xs">{selectedTrade.exit_time}</div>
+                </div>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                  <div className="text-[10px] text-gray-400 mb-1">入场价格</div>
+                  <div className="font-medium">${selectedTrade.entry_price}</div>
+                </div>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                  <div className="text-[10px] text-gray-400 mb-1">出场价格</div>
+                  <div className="font-medium">${selectedTrade.exit_price}</div>
+                </div>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                  <div className="text-[10px] text-gray-400 mb-1">盈亏 (PnL)</div>
+                  <div className={`font-bold text-base ${selectedTrade.pnl > 0 ? 'text-green-600' : 'text-red-600'}`}>{selectedTrade.pnl > 0 ? '+' : ''}${selectedTrade.pnl.toFixed(2)}</div>
+                </div>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                  <div className="text-[10px] text-gray-400 mb-1">盈亏 (%)</div>
+                  <div className={`font-bold text-base ${selectedTrade.pnl_pct > 0 ? 'text-green-600' : 'text-red-600'}`}>{selectedTrade.pnl_pct > 0 ? '+' : ''}{selectedTrade.pnl_pct}%</div>
+                </div>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                  <div className="text-[10px] text-gray-400 mb-1">持仓时长</div>
+                  <div className="font-medium">{selectedTrade.duration || '—'}</div>
+                </div>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                  <div className="text-[10px] text-gray-400 mb-1">累计盈亏</div>
+                  <div className={`font-medium ${selectedTrade.cumulative_pnl > 0 ? 'text-green-600' : 'text-red-600'}`}>{selectedTrade.cumulative_pnl > 0 ? '+' : ''}${selectedTrade.cumulative_pnl.toFixed(2)}</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 pt-3 border-t">
+                <span className={`px-2.5 py-1 rounded text-xs font-medium ${selectedTrade.exit_reason?.includes('止盈') ? 'bg-green-100 text-green-700' : selectedTrade.exit_reason?.includes('止损') ? 'bg-red-100 text-red-700' : selectedTrade.exit_reason?.includes('结构') ? 'bg-blue-100 text-blue-700' : selectedTrade.exit_reason?.includes('移动') ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600'}`}>{selectedTrade.exit_reason}</span>
+                <span className="text-xs text-gray-400">{selectedTrade.enter_tag}</span>
+              </div>
+            </div>
           </div>
         </div>
       )}
