@@ -87,6 +87,7 @@ open http://localhost:3000
 | `btc/docs/CHAN_THEORY_STRATEGY.md` | 策略算法和回测数据 |
 | `btc/docs/PAPER_TRADE_FLOW.md` | 模拟盘数据流转 |
 | `btc/docs/DATA_SOURCE.md` | 数据源和实时更新 |
+| `btc/docs/LIVE_TRADING.md` | 实盘部署指南 |
 
 ## 关键技术决策
 
