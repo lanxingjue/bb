@@ -1347,6 +1347,65 @@ function LiveTradePanel({ API_BASE }: { API_BASE: string }) {
 
       {error && <div className="text-red-500 text-sm bg-red-50 border border-red-200 rounded-lg p-3">{error}</div>}
 
+      {/* ===== 风控配置面板（折叠） ===== */}
+      <details className="bg-white dark:bg-gray-800 border rounded-xl">
+        <summary className="px-4 py-3 text-sm font-medium cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl">
+          ⚙️ 风控配置 {running ? '(运行中，部分参数可通过 API 热更新)' : ''}
+        </summary>
+        <div className="px-4 pb-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div>
+            <label className="text-gray-400">每日亏损限额</label>
+            <div className="font-medium">{cfg.daily_loss_limit || '-10'}%</div>
+          </div>
+          <div>
+            <label className="text-gray-400">最大回撤</label>
+            <div className="font-medium">{cfg.max_drawdown || '-25'}%</div>
+          </div>
+          <div>
+            <label className="text-gray-400">仓位/笔</label>
+            <div className="font-medium">{cfg.position_pct || '20'}%</div>
+          </div>
+          <div>
+            <label className="text-gray-400">最大持仓</label>
+            <div className="font-medium">{cfg.max_positions || '2'} 笔</div>
+          </div>
+          <div className="col-span-2">
+            <label className="text-gray-400">Webhook 通知</label>
+            <div className="font-medium truncate">{cfg.webhook_url || '未配置'}</div>
+          </div>
+          <div className="col-span-2">
+            <label className="text-gray-400">策略参数</label>
+            <div className="font-medium">止损 1.5% | 移动止盈 0.8%/3% | ROI阶梯</div>
+          </div>
+        </div>
+      </details>
+
+      {/* ===== 风控状态条 ===== */}
+      {status?.drawdown_pct != null && (
+        <div className="bg-white dark:bg-gray-800 border rounded-xl p-3">
+          <div className="flex items-center justify-between text-xs mb-1.5">
+            <span className="text-gray-400">当日盈亏</span>
+            <span className={`font-medium ${(status.daily_pnl||0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {status.daily_pnl >= 0 ? '+' : ''}${status.daily_pnl?.toFixed(2)}
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-xs mb-1.5">
+            <span className="text-gray-400">总回撤</span>
+            <span className={`font-medium ${(status.drawdown_pct||0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {status.drawdown_pct}%
+            </span>
+          </div>
+          <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div className="h-full rounded-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 transition-all"
+              style={{width: `${Math.min(Math.abs(status.drawdown_pct || 0) * 3, 100)}%`}} />
+          </div>
+          <div className="flex justify-between text-[10px] text-gray-400 mt-1">
+            <span>0%</span>
+            <span>⛔ 止损 {(cfg.daily_loss_limit || -10)}%</span>
+          </div>
+        </div>
+      )}
+
       {/* ===== 账户总览卡片 ===== */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
 

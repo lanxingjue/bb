@@ -283,6 +283,9 @@ class LiveTradeConfig(BaseModel):
     leverage: float = 3.0
     position_pct: float = 20.0
     max_positions: int = 2
+    daily_loss_limit: float = -10.0
+    max_drawdown: float = -25.0
+    webhook_url: str = ""
 
 
 @app.post("/api/livetrade/start")
@@ -307,6 +310,12 @@ def livetrade_stop():
 def livetrade_close_all():
     """一键平仓"""
     return _live_engine.close_all()
+
+
+@app.post("/api/livetrade/config")
+def livetrade_config(cfg: LiveTradeConfig):
+    """更新实盘配置（不重启）"""
+    return _live_engine.update_config(cfg.model_dump())
 
 
 # ─── 启动 ──────────────────────────────────────────────────────────────────
