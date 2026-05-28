@@ -129,25 +129,42 @@ class LiveTradingEngine:
                 positions = self.exchange.fetch_positions() if self.exchange else []
                 
                 total_equity = float(balance.get('USDT', {}).get('total', 0))
-                open_positions = [
-                    {
-                        "pair": p['symbol'],
-                        "side": "long" if float(p['contracts']) > 0 else "short",
-                        "size": abs(float(p['contracts'])),
-                        "entry_price": float(p['entryPrice']),
-                        "pnl": float(p['unrealizedPnl']),
-                        "pnl_pct": float(p['percentage']),
-                    }
-                    for p in positions if abs(float(p['contracts'])) > 0
-                ]
+                free = float(balance.get('USDT', {}).get('free', 0))
+                used = float(balance.get('USDT', {}).get('used', 0))
+                
+                open_positions = []
+                total_unrealized_pnl = 0.0
+                for p in positions:
+                    if abs(float(p['contracts'])) > 0:
+                        upnl = float(p['unrealizedPnl'])
+                        total_unrealized_pnl += upnl
+                        open_positions.append({
+                            "pair": p['symbol'],
+                            "side": "long" if float(p['contracts']) > 0 else "short",
+                            "size": abs(float(p['contracts'])),
+                            "entry_price": float(p['entryPrice']),
+                            "mark_price": float(p.get('markPrice', 0)),
+                            "pnl": round(upnl, 2),
+                            "pnl_pct": round(float(p.get('percentage', 0)), 2),
+                            "liquidation": float(p.get('liquidationPrice', 0)),
+                        })
+                
+                # 配对交易
+                paired = self._paired_trades()
+                session_pnl = sum(t.get('pnl', 0) for t in self.trades if t['type'] == 'exit')
                 
                 return {
                     "running": self.running,
                     "exchange": self.exchange_name,
                     "balance": round(total_equity, 2),
+                    "free": round(free, 2),
+                    "used": round(used, 2),
+                    "unrealized_pnl": round(total_unrealized_pnl, 2),
                     "open_positions": len(open_positions),
                     "positions": open_positions,
                     "trades": self.trades[-100:],
+                    "paired_trades": paired,
+                    "session_pnl": round(session_pnl, 2),
                     "recent_signals": self.signal_log[-30:],
                     "equity_curve": self.equity_curve[-500:],
                     "config": self._get_config(),
@@ -158,6 +175,29 @@ class LiveTradingEngine:
                     "error": str(e),
                     "config": self._get_config(),
                 }
+
+    def _paired_trades(self) -> list:
+        pt, pending, cum = [], {}, 0.0
+        for t in self.trades:
+            key = (t["pair"], t["side"])
+            if t["type"] == "entry":
+                pending[key] = t
+            elif t["type"] == "exit" and key in pending:
+                e = pending.pop(key)
+                cum += t.get("pnl", 0)
+                pt.append({
+                    "entry_time": str(e["timestamp"])[:16],
+                    "exit_time": str(t["timestamp"])[:16],
+                    "pair": t["pair"],
+                    "direction": t["side"],
+                    "entry_price": e["price"],
+                    "exit_price": t["price"],
+                    "pnl": round(t.get("pnl", 0), 2),
+                    "enter_tag": (e.get("enter_tag", "") or "")[:30],
+                    "exit_reason": t.get("exit_reason", ""),
+                    "cumulative_pnl": round(cum, 2),
+                })
+        return pt
 
     def _loop(self):
         print(f"[LiveTrade] 启动: {self.strategy_name} on {self.exchange_name}")

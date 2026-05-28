@@ -1302,121 +1302,257 @@ function LiveTradePanel({ API_BASE }: { API_BASE: string }) {
   }
 
   const handleCloseAll = async () => {
+    if (!window.confirm('确定平掉所有持仓？')) return
     await fetch(`${API_BASE}/api/livetrade/close-all`, { method: 'POST' })
     await fetchStatus()
   }
 
   const cfg = status?.config || {}
   const bal = status?.balance || 0
+  const free = status?.free || 0
+  const used = status?.used || 0
+  const upnl = status?.unrealized_pnl || 0
+  const sessionPnl = status?.session_pnl || 0
   const pos = status?.positions || []
+  const paired = status?.paired_trades || []
+  const signals = status?.recent_signals || []
+  const signalsDesc = [...signals].reverse()
+  const usedPct = bal > 0 ? (used / bal * 100) : 0
+  const totalReturn = bal > 0 ? ((bal - 1000) / 1000 * 100) : 0
 
   return (
     <div className="space-y-4">
       {/* 顶部横幅 */}
-      <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-700">
-        🔴 <strong>实盘模式</strong> — 交易将通过交易所 API 真实执行，请确认资金安全
+      <div className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-xl p-4 text-sm text-red-700 flex items-center gap-2">
+        <span className="text-lg">🔴</span>
+        <span><strong>实盘模式</strong> — 交易将通过 <strong>{cfg.exchange || '交易所'}</strong> API 真实执行</span>
       </div>
 
       {/* 控制栏 */}
-      <div className="flex flex-wrap items-center gap-3">
-        <button
-          className={`px-4 py-2 text-sm rounded-lg font-medium ${running ? 'bg-gray-300 cursor-not-allowed' : 'bg-red-600 text-white hover:bg-red-700'}`}
-          onClick={handleStart} disabled={running || loading}
-        >{loading ? '连接中...' : '▶ 启动实盘'}</button>
-        <button
-          className={`px-4 py-2 text-sm rounded-lg font-medium ${!running ? 'bg-gray-300 cursor-not-allowed' : 'bg-orange-600 text-white hover:bg-orange-700'}`}
-          onClick={handleStop} disabled={!running}
-        >⏹ 停止</button>
-        <button
-          className={`px-4 py-2 text-sm rounded-lg font-medium ${!running ? 'bg-gray-300 cursor-not-allowed' : 'bg-red-700 text-white hover:bg-red-800'}`}
-          onClick={handleCloseAll} disabled={!running}
-        >⛔ 一键平仓</button>
-        <button className="px-4 py-2 text-sm rounded-lg font-medium bg-gray-100 hover:bg-gray-200" onClick={fetchStatus}>🔄 刷新</button>
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="flex gap-2 mr-4">
+          <button className={`px-4 py-2 text-sm rounded-lg font-bold transition-all ${running ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-red-600 text-white hover:bg-red-700 shadow-sm'}`} onClick={handleStart} disabled={running || loading}>
+            {loading ? '⏳ 连接中...' : '▶ 启动'}
+          </button>
+          <button className={`px-4 py-2 text-sm rounded-lg font-bold transition-all ${!running ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-gray-700 text-white hover:bg-gray-800 shadow-sm'}`} onClick={handleStop} disabled={!running}>
+            ⏹ 停止
+          </button>
+          <button className={`px-4 py-2 text-sm rounded-lg font-bold transition-all ${!running ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-red-700 text-white hover:bg-red-800 shadow-sm'}`} onClick={handleCloseAll} disabled={!running}>
+            ⛔ 一键平仓
+          </button>
+        </div>
+        <button className="px-3 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors" onClick={fetchStatus}>🔄 刷新</button>
+        <span className={`text-xs ${running ? 'text-green-600' : 'text-gray-400'}`}>● {running ? '运行中' : '已停止'}</span>
       </div>
 
-      {error && <div className="text-red-500 text-sm bg-red-50 p-2 rounded">{error}</div>}
+      {error && <div className="text-red-500 text-sm bg-red-50 border border-red-200 rounded-lg p-3">{error}</div>}
 
-      {/* 账户信息 */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="border rounded-lg p-3">
-          <div className="text-xs text-gray-400">交易所</div>
-          <div className="text-lg font-bold">{cfg.exchange || '—'}</div>
+      {/* ===== 账户总览卡片 ===== */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+
+        {/* 总权益 */}
+        <div className="bg-white dark:bg-gray-800 border rounded-xl p-4 shadow-sm">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs text-gray-400 font-medium">总权益</span>
+            <span className="text-[10px] text-gray-300">{cfg.exchange}</span>
+          </div>
+          <div className="text-2xl font-bold">${bal.toFixed(2)}</div>
+          <div className={`text-xs mt-1 ${totalReturn >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {totalReturn >= 0 ? '↗' : '↘'} 总收益率 {totalReturn >= 0 ? '+' : ''}{totalReturn.toFixed(2)}%
+          </div>
         </div>
-        <div className="border rounded-lg p-3">
-          <div className="text-xs text-gray-400">账户权益</div>
-          <div className="text-lg font-bold">${bal.toFixed(2)}</div>
+
+        {/* 可用/冻结 */}
+        <div className="bg-white dark:bg-gray-800 border rounded-xl p-4 shadow-sm">
+          <div className="text-xs text-gray-400 font-medium mb-2">资金使用</div>
+          <div className="flex items-baseline gap-2">
+            <span className="text-lg font-bold">${free.toFixed(2)}</span>
+            <span className="text-xs text-gray-400">/ ${bal.toFixed(0)}</span>
+          </div>
+          <div className="mt-2 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-full bg-blue-500 rounded-full transition-all" style={{width: `${Math.min(usedPct, 100)}%`}} />
+          </div>
+          <div className="flex justify-between text-[10px] text-gray-400 mt-1">
+            <span>已用 ${used.toFixed(2)} ({usedPct.toFixed(0)}%)</span>
+            <span>可用 ${free.toFixed(2)}</span>
+          </div>
         </div>
-        <div className="border rounded-lg p-3">
-          <div className="text-xs text-gray-400">运行状态</div>
-          <div className="text-lg font-bold">{running ? '🟢 运行中' : '🔴 已停止'}</div>
+
+        {/* 浮动盈亏 */}
+        <div className="bg-white dark:bg-gray-800 border rounded-xl p-4 shadow-sm">
+          <div className="text-xs text-gray-400 font-medium mb-2">浮动盈亏</div>
+          <div className={`text-lg font-bold ${upnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {upnl >= 0 ? '+' : ''}${upnl.toFixed(2)}
+          </div>
+          <div className="flex items-center gap-1 mt-1">
+            <span className={`inline-block w-2 h-2 rounded-full ${pos.length > 0 ? 'bg-green-500' : 'bg-gray-300'}`} />
+            <span className="text-xs text-gray-400">{pos.length} 笔持仓</span>
+          </div>
         </div>
-        <div className="border rounded-lg p-3">
-          <div className="text-xs text-gray-400">持仓数</div>
-          <div className="text-lg font-bold">{pos.length} 笔</div>
+
+        {/* 已实现盈亏 */}
+        <div className="bg-white dark:bg-gray-800 border rounded-xl p-4 shadow-sm">
+          <div className="text-xs text-gray-400 font-medium mb-2">已实现盈亏</div>
+          <div className={`text-lg font-bold ${sessionPnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {sessionPnl >= 0 ? '+' : ''}${sessionPnl.toFixed(2)}
+          </div>
+          <div className="flex items-center gap-1 mt-1">
+            <span className="text-xs text-gray-400">{paired.length} 笔已平仓</span>
+          </div>
         </div>
       </div>
 
-      {/* 当前配置 */}
-      <div className="border rounded-lg p-3 text-xs text-gray-500">
-        策略: {cfg.strategy || '—'} | 周期: {cfg.timeframe || '—'} | 杠杆: {cfg.leverage || '—'}x | 仓位: {cfg.position_pct || '—'}%/笔
+      {/* ===== 当前配置条 ===== */}
+      <div className="flex flex-wrap gap-3 text-xs text-gray-500 bg-gray-50 dark:bg-gray-800 rounded-lg px-4 py-2.5">
+        <span>📊 {cfg.strategy || '—'}</span>
+        <span>⏱ {cfg.timeframe || '—'}</span>
+        <span>📐 {cfg.leverage || '—'}x</span>
+        <span>📦 {cfg.position_pct || '—'}%/笔</span>
+        <span>🔗 {cfg.pairs?.join(', ') || '—'}</span>
       </div>
 
-      {/* 持仓列表 */}
+      {/* ===== 持仓卡片 ===== */}
       {pos.length > 0 && (
-        <div className="border rounded-lg p-3">
-          <h3 className="text-sm font-semibold mb-2">当前持仓</h3>
-          <div className="overflow-x-auto">
+        <div>
+          <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
+            <span>📋 当前持仓</span>
+            <span className="text-xs text-gray-400 font-normal">({pos.length} 笔)</span>
+          </h3>
+          <div className="grid gap-3">
+            {pos.map((p: any, i: number) => {
+              const isLong = p.side === 'long'
+              const pnlPct = p.pnl_pct || 0
+              return (
+                <div key={i} className={`bg-white dark:bg-gray-800 border rounded-xl p-4 shadow-sm ${isLong ? 'border-l-4 border-l-green-500' : 'border-l-4 border-l-red-500'}`}>
+                  <div className="flex items-center justify-between">
+                    {/* 左侧: 方向 + 币种 */}
+                    <div className="flex items-center gap-3">
+                      <div className={`text-2xl ${isLong ? 'text-green-600' : 'text-red-600'}`}>
+                        {isLong ? '🟢' : '🔴'}
+                      </div>
+                      <div>
+                        <div className="font-bold text-sm">{p.pair?.split('/')[0]}</div>
+                        <div className="text-[10px] text-gray-400">{isLong ? '做多' : '做空'}</div>
+                      </div>
+                    </div>
+
+                    {/* 中间: 价格信息 */}
+                    <div className="text-xs text-center">
+                      <div className="text-gray-400">入场</div>
+                      <div className="font-medium">${p.entry_price?.toFixed(2)}</div>
+                      {p.mark_price > 0 && (
+                        <>
+                          <div className="text-gray-400 mt-1">标记</div>
+                          <div className="font-medium">${p.mark_price?.toFixed(2)}</div>
+                        </>
+                      )}
+                    </div>
+
+                    {/* 右侧: 盈亏 */}
+                    <div className="text-right">
+                      <div className={`text-lg font-bold ${p.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {p.pnl >= 0 ? '+' : ''}${p.pnl?.toFixed(2)}
+                      </div>
+                      <div className={`text-xs font-medium ${pnlPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {pnlPct >= 0 ? '+' : ''}{pnlPct.toFixed(2)}%
+                      </div>
+                      <div className="text-[10px] text-gray-400 mt-1">
+                        数量 {p.size?.toFixed(4)}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 盈亏进度条 */}
+                  <div className="mt-2 h-1 bg-gray-100 rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full transition-all ${p.pnl >= 0 ? 'bg-green-500' : 'bg-red-500'}`}
+                      style={{width: `${Math.min(Math.abs(pnlPct) * 5, 100)}%`}} />
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ===== 交易记录 ===== */}
+      {paired.length > 0 && (
+        <div>
+          <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
+            <span>📝 交易记录</span>
+            <span className="text-xs text-gray-400 font-normal">({paired.length} 笔)</span>
+          </h3>
+          <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
+            {[...paired].reverse().map((t: any, i: number) => (
+              <div key={i} className={`bg-white dark:bg-gray-800 border rounded-xl p-3 shadow-sm ${t.pnl > 0 ? 'border-l-4 border-l-green-500' : 'border-l-4 border-l-red-500'}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className={`font-bold text-base ${t.pnl > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      {t.pnl > 0 ? '+' : ''}{t.pnl.toFixed(2)}
+                    </div>
+                    <div className="text-xs">
+                      <div className="font-medium">{t.pair?.split('/')[0]} {t.direction === 'long' ? '🟢' : '🔴'}</div>
+                      <div className="text-gray-400">${t.entry_price} → ${t.exit_price}</div>
+                    </div>
+                  </div>
+                  <div className="text-right text-[10px] text-gray-400">
+                    <div>{t.entry_time?.slice(5)}</div>
+                    <div className="text-gray-300">{t.exit_reason || t.enter_tag}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ===== 信号日志 ===== */}
+      {signalsDesc.length > 0 && (
+        <div>
+          <h3 className="text-sm font-semibold mb-2">📡 信号日志</h3>
+          <div className="bg-white dark:bg-gray-800 border rounded-xl overflow-hidden max-h-60 overflow-y-auto">
             <table className="w-full text-xs">
-              <thead><tr className="border-b text-left">
-                <th className="py-1 pr-3">交易对</th><th className="py-1 pr-3">方向</th>
-                <th className="py-1 pr-3">入场价</th><th className="py-1 pr-3">数量</th>
-                <th className="py-1 pr-3">未实现盈亏</th>
-              </tr></thead>
-              <tbody>{pos.map((p: any, i: number) => (
-                <tr key={i} className="border-b">
-                  <td className="py-1 pr-3">{p.pair?.split('/')[0]}</td>
-                  <td className="py-1 pr-3">{p.side === 'long' ? '🟢 多' : '🔴 空'}</td>
-                  <td className="py-1 pr-3">${p.entry_price}</td>
-                  <td className="py-1 pr-3">{p.size}</td>
-                  <td className={`py-1 pr-3 font-medium ${p.pnl > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {p.pnl > 0 ? '+' : ''}{p.pnl?.toFixed(2)}
-                  </td>
+              <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0">
+                <tr className="text-left">
+                  <th className="py-2 px-3 font-medium text-gray-500">时间</th>
+                  <th className="py-2 px-3 font-medium text-gray-500">操作</th>
+                  <th className="py-2 px-3 font-medium text-gray-500">交易对</th>
+                  <th className="py-2 px-3 font-medium text-gray-500">信号</th>
                 </tr>
-              ))}</tbody>
+              </thead>
+              <tbody>
+                {signalsDesc.map((s: any, i: number) => (
+                  <tr key={i} className="border-t hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <td className="py-2 px-3 text-gray-400 whitespace-nowrap">{s.time?.slice(5,16)}</td>
+                    <td className="py-2 px-3">
+                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                        s.action === '买入' ? 'bg-green-100 text-green-700' :
+                        s.action === '卖出' ? 'bg-red-100 text-red-700' :
+                        'bg-gray-100 text-gray-600'
+                      }`}>{s.action}</span>
+                    </td>
+                    <td className="py-2 px-3">{s.pair?.split('/')[0]}</td>
+                    <td className="py-2 px-3 text-gray-400 max-w-[120px] truncate">{s.tag || s.reason || ''}</td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </div>
         </div>
       )}
 
-      {/* 最近信号 */}
-      {(status?.recent_signals || []).length > 0 && (
-        <div className="border rounded-lg p-3">
-          <h3 className="text-sm font-semibold mb-2">最近信号</h3>
-          <div className="overflow-x-auto max-h-60 overflow-y-auto">
-            <table className="w-full text-xs">
-              <thead><tr className="border-b text-left">
-                <th className="py-1 pr-3">时间</th><th className="py-1 pr-3">交易对</th>
-                <th className="py-1 pr-3">操作</th><th className="py-1 pr-3">标签</th>
-              </tr></thead>
-              <tbody>{(status.recent_signals || []).slice().reverse().map((s: any, i: number) => (
-                <tr key={i} className="border-b">
-                  <td className="py-1 pr-3 text-xs">{s.time?.slice(0,16)}</td>
-                  <td className="py-1 pr-3">{s.pair?.split('/')[0]}</td>
-                  <td className="py-1 pr-3"><span className={`px-1 py-0.5 rounded text-xs font-medium ${s.action === '买入' ? 'bg-green-100 text-green-700' : s.action === '卖出' ? 'bg-red-100 text-red-700' : 'bg-gray-100'}`}>{s.action}</span></td>
-                  <td className="py-1 pr-3 text-gray-400">{s.tag || s.reason || ''}</td>
-                </tr>
-              ))}</tbody>
-            </table>
+      {/* ===== 空状态 ===== */}
+      {!running && !status?.balance && (
+        <div className="text-center py-16 text-gray-400">
+          <div className="text-5xl mb-4 opacity-50">📡</div>
+          <p className="text-sm font-medium">实盘引擎未运行</p>
+          <p className="text-xs mt-2 max-w-md mx-auto leading-relaxed">
+            在 <code className="bg-gray-100 px-1 rounded">config.json</code> 中配置交易所 API Key，然后点击上方「启动」按钮
+          </p>
+          <div className="mt-4 inline-flex items-center gap-2 text-[10px] text-gray-300 bg-gray-50 rounded-lg px-3 py-2">
+            <span>支持 OKX / Binance</span>
+            <span>·</span>
+            <span>需要 Trade 权限</span>
           </div>
-        </div>
-      )}
-
-      {/* 空状态 */}
-      {!running && status === null && (
-        <div className="text-center py-12 text-gray-400">
-          <div className="text-4xl mb-3">🔴</div>
-          <p className="text-sm">实盘未运行</p>
-          <p className="text-xs mt-1">配置好 config.json 中的 API Key 后点击启动</p>
         </div>
       )}
     </div>
