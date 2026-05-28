@@ -561,7 +561,7 @@ export default function Home() {
   const [selectedTradeTime, setSelectedTradeTime] = useState<number | undefined>(undefined)
   const [running, setRunning] = useState(false)
   const [error, setError] = useState('')
-  const [activeTab, setActiveTab] = useState<'backtest' | 'editor' | 'library' | 'papertrade'>('backtest')
+  const [activeTab, setActiveTab] = useState<'backtest' | 'editor' | 'library' | 'papertrade' | 'livetrade'>('backtest')
   const [strategyCode, setStrategyCode] = useState('')
   const [strategyList, setStrategyList] = useState<string[]>([])
 
@@ -672,6 +672,10 @@ export default function Home() {
             className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all ${activeTab === 'papertrade' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             onClick={() => setActiveTab('papertrade')}
           >🟢 模拟盘</button>
+          <button
+            className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all ${activeTab === 'livetrade' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+            onClick={() => setActiveTab('livetrade')}
+          >🔴 实盘</button>
         </div>
       </header>
 
@@ -830,6 +834,9 @@ export default function Home() {
 
         {activeTab === 'papertrade' && (
           <PaperTradePanel API_BASE={API_BASE} />
+        )}
+        {activeTab === 'livetrade' && (
+          <LiveTradePanel API_BASE={API_BASE} />
         )}
       </div>
     </div>
@@ -1242,6 +1249,174 @@ function PaperTradePanel({ API_BASE }: { API_BASE: string }) {
           <div className="text-4xl mb-3">📊</div>
           <p className="text-sm">模拟盘未运行</p>
           <p className="text-xs mt-1">选择策略 → 点击「启动」开始模拟交易</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── 实盘面板 ──────────────────────────────────────────────────────────
+
+function LiveTradePanel({ API_BASE }: { API_BASE: string }) {
+  const [status, setStatus] = useState<any>(null)
+  const [running, setRunning] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const fetchStatus = useCallback(async () => {
+    try {
+      const r = await fetch(`${API_BASE}/api/livetrade/status`)
+      const d = await r.json()
+      setStatus(d)
+      setRunning(d.running)
+      if (d.error) setError(d.error)
+    } catch {}
+  }, [API_BASE])
+
+  useEffect(() => { fetchStatus() }, [fetchStatus])
+  useEffect(() => {
+    if (running) {
+      const timer = setInterval(fetchStatus, 10000)
+      return () => clearInterval(timer)
+    }
+  }, [running, fetchStatus])
+
+  const handleStart = async () => {
+    setLoading(true); setError('')
+    try {
+      const r = await fetch(`${API_BASE}/api/livetrade/start`, {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ strategy: 'ChanTheoryScalp' }),
+      })
+      const d = await r.json()
+      if (d.status === 'error') setError(d.message)
+      await fetchStatus()
+    } catch {}
+    setLoading(false)
+  }
+
+  const handleStop = async () => {
+    await fetch(`${API_BASE}/api/livetrade/stop`, { method: 'POST' })
+    setRunning(false)
+    await fetchStatus()
+  }
+
+  const handleCloseAll = async () => {
+    await fetch(`${API_BASE}/api/livetrade/close-all`, { method: 'POST' })
+    await fetchStatus()
+  }
+
+  const cfg = status?.config || {}
+  const bal = status?.balance || 0
+  const pos = status?.positions || []
+
+  return (
+    <div className="space-y-4">
+      {/* 顶部横幅 */}
+      <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-700">
+        🔴 <strong>实盘模式</strong> — 交易将通过交易所 API 真实执行，请确认资金安全
+      </div>
+
+      {/* 控制栏 */}
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          className={`px-4 py-2 text-sm rounded-lg font-medium ${running ? 'bg-gray-300 cursor-not-allowed' : 'bg-red-600 text-white hover:bg-red-700'}`}
+          onClick={handleStart} disabled={running || loading}
+        >{loading ? '连接中...' : '▶ 启动实盘'}</button>
+        <button
+          className={`px-4 py-2 text-sm rounded-lg font-medium ${!running ? 'bg-gray-300 cursor-not-allowed' : 'bg-orange-600 text-white hover:bg-orange-700'}`}
+          onClick={handleStop} disabled={!running}
+        >⏹ 停止</button>
+        <button
+          className={`px-4 py-2 text-sm rounded-lg font-medium ${!running ? 'bg-gray-300 cursor-not-allowed' : 'bg-red-700 text-white hover:bg-red-800'}`}
+          onClick={handleCloseAll} disabled={!running}
+        >⛔ 一键平仓</button>
+        <button className="px-4 py-2 text-sm rounded-lg font-medium bg-gray-100 hover:bg-gray-200" onClick={fetchStatus}>🔄 刷新</button>
+      </div>
+
+      {error && <div className="text-red-500 text-sm bg-red-50 p-2 rounded">{error}</div>}
+
+      {/* 账户信息 */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="border rounded-lg p-3">
+          <div className="text-xs text-gray-400">交易所</div>
+          <div className="text-lg font-bold">{cfg.exchange || '—'}</div>
+        </div>
+        <div className="border rounded-lg p-3">
+          <div className="text-xs text-gray-400">账户权益</div>
+          <div className="text-lg font-bold">${bal.toFixed(2)}</div>
+        </div>
+        <div className="border rounded-lg p-3">
+          <div className="text-xs text-gray-400">运行状态</div>
+          <div className="text-lg font-bold">{running ? '🟢 运行中' : '🔴 已停止'}</div>
+        </div>
+        <div className="border rounded-lg p-3">
+          <div className="text-xs text-gray-400">持仓数</div>
+          <div className="text-lg font-bold">{pos.length} 笔</div>
+        </div>
+      </div>
+
+      {/* 当前配置 */}
+      <div className="border rounded-lg p-3 text-xs text-gray-500">
+        策略: {cfg.strategy || '—'} | 周期: {cfg.timeframe || '—'} | 杠杆: {cfg.leverage || '—'}x | 仓位: {cfg.position_pct || '—'}%/笔
+      </div>
+
+      {/* 持仓列表 */}
+      {pos.length > 0 && (
+        <div className="border rounded-lg p-3">
+          <h3 className="text-sm font-semibold mb-2">当前持仓</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead><tr className="border-b text-left">
+                <th className="py-1 pr-3">交易对</th><th className="py-1 pr-3">方向</th>
+                <th className="py-1 pr-3">入场价</th><th className="py-1 pr-3">数量</th>
+                <th className="py-1 pr-3">未实现盈亏</th>
+              </tr></thead>
+              <tbody>{pos.map((p: any, i: number) => (
+                <tr key={i} className="border-b">
+                  <td className="py-1 pr-3">{p.pair?.split('/')[0]}</td>
+                  <td className="py-1 pr-3">{p.side === 'long' ? '🟢 多' : '🔴 空'}</td>
+                  <td className="py-1 pr-3">${p.entry_price}</td>
+                  <td className="py-1 pr-3">{p.size}</td>
+                  <td className={`py-1 pr-3 font-medium ${p.pnl > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {p.pnl > 0 ? '+' : ''}{p.pnl?.toFixed(2)}
+                  </td>
+                </tr>
+              ))}</tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* 最近信号 */}
+      {(status?.recent_signals || []).length > 0 && (
+        <div className="border rounded-lg p-3">
+          <h3 className="text-sm font-semibold mb-2">最近信号</h3>
+          <div className="overflow-x-auto max-h-60 overflow-y-auto">
+            <table className="w-full text-xs">
+              <thead><tr className="border-b text-left">
+                <th className="py-1 pr-3">时间</th><th className="py-1 pr-3">交易对</th>
+                <th className="py-1 pr-3">操作</th><th className="py-1 pr-3">标签</th>
+              </tr></thead>
+              <tbody>{(status.recent_signals || []).slice().reverse().map((s: any, i: number) => (
+                <tr key={i} className="border-b">
+                  <td className="py-1 pr-3 text-xs">{s.time?.slice(0,16)}</td>
+                  <td className="py-1 pr-3">{s.pair?.split('/')[0]}</td>
+                  <td className="py-1 pr-3"><span className={`px-1 py-0.5 rounded text-xs font-medium ${s.action === '买入' ? 'bg-green-100 text-green-700' : s.action === '卖出' ? 'bg-red-100 text-red-700' : 'bg-gray-100'}`}>{s.action}</span></td>
+                  <td className="py-1 pr-3 text-gray-400">{s.tag || s.reason || ''}</td>
+                </tr>
+              ))}</tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* 空状态 */}
+      {!running && status === null && (
+        <div className="text-center py-12 text-gray-400">
+          <div className="text-4xl mb-3">🔴</div>
+          <p className="text-sm">实盘未运行</p>
+          <p className="text-xs mt-1">配置好 config.json 中的 API Key 后点击启动</p>
         </div>
       )}
     </div>

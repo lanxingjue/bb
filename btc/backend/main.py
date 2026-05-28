@@ -268,6 +268,47 @@ def papertrade_stop():
     return _paper_engine.stop()
 
 
+# ─── 实盘 ──────────────────────────────────────────────────────────────────
+
+from livetrade import LiveTradingEngine
+
+_live_engine = LiveTradingEngine()
+
+
+class LiveTradeConfig(BaseModel):
+    exchange_name: str = "okx"
+    strategy: str = "ChanTheoryScalp"
+    pairs: list[str] = ["BTC/USDT:USDT"]
+    timeframe: str = "1h"
+    leverage: float = 3.0
+    position_pct: float = 20.0
+    max_positions: int = 2
+
+
+@app.post("/api/livetrade/start")
+def livetrade_start(cfg: LiveTradeConfig):
+    """启动实盘"""
+    return _live_engine.start(cfg.model_dump())
+
+
+@app.get("/api/livetrade/status")
+def livetrade_status():
+    """实盘状态"""
+    return _live_engine.get_status()
+
+
+@app.post("/api/livetrade/stop")
+def livetrade_stop():
+    """停止实盘"""
+    return _live_engine.stop()
+
+
+@app.post("/api/livetrade/close-all")
+def livetrade_close_all():
+    """一键平仓"""
+    return _live_engine.close_all()
+
+
 # ─── 启动 ──────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
