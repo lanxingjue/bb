@@ -14,14 +14,14 @@ from backtest_engine import load_strategy, DATA_DIR, FEE_CONFIG
 
 class PaperTradingEngine:
     def __init__(self):
-        self.strategy_name = "RealChanTheory"
+        self.strategy_name = "ChanTheoryScalp"
         self.pairs = ["BTC/USDT:USDT"]
-        self.timeframe = "1h"
+        self.timeframe = "1m"
         self.leverage = 3.0
         self.fee = 0.0004
         self.slippage = 0.0015
         self.position_pct = 25.0
-        self.max_positions = 3
+        self.max_positions = 2
         self.balance = 1000.0
         self.equity = 1000.0
         self.positions: dict = {}

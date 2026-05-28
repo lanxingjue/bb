@@ -239,14 +239,14 @@ _paper_engine = PaperTradingEngine()
 
 
 class PaperTradeConfig(BaseModel):
-    strategy: str = "RealChanTheory"
-    pairs: list[str] = ["BTC/USDT:USDT", "ETH/USDT:USDT"]
-    timeframe: str = "1h"
+    strategy: str = "ChanTheoryScalp"
+    pairs: list[str] = ["BTC/USDT:USDT"]
+    timeframe: str = "1m"
     leverage: float = 3.0
     fee: float = 0.0004
-    slippage: float = 0.0005
+    slippage: float = 0.0015
     position_pct: float = 25.0
-    max_positions: int = 3
+    max_positions: int = 2
     initial_balance: float = 1000.0
 
 
