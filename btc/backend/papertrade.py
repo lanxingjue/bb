@@ -121,47 +121,34 @@ class PaperTradingEngine:
     # ─── 同步时间轴模式 ───
 
     def _run_all(self):
-        """同步时间轴：所有币种按统一时间戳推进"""
-        # 1. 加载所有币种数据 + 计算信号
-        dfs = {}
+        """实时模式：从最新数据开始，等待新 K 线"""
+        import warnings
+        warnings.filterwarnings('ignore')
+        
         for pair in self.pairs:
             df = self._load_df(pair)
             if df is None or len(df) < 2000:
+                print(f"[PaperTrade] ⚠️ {pair} 数据不足 ({len(df) if df is not None else 0}根)")
                 continue
-            df2 = self._calc_signals(pair, df)
+            
+            # 只取最新 2000 根做 startup（不交易，只让指标收敛）
+            df_warmup = df.tail(2000)
+            df2 = self._calc_signals(pair, df_warmup)
             if df2 is not None:
-                dfs[pair] = df2
-
-        if not dfs:
-            return
-
-        self._dfs = dfs
-
-        # 2. 找到公共时间范围（取所有币种都有数据的范围）
-        all_starts = [df.index[0] for df in dfs.values()]
-        all_ends = [df.index[-1] for df in dfs.values()]
-        common_start = max(all_starts)
-        common_end = min(all_ends)
-
-        # 3. 对每个币种截取公共时间范围，记录起始索引
-        for pair, df2 in dfs.items():
-            mask = (df2.index >= common_start) & (df2.index <= common_end)
-            self._bar_idx[pair] = df2[mask].index[0]  # 起始时间戳
-
-        # 4. 生成统一时间轴（取第一个币种的时间轴，其他币种在对应时间戳查数据）
-        first_pair = list(dfs.keys())[0]
-        self._all_times = dfs[first_pair][
-            (dfs[first_pair].index >= common_start) & (dfs[first_pair].index <= common_end)
-        ].index.tolist()
-
-        print(f"[PaperTrade] 同步回放: {len(self._all_times)}根K线, {list(dfs.keys())}")
-        self._tick_batch(self._all_times)
+                self._dfs[pair] = df2
+                # 标记最后处理到的 bar
+                self._bar_idx[pair] = df_warmup.index[-1]
+                print(f"[PaperTrade] {pair}: 加载最新 {len(df_warmup)} 根 (最新: {df_warmup.index[-1]})")
+        
+        self._all_times = []
+        print(f"[PaperTrade] 启动完毕, 等待新数据...")
 
     def _check_new_data(self):
-        """检查增量新数据（同步处理）"""
+        """实时模式：检查新 K 线并交易"""
         if not self._dfs:
             return
 
+        new_times = []
         for pair in self._dfs:
             df = self._load_df(pair)
             if df is None:
@@ -169,16 +156,19 @@ class PaperTradingEngine:
             last_bar = self._bar_idx.get(pair)
             if last_bar is not None:
                 new = df[df.index > last_bar]
-                if len(new) > 0:
-                    # 有新增数据，重新加载全部数据并重新计算信号
-                    print(f"[PaperTrade] 新数据: {pair} +{len(new)}根")
-                    df2 = self._calc_signals(pair, df)
-                    if df2 is not None:
-                        self._dfs[pair] = df2
-                        self._bar_idx[pair] = df.index[-1]
-                        # 把新时间戳加入统一时间轴
-                        new_times = [t for t in df2.index if t > (self._all_times[-1] if self._all_times else df2.index[0])]
-                        self._all_times.extend(new_times)
+                if len(new) == 0:
+                    continue
+                # 用完整数据重算信号（增量更新）
+                df2 = self._calc_signals(pair, df)
+                if df2 is not None:
+                    self._dfs[pair] = df2
+                    self._bar_idx[pair] = df.index[-1]
+                    new_times.extend(new.index.tolist())
+
+        if new_times:
+            new_times = sorted(set(new_times))
+            print(f"[PaperTrade] 新数据: {len(new_times)}根, 最新: {new_times[-1]}")
+            self._tick_batch(new_times)
 
     def _tick_batch(self, times):
         """批量处理一批时间戳（同步推进所有币种）"""
