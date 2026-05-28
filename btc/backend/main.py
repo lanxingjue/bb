@@ -231,6 +231,43 @@ def kline_data(
     return {"pair": pair, "timeframe": timeframe, "data": records}
 
 
+# ─── 模拟盘 ────────────────────────────────────────────────────────────────
+
+from papertrade import PaperTradingEngine
+
+_paper_engine = PaperTradingEngine()
+
+
+class PaperTradeConfig(BaseModel):
+    strategy: str = "RealChanTheory"
+    pairs: list[str] = ["BTC/USDT:USDT", "ETH/USDT:USDT"]
+    timeframe: str = "1h"
+    leverage: float = 3.0
+    fee: float = 0.0004
+    slippage: float = 0.0005
+    position_pct: float = 25.0
+    max_positions: int = 3
+    initial_balance: float = 1000.0
+
+
+@app.post("/api/papertrade/start")
+def papertrade_start(cfg: PaperTradeConfig):
+    """启动模拟盘"""
+    return _paper_engine.start(cfg.model_dump())
+
+
+@app.get("/api/papertrade/status")
+def papertrade_status():
+    """模拟盘状态"""
+    return _paper_engine.get_status()
+
+
+@app.post("/api/papertrade/stop")
+def papertrade_stop():
+    """停止模拟盘"""
+    return _paper_engine.stop()
+
+
 # ─── 启动 ──────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":

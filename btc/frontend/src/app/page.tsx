@@ -561,7 +561,7 @@ export default function Home() {
   const [selectedTradeTime, setSelectedTradeTime] = useState<number | undefined>(undefined)
   const [running, setRunning] = useState(false)
   const [error, setError] = useState('')
-  const [activeTab, setActiveTab] = useState<'backtest' | 'editor' | 'library'>('backtest')
+  const [activeTab, setActiveTab] = useState<'backtest' | 'editor' | 'library' | 'papertrade'>('backtest')
   const [strategyCode, setStrategyCode] = useState('')
   const [strategyList, setStrategyList] = useState<string[]>([])
 
@@ -624,8 +624,8 @@ export default function Home() {
         }),
       })
       const data = await res.json()
-      if (data.success === false) {
-        setError(data.error || '回测失败')
+      if (!res.ok || data.success === false) {
+        setError(data.detail || data.error || '回测失败')
       } else {
         setResult(data)
       }
@@ -668,6 +668,10 @@ export default function Home() {
             className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all ${activeTab === 'library' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             onClick={() => setActiveTab('library')}
           >📚 策略库</button>
+          <button
+            className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all ${activeTab === 'papertrade' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+            onClick={() => setActiveTab('papertrade')}
+          >🟢 模拟盘</button>
         </div>
       </header>
 
@@ -720,7 +724,7 @@ export default function Home() {
               )}
 
               {/* Equity Curve */}
-              {result && result.equity_curve.length > 0 && (
+              {result && result.equity_curve && result.equity_curve.length > 0 && (
                 <div className="border rounded-lg p-2">
                   <h2 className="text-sm font-semibold mb-2 px-1">资金曲线</h2>
                   <EquityChart curve={result.equity_curve} initBalance={result.config.initial_balance} dark={dark} />
@@ -731,9 +735,9 @@ export default function Home() {
               {result && (
                 <div className="border rounded-lg p-3">
                   <h2 className="text-sm font-semibold mb-2">
-                    交易明细 ({result.trades.filter(t => t.type === 'exit').length} 笔平仓)
+                    交易明细 ({(result.trades || []).filter((t: any) => t.type === 'exit').length} 笔平仓)
                   </h2>
-                  <TradeTable trades={result.trades} onSelectTime={setSelectedTradeTime} />
+                  <TradeTable trades={result.trades || []} onSelectTime={setSelectedTradeTime} />
                 </div>
               )}
             </div>
@@ -823,6 +827,10 @@ export default function Home() {
             setActiveTab('editor')
           }} />
         )}
+
+        {activeTab === 'papertrade' && (
+          <PaperTradePanel API_BASE={API_BASE} />
+        )}
       </div>
     </div>
   )
@@ -834,7 +842,7 @@ const STRATEGIES = [
   {
     name: 'RealChanTheory',
     title: '🏆 真正缠论',
-    description: '缠论+4h级别过滤+MACD背驰。推荐BTC单币+做市费率。完整365天BTC收益+5~9%。每笔标注4h级别+买卖点+进出原因。多币种会摊薄收益请谨慎。',
+    description: '缠论+EMA50趋势+ATR波动率过滤。365天BTC:39笔|胜率51%|收益+8.9%|夏普1.30|回撤7.3%。纯顺势交易，不抄底不摸顶。推荐做市费率+BTC单币。',
     tags: ['缠论', '🏆推荐', '低回撤'],
     params: { timeframe: '1h', leverage: '3x', fee: '0.02%' },
     perf: '+16.16%',
@@ -970,6 +978,272 @@ function StrategyLibrary({ onSelect }: { onSelect: (name: string) => void }) {
           )
         })}
       </div>
+    </div>
+  )
+}
+
+// ─── 模拟盘面板 ──────────────────────────────────────────────────────────
+
+function PaperTradePanel({ API_BASE }: { API_BASE: string }) {
+  const [status, setStatus] = useState<any>(null)
+  const [running, setRunning] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [strategy, setStrategy] = useState('RealChanTheory')
+  const [strategyList, setStrategyList] = useState<string[]>([])
+  const chartRef = useRef<HTMLDivElement>(null)
+  const chartInstance = useRef<any>(null)
+
+  // 加载策略列表
+  useEffect(() => {
+    fetch(`${API_BASE}/api/strategies`)
+      .then(r => r.json())
+      .then(d => setStrategyList((d.strategies || []).map((s: any) => s.name)))
+      .catch(() => {})
+  }, [API_BASE])
+
+  const fetchStatus = useCallback(async () => {
+    try {
+      const r = await fetch(`${API_BASE}/api/papertrade/status`)
+      const d = await r.json()
+      setStatus(d)
+      setRunning(d.running)
+    } catch {}
+  }, [API_BASE])
+
+  useEffect(() => {
+    if (running) {
+      const timer = setInterval(fetchStatus, 5000)
+      return () => clearInterval(timer)
+    }
+  }, [running, fetchStatus])
+
+  // 进场时拉一次状态
+  useEffect(() => { fetchStatus() }, [fetchStatus])
+
+  const handleStart = async () => {
+    setLoading(true)
+    try {
+      await fetch(`${API_BASE}/api/papertrade/start`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ strategy }),
+      })
+      await new Promise(r => setTimeout(r, 5000))
+      await fetchStatus()
+    } catch {}
+    setLoading(false)
+  }
+
+  const handleStop = async () => {
+    await fetch(`${API_BASE}/api/papertrade/stop`, { method: 'POST' })
+    setRunning(false)
+    await fetchStatus()
+  }
+
+  // ── 权益曲线（使用静态 createChart） ──
+  useEffect(() => {
+    if (!chartRef.current || !status?.equity_curve?.length) return
+    if (chartInstance.current) { chartInstance.current.remove(); chartInstance.current = null }
+    try {
+      const chart = createChart(chartRef.current, {
+        width: chartRef.current.clientWidth,
+        height: 280,
+        layout: { background: { color: 'transparent' }, textColor: '#888' },
+        grid: { vertLines: { color: '#eee' }, horzLines: { color: '#eee' } },
+        timeScale: { visible: false },
+        crosshair: { vertLine: { visible: false }, horzLine: { visible: false } },
+      })
+      const line = chart.addLineSeries({ color: '#3b82f6', lineWidth: 2 })
+      const data = status.equity_curve.map((p: any) => ({
+        time: new Date(p.timestamp).getTime() / 1000,
+        value: p.equity,
+      }))
+      line.setData(data)
+      chart.timeScale().fitContent()
+      chartInstance.current = chart
+    } catch {}
+    return () => { if (chartInstance.current) { chartInstance.current.remove(); chartInstance.current = null } }
+  }, [status?.equity_curve])
+
+  const paired = status?.paired_trades || []
+  const signals = status?.recent_signals || []
+  const totalPnl = paired.reduce((s: number, t: any) => s + (t.pnl || 0), 0)
+  const wins2 = paired.filter((t: any) => (t.pnl || 0) > 0).length
+  const winPnl = paired.filter((t: any) => t.pnl > 0).map((t: any) => t.pnl)
+  const losePnl = paired.filter((t: any) => t.pnl < 0).map((t: any) => t.pnl)
+  const avgWin = winPnl.length ? winPnl.reduce((a: number,b: number) => a+b, 0) / winPnl.length : 0
+  const avgLoss = losePnl.length ? Math.abs(losePnl.reduce((a: number,b: number) => a+b, 0) / losePnl.length) : 0
+  const pf = avgLoss > 0 ? (avgWin / avgLoss) * (wins2 / Math.max(1, paired.length - wins2)) : 0
+  const best = paired.length ? paired.reduce((a: any, b: any) => a.pnl > b.pnl ? a : b) : null
+  const worst = paired.length ? paired.reduce((a: any, b: any) => a.pnl < b.pnl ? a : b) : null
+  const bal = status?.equity || 1000
+  const pnlColor = totalPnl >= 0 ? 'text-green-500' : 'text-red-500'
+
+  return (
+    <div className="space-y-4">
+
+      {/* 策略选择 + 控制栏 */}
+      <div className="flex flex-wrap items-center gap-3">
+        <select
+          className="border rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800"
+          value={strategy}
+          onChange={e => setStrategy(e.target.value)}
+          disabled={running}
+        >
+          {strategyList.map(s => <option key={s} value={s}>{s}</option>)}
+        </select>
+        <button
+          className={`px-4 py-2 text-sm rounded-lg font-medium transition-all ${running ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-green-600 text-white hover:bg-green-700'}`}
+          onClick={handleStart} disabled={running || loading}
+        >{loading ? '启动中...' : '▶ 启动'}</button>
+        <button
+          className={`px-4 py-2 text-sm rounded-lg font-medium transition-all ${!running ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-red-600 text-white hover:bg-red-700'}`}
+          onClick={handleStop} disabled={!running}
+        >⏹ 停止</button>
+        <button className="px-4 py-2 text-sm rounded-lg font-medium bg-gray-100 hover:bg-gray-200 transition-colors" onClick={fetchStatus}>🔄 刷新</button>
+        {!running && paired.length === 0 && (
+          <span className="text-xs text-gray-400">选择策略 → 点「启动」</span>
+        )}
+      </div>
+
+      {/* 统计卡片 */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+        <div className="border rounded-lg p-2.5"><div className="text-xs text-gray-400">状态</div><div className="text-base font-bold">{running ? '🟢 运行' : '🔴 停止'}</div></div>
+        <div className="border rounded-lg p-2.5"><div className="text-xs text-gray-400">权益</div><div className="text-base font-bold">${bal.toFixed(0)}</div></div>
+        <div className="border rounded-lg p-2.5"><div className="text-xs text-gray-400">总盈亏</div><div className={`text-base font-bold ${pnlColor}`}>{totalPnl >= 0 ? '+' : ''}{totalPnl.toFixed(2)}</div></div>
+        <div className="border rounded-lg p-2.5"><div className="text-xs text-gray-400">胜率</div><div className="text-base font-bold">{paired.length > 0 ? `${(wins2/paired.length*100).toFixed(0)}%` : '—'}</div></div>
+        <div className="border rounded-lg p-2.5"><div className="text-xs text-gray-400">盈亏比</div><div className="text-base font-bold">{pf !== null ? pf.toFixed(2) : '—'}</div></div>
+        <div className="border rounded-lg p-2.5"><div className="text-xs text-gray-400">均盈/均亏</div><div className="text-base font-bold text-xs">{avgWin ? `+${avgWin.toFixed(2)}` : '—'}/{avgLoss ? avgLoss.toFixed(2) : '—'}</div></div>
+        <div className="border rounded-lg p-2.5"><div className="text-xs text-gray-400">交易</div><div className="text-base font-bold">{paired.length}笔</div></div>
+      </div>
+
+      {/* 权益曲线 */}
+      {status?.equity_curve?.length > 0 && (
+        <div className="border rounded-lg p-3">
+          <h3 className="text-sm font-semibold mb-2">权益曲线</h3>
+          <div ref={chartRef} className="w-full" style={{ height: 240 }} />
+        </div>
+      )}
+
+      {/* 信号分组统计 */}
+      {paired.length > 0 && (() => {
+        const byTag: Record<string, {pnls:number[], wins:number}> = {}
+        paired.forEach((t: any) => {
+          const tag = (t.enter_tag || '?').slice(0,4)
+          if (!byTag[tag]) byTag[tag] = {pnls:[], wins:0}
+          byTag[tag].pnls.push(t.pnl)
+          if (t.pnl > 0) byTag[tag].wins++
+        })
+        return (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {Object.entries(byTag).map(([tag, data]: [string, any]) => (
+              <div key={tag} className="border rounded-lg p-2.5 text-xs">
+                <div className="font-semibold mb-1">{tag}</div>
+                <div className="text-gray-500">{data.pnls.length}笔 胜率{(data.wins/data.pnls.length*100).toFixed(0)}%</div>
+                <div className={`font-medium ${data.pnls.reduce((a:number,b:number)=>a+b,0) > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  合计{data.pnls.reduce((a:number,b:number)=>a+b,0).toFixed(2)}
+                </div>
+              </div>
+            ))}
+          </div>
+        )
+      })()}
+
+      {/* 当前持仓 */}
+      {status?.positions?.length > 0 && (
+        <div className="border rounded-lg p-3">
+          <h3 className="text-sm font-semibold mb-2">当前持仓</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead><tr className="border-b text-left"><th className="py-1 pr-3">交易对</th><th className="py-1 pr-3">方向</th><th className="py-1 pr-3">入场价</th><th className="py-1 pr-3">数量</th><th className="py-1 pr-3">入场时间</th><th className="py-1 pr-3">标记</th></tr></thead>
+              <tbody>{status.positions.map((p: any, i: number) => (
+                <tr key={i} className="border-b"><td className="py-1 pr-3">{p.pair?.split('/')[0]}</td><td className="py-1 pr-3">{p.side === 'long' ? '🟢 多' : '🔴 空'}</td><td className="py-1 pr-3">${p.entry_price}</td><td className="py-1 pr-3">{p.size}</td><td className="py-1 pr-3 text-xs">{p.entry_time?.slice(0,16)}</td><td className="py-1 pr-3 text-gray-400">{p.enter_tag?.slice(0,15)}</td></tr>
+              ))}</tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* 配对交易卡片 */}
+      {paired.length > 0 && (
+        <div className="border rounded-lg p-3">
+          <h3 className="text-sm font-semibold mb-3">交易记录 ({paired.length} 笔)</h3>
+          <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
+            {paired.slice().reverse().map((t: any, i: number) => (
+              <div key={i} className={`border rounded-lg p-3 flex items-stretch gap-3 ${t.pnl > 0 ? 'border-l-4 border-l-green-500' : 'border-l-4 border-l-red-500'}`}>
+                {/* 左侧：方向+盈亏 */}
+                <div className="flex flex-col items-center justify-center min-w-[70px]">
+                  <div className={`text-lg ${t.direction === 'long' ? 'text-green-600' : 'text-red-600'}`}>
+                    {t.direction === 'long' ? '🟢' : '🔴'}
+                  </div>
+                  <div className={`text-base font-bold ${t.pnl > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {t.pnl > 0 ? '+' : ''}{t.pnl.toFixed(2)}
+                  </div>
+                  <div className={`text-xs ${t.pnl > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                    {t.pnl_pct > 0 ? '+' : ''}{t.pnl_pct}%
+                  </div>
+                </div>
+                {/* 中间：价格+时间 */}
+                <div className="flex-1 text-xs space-y-0.5">
+                  <div className="flex items-center gap-3">
+                    <span className="font-medium">{t.pair?.split('/')[0]}</span>
+                    <span className="text-gray-400">{t.enter_tag}</span>
+                    <span className="text-gray-400">{t.duration}</span>
+                  </div>
+                  <div className="text-gray-500">
+                    入 {t.entry_price} → 出 {t.exit_price}
+                  </div>
+                  <div className="text-gray-400">
+                    {t.entry_time?.slice(5)} → {t.exit_time?.slice(5)}
+                  </div>
+                </div>
+                {/* 右侧：出场原因 */}
+                <div className="flex flex-col items-end justify-center min-w-[60px] text-xs">
+                  <span className={`px-2 py-0.5 rounded font-medium ${
+                    t.exit_reason?.includes('止盈') ? 'bg-green-100 text-green-700' :
+                    t.exit_reason?.includes('止损') ? 'bg-red-100 text-red-700' :
+                    t.exit_reason?.includes('结构') ? 'bg-blue-100 text-blue-700' :
+                    t.exit_reason?.includes('移动') ? 'bg-yellow-100 text-yellow-700' :
+                    'bg-gray-100 text-gray-600'
+                  }`}>{t.exit_reason}</span>
+                  <div className={`text-xs mt-1 font-medium ${t.cumulative_pnl > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    累计 {t.cumulative_pnl > 0 ? '+' : ''}{t.cumulative_pnl.toFixed(2)}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 最佳/最差交易 */}
+      {best && worst && paired.length > 1 && (
+        <div className="grid grid-cols-2 gap-3">
+          {best && (
+            <div className="border rounded-lg p-3 border-green-200">
+              <div className="text-xs text-gray-400 mb-1">🏆 最佳交易</div>
+              <div className="text-sm font-bold text-green-600">+{best.pnl.toFixed(2)}</div>
+              <div className="text-xs text-gray-500">{best.pair?.split('/')[0]} {best.enter_tag} {best.duration}</div>
+            </div>
+          )}
+          {worst && (
+            <div className="border rounded-lg p-3 border-red-200">
+              <div className="text-xs text-gray-400 mb-1">💀 最差交易</div>
+              <div className="text-sm font-bold text-red-600">{worst.pnl.toFixed(2)}</div>
+              <div className="text-xs text-gray-500">{worst.pair?.split('/')[0]} {worst.enter_tag} {worst.duration}</div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 空状态 */}
+      {!running && paired.length === 0 && (
+        <div className="text-center py-12 text-gray-400">
+          <div className="text-4xl mb-3">📊</div>
+          <p className="text-sm">模拟盘未运行</p>
+          <p className="text-xs mt-1">选择策略 → 点击「启动」开始模拟交易</p>
+        </div>
+      )}
     </div>
   )
 }
